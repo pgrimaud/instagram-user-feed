@@ -15,7 +15,6 @@ composer require pgrimaud/instagram-user-feed
 ## Usage
 
 ```php
-
 $api = new Api();
 $api->setUserName('pgrimaud');
 
