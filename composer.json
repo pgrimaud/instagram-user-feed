@@ -1,0 +1,31 @@
+{
+  "name": "pgrimaud/instagram-user-feed",
+  "type": "library",
+  "description": "Easily fetch any user's Instagram feed without oAuth",
+  "keywords": ["instagram", "api"],
+  "homepage": "https://github.com/pgrimaud/instagram-user-feed",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pierre Grimaud",
+      "email": "grimaud.pierre@gmail.com"
+    },
+    {
+      "name": "Charles Salvan",
+      "email": "charles.salvan@hotmail.fr"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Instagram\\": "src/Instagram/"
+    }
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.4.*",
+    "codeclimate/php-test-reporter": "dev-master",
+    "friendsofphp/php-cs-fixer": "^2.4"
+  }
+}
