@@ -56,7 +56,6 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->invalidClient);
         $api->setUserName('pgrimaud');
         $api->getFeed();
-
     }
 
     public function testValidFeedWithMaxIdReturn()
