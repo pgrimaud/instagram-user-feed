@@ -18,6 +18,11 @@ class Api
     private $userName = '';
 
     /**
+     * @var integer
+     */
+    private $maxId = false;
+
+    /**
      * Api constructor.
      * @param Client|null $client
      */
@@ -35,6 +40,14 @@ class Api
     }
 
     /**
+     * @param int $maxId
+     */
+    public function setMaxId($maxId)
+    {
+        $this->maxId = $maxId;
+    }
+
+    /**
      * @return mixed
      * @throws InstagramException
      */
@@ -44,7 +57,7 @@ class Api
             throw new InstagramException();
         }
 
-        $rss  = new JsonFeed($this->client, $this->userName);
+        $rss  = new JsonFeed($this->client, $this->userName, $this->maxId);
         $data = $rss->fetch();
 
         $hydrator = new Hydrator();

@@ -19,14 +19,19 @@ class JsonFeed
     private $endpoint;
 
     /**
-     * FetchRss constructor.
+     * JsonFeed constructor.
      * @param Client $client
      * @param $userName
+     * @param $maxId
      */
-    public function __construct(Client $client, $userName)
+    public function __construct(Client $client, $userName, $maxId)
     {
         $this->client   = $client;
         $this->endpoint = self::INSTAGRAM_ENDPOINT . $userName . '?__a=1';
+
+        if ($maxId) {
+            $this->endpoint .= '&max_id=' . $maxId;
+        }
     }
 
     /**
