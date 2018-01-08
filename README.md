@@ -5,7 +5,6 @@
 [![Code Climate](https://codeclimate.com/github/pgrimaud/instagram-user-feed/badges/gpa.svg)](https://codeclimate.com/github/pgrimaud/instagram-user-feed)
 [![Test Coverage](https://codeclimate.com/github/pgrimaud/instagram-user-feed/badges/coverage.svg)](https://codeclimate.com/github/pgrimaud/instagram-user-feed/coverage)
 [![Issue Count](https://codeclimate.com/github/pgrimaud/instagram-user-feed/badges/issue_count.svg)](https://codeclimate.com/github/pgrimaud/instagram-user-feed)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/f94915cd-9337-4aab-8846-81a00227717c/mini.png)](https://insight.sensiolabs.com/projects/f94915cd-9337-4aab-8846-81a00227717c)
 
 ## Installation
 
