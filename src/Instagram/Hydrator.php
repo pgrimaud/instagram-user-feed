@@ -31,7 +31,7 @@ class Hydrator
 
             $media->setId($node['id']);
             $media->setTypeName($node['__typename']);
-            $media->setCaption($node['caption']);
+            $media->setCaption(isset($node['caption']) ? $node['caption'] : null);
 
             $media->setHeight($node['dimensions']['height']);
             $media->setWidth($node['dimensions']['width']);
