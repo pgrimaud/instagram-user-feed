@@ -1,5 +1,5 @@
 <?php
-namespace Instagra\tests;
+namespace Instagram\tests;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
