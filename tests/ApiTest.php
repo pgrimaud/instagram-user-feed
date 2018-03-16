@@ -70,7 +70,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->expectException(InstagramException::class);
 
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->getFeed(true, true);
+        $api->retrieveUserData(true);
+        $api->retrieveMediaData(true);
+        $api->getFeed();
     }
 
     /**
@@ -83,7 +85,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setMaxId(123);
         $api->setUserName('pgrimaud');
-        $api->getFeed(true, true);
+        $api->retrieveUserData(true);
+        $api->retrieveMediaData(true);
+        $api->getFeed();
     }
 
     /**
@@ -93,7 +97,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     {
         $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserName('pgrimaud');
-        $feed = $api->getFeed(false, true);
+
+        $api->retrieveMediaData(false);
+        $api->retrieveUserData(true);
+        $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
     }
@@ -107,7 +114,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserId(123);
-        $api->getFeed(false, true);
+
+        $api->retrieveMediaData(false);
+        $api->retrieveUserData(true);
+        $api->getFeed();
     }
 
     /**
@@ -119,7 +129,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $api = new Api($this->invalidUserClient, $this->invalidMediaClient);
         $api->setUserName('pgrimaud');
-        $api->getFeed(false, true);
+        $api->retrieveMediaData(false);
+        $api->retrieveUserData(true);
+        $api->getFeed();
     }
 
     /**
@@ -132,7 +144,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->validUserClient, $this->invalidMediaClient);
         $api->setUserName('pgrimaud');
         $api->setUserId(123);
-        $api->getFeed(true, true);
+        $api->retrieveMediaData(true);
+        $api->retrieveUserData(true);
+        $api->getFeed();
     }
 
     /**
@@ -145,6 +159,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api->setUserId(12345);
         $api->setMaxId(1);
 
+        $api->retrieveMediaData(true);
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
@@ -171,7 +186,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api->setUserId(123);
 
         /** @var Feed $feed */
-        $feed = $api->getFeed(true, true);
+        $api->retrieveMediaData(true);
+        $api->retrieveUserData(true);
+        $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
 
@@ -208,6 +225,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api->setUserId(123);
 
         /** @var Feed $feed */
+        $api->retrieveMediaData(true);
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);

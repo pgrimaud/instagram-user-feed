@@ -33,6 +33,16 @@ class Api
     private $maxId = false;
 
     /**
+     * @var bool
+     */
+    private $retrieveMediaData = false;
+
+    /**
+     * @var bool
+     */
+    private $retrieveUserData = false;
+
+    /**
      * Api constructor.
      * @param Client|null $clientUser
      * @param Client|null $clientMedia
@@ -68,38 +78,52 @@ class Api
     }
 
     /**
-     * @param bool $fetchMedia
-     * @param bool $fetchUser
      * @return Hydrator\Feed
      * @throws InstagramException
      */
-    public function getFeed($fetchMedia = true, $fetchUser = false)
+    public function getFeed()
     {
         if (!$this->userName && !$this->userId) {
             throw new InstagramException('Missing userName or userId');
         }
 
-        if ($fetchUser && !$this->userName) {
+        if ($this->retrieveUserData && !$this->userName) {
             throw new InstagramException('You must specify a userName to retrieve userData');
         }
 
-        if (($fetchMedia || $this->maxId) && !$this->userId) {
+        if (($this->retrieveMediaData || $this->maxId) && !$this->userId) {
             throw new InstagramException('You must specify a userId to retrieve mediaData');
         }
 
         $feed     = new JsonFeed($this->clientUser, $this->clientMedia);
         $hydrator = new Hydrator();
 
-        if ($fetchUser) {
+        if ($this->retrieveUserData) {
             $userDataFetched = $feed->fetchUserData($this->userName);
             $hydrator->setUserData($userDataFetched);
         }
 
-        if ($fetchMedia) {
+        if ($this->retrieveMediaData) {
             $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->maxId);
             $hydrator->setMediaData($mediaDataFetched);
         }
 
         return $hydrator->getHydratedData();
+    }
+
+    /**
+     * @param bool $retrieveMediaData
+     */
+    public function retrieveMediaData($retrieveMediaData)
+    {
+        $this->retrieveMediaData = $retrieveMediaData;
+    }
+
+    /**
+     * @param bool $retrieveUserData
+     */
+    public function retrieveUserData($retrieveUserData)
+    {
+        $this->retrieveUserData = $retrieveUserData;
     }
 }
