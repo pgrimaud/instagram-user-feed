@@ -26,10 +26,12 @@ class Hydrator
     {
         $feed = $this->generateFeed();
 
-        foreach ($this->data['media']['nodes'] as $node) {
+        foreach ($this->data['edge_owner_to_timeline_media']['edges'] as $node) {
+            $node = $node['node'];
+
             $media = new Media();
 
-            $media->setId($node['id']);
+            $media->setId(['id']);
             $media->setTypeName($node['__typename']);
             $media->setCaption(isset($node['caption']) ? $node['caption'] : null);
 
@@ -37,7 +39,7 @@ class Hydrator
             $media->setWidth($node['dimensions']['width']);
 
             $media->setThumbnailSrc($node['thumbnail_src']);
-            $media->setDisplaySrc($node['display_src']);
+            $media->setDisplaySrc($node['display_url']);
 
             $resources = [];
 
@@ -51,20 +53,20 @@ class Hydrator
 
             $media->setThumbnailResources($resources);
 
-            $media->setCode($node['code']);
-            $media->setLink('https://www.instagram.com/p/' . $node['code'] . '/');
+            $media->setCode($node['shortcode']);
+            $media->setLink('https://www.instagram.com/p/' . $node['shortcode'] . '/');
 
             $date = new \DateTime();
-            $date->setTimestamp($node['date']);
+            $date->setTimestamp($node['taken_at_timestamp']);
 
             $media->setDate($date);
 
-            $media->setComments($node['comments']['count']);
-            $media->setLikes($node['likes']['count']);
+            //$media->setComments($node['comments']['count']); // seems to be moved
+            $media->setLikes($node['edge_liked_by']['count']);
 
             $feed->addMedia($media);
         }
-
+     
         return $feed;
     }
 
@@ -81,15 +83,15 @@ class Hydrator
         $feed->setBiography($this->data['biography']);
 
         $feed->setIsVerified($this->data['is_verified']);
-        $feed->setFollowers($this->data['followed_by']['count']);
-        $feed->setFollowing($this->data['follows']['count']);
+        $feed->setFollowers($this->data['followed_by_viewer']['count']);
+        $feed->setFollowing($this->data['follows_viewer']['count']);
 
         $feed->setProfilePicture($this->data['profile_pic_url']);
         $feed->setProfilePictureHd($this->data['profile_pic_url_hd']);
         $feed->setExternalUrl($this->data['external_url']);
 
-        $feed->setHasNextPage($this->data['media']['page_info']['has_next_page']);
-        $feed->setMediaCount($this->data['media']['count']);
+        $feed->setHasNextPage($this->data['edge_owner_to_timeline_media']['page_info']['has_next_page']);
+        $feed->setMediaCount($this->data['edge_owner_to_timeline_media']['count']);
 
         return $feed;
     }
