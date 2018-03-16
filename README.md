@@ -23,7 +23,7 @@ composer require pgrimaud/instagram-user-feed
 ```php
 $api = new Api();
 
-// For user data, userName is mandatory!
+// for user data, userName is mandatory!
 $api->setUserName('pgrimaud');
 
 $api->retrieveUserData(true);
@@ -61,7 +61,7 @@ Instagram\Hydrator\Feed Object
 ```php
 $api = new Api();
 
-// For media, userId is mandatory!
+// for media, userId is mandatory!
 $api->setUserId(184263228);
 
 $api->retrieveMediaData(true);
@@ -150,6 +150,7 @@ Instagram\Hydrator\Feed Object
                     [likes] => 29
                 )
         )
+        ...
 )
 ```
 
@@ -158,10 +159,10 @@ Instagram\Hydrator\Feed Object
 ```php
 $api = new Api();
 
-// For user data, userName is mandatory!
+// for user data, userName is mandatory!
 $api->setUserName('pgrimaud');
 
-// For media, userId is mandatory!
+// for media, userId is mandatory!
 $api->setUserId(184263228);
 
 $api->retrieveUserData(true);
@@ -251,6 +252,7 @@ Instagram\Hydrator\Feed Object
                     [likes] => 29
                 )
         )
+        ...
 )        
 ```
 
