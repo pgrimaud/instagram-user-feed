@@ -16,28 +16,74 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Client
      */
-    private $validClient;
+    private $validUserClient;
 
     /**
      * @var Client
      */
-    private $invalidClient;
+    private $invalidUserClient;
+
+    /**
+     * @var Client
+     */
+    private $validMediaClient;
+
+    /**
+     * @var Client
+     */
+    private $invalidMediaClient;
 
     public function setUp()
     {
-        $validFixtures = file_get_contents(__DIR__ . '/fixtures/instagram_feed.json');
+        $validUserFixtures   = file_get_contents(__DIR__ . '/fixtures/user_feed.json');
+        $invalidUserFixtures = '';
 
-        $response          = new Response(200, [], $validFixtures);
-        $mock              = new MockHandler([$response]);
-        $handler           = HandlerStack::create($mock);
-        $this->validClient = new Client(['handler' => $handler]);
+        $response              = new Response(200, [], $validUserFixtures);
+        $mock                  = new MockHandler([$response]);
+        $handler               = HandlerStack::create($mock);
+        $this->validUserClient = new Client(['handler' => $handler]);
 
-        $invalidFixtures = '';
+        $response                = new Response(200, [], $invalidUserFixtures);
+        $mock                    = new MockHandler([$response]);
+        $handler                 = HandlerStack::create($mock);
+        $this->invalidUserClient = new Client(['handler' => $handler]);
 
-        $response            = new Response(200, [], $invalidFixtures);
-        $mock                = new MockHandler([$response]);
-        $handler             = HandlerStack::create($mock);
-        $this->invalidClient = new Client(['handler' => $handler]);
+        $validMediaFixtures   = file_get_contents(__DIR__ . '/fixtures/medias_feed.json');
+        $invalidMediaFixtures = '';
+
+        $response               = new Response(200, [], $validMediaFixtures);
+        $mock                   = new MockHandler([$response]);
+        $handler                = HandlerStack::create($mock);
+        $this->validMediaClient = new Client(['handler' => $handler]);
+
+        $response                 = new Response(200, [], $invalidMediaFixtures);
+        $mock                     = new MockHandler([$response]);
+        $handler                  = HandlerStack::create($mock);
+        $this->invalidMediaClient = new Client(['handler' => $handler]);
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testEmptyUserIdAndEmptyUserName()
+    {
+        $this->expectException(InstagramException::class);
+
+        $api = new Api($this->validUserClient, $this->validMediaClient);
+        $api->getFeed(true, true);
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testEmptyUserIdAndMaxId()
+    {
+        $this->expectException(InstagramException::class);
+
+        $api = new Api($this->validUserClient, $this->validMediaClient);
+        $api->setMaxId(123);
+        $api->setUserName('pgrimaud');
+        $api->getFeed(true, true);
     }
 
     /**
@@ -45,9 +91,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidFeedReturn()
     {
-        $api = new Api($this->validClient);
+        $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserName('pgrimaud');
-        $feed = $api->getFeed();
+        $feed = $api->getFeed(false, true);
 
         $this->assertInstanceOf(Feed::class, $feed);
     }
@@ -55,13 +101,38 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @throws InstagramException
      */
-    public function testValidEmptyFeedReturn()
+    public function testEmptyUserName()
     {
         $this->expectException(InstagramException::class);
 
-        $api = new Api($this->invalidClient);
+        $api = new Api($this->validUserClient, $this->validMediaClient);
+        $api->setUserId(123);
+        $api->getFeed(false, true);
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testEmptyUserFeedReturn()
+    {
+        $this->expectException(InstagramException::class);
+
+        $api = new Api($this->invalidUserClient, $this->invalidMediaClient);
         $api->setUserName('pgrimaud');
-        $api->getFeed();
+        $api->getFeed(false, true);
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testEmptyMediaFeedReturn()
+    {
+        $this->expectException(InstagramException::class);
+
+        $api = new Api($this->validUserClient, $this->invalidMediaClient);
+        $api->setUserName('pgrimaud');
+        $api->setUserId(123);
+        $api->getFeed(true, true);
     }
 
     /**
@@ -69,9 +140,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidFeedWithMaxIdReturn()
     {
-        $api = new Api($this->validClient);
+        $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserName('pgrimaud');
+        $api->setUserId(12345);
         $api->setMaxId(1);
+
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
@@ -84,7 +157,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     {
         $this->expectException(InstagramException::class);
 
-        $api = new Api($this->validClient);
+        $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->getFeed();
     }
 
@@ -93,11 +166,12 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testFeedContent()
     {
-        $api = new Api($this->validClient);
+        $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserName('pgrimaud');
+        $api->setUserId(123);
 
         /** @var Feed $feed */
-        $feed = $api->getFeed();
+        $feed = $api->getFeed(true, true);
 
         $this->assertInstanceOf(Feed::class, $feed);
 
@@ -129,8 +203,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaContent()
     {
-        $api = new Api($this->validClient);
+        $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserName('pgrimaud');
+        $api->setUserId(123);
 
         /** @var Feed $feed */
         $feed = $api->getFeed();

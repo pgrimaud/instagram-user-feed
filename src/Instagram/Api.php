@@ -10,12 +10,22 @@ class Api
     /**
      * @var Client
      */
-    private $client;
+    private $clientUser = null;
+
+    /**
+     * @var Client
+     */
+    private $clientMedia = null;
 
     /**
      * @var string
      */
-    private $userName = '';
+    private $userName = null;
+
+    /**
+     * @var integer
+     */
+    private $userId = null;
 
     /**
      * @var integer
@@ -24,11 +34,13 @@ class Api
 
     /**
      * Api constructor.
-     * @param Client|null $client
+     * @param Client|null $clientUser
+     * @param Client|null $clientMedia
      */
-    public function __construct(Client $client = null)
+    public function __construct(Client $clientUser = null, Client $clientMedia = null)
     {
-        $this->client = $client ?: new Client();
+        $this->clientUser  = $clientUser ?: new Client();
+        $this->clientMedia = $clientMedia ?: new Client();
     }
 
     /**
@@ -48,20 +60,45 @@ class Api
     }
 
     /**
-     * @return mixed
+     * @param int $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    }
+
+    /**
+     * @param bool $fetchMedia
+     * @param bool $fetchUser
+     * @return Hydrator\Feed
      * @throws InstagramException
      */
-    public function getFeed()
+    public function getFeed($fetchMedia = true, $fetchUser = false)
     {
-        if (!$this->userName) {
-            throw new InstagramException();
+        if (!$this->userName && !$this->userId) {
+            throw new InstagramException('Missing userName or userId');
         }
 
-        $rss  = new JsonFeed($this->client, $this->userName, $this->maxId);
-        $data = $rss->fetch();
+        if ($fetchUser && !$this->userName) {
+            throw new InstagramException('You must specify a userName to retrieve userData');
+        }
 
+        if (($fetchMedia || $this->maxId) && !$this->userId) {
+            throw new InstagramException('You must specify a userId to retrieve mediaData');
+        }
+
+        $feed     = new JsonFeed($this->clientUser, $this->clientMedia);
         $hydrator = new Hydrator();
-        $hydrator->setData($data);
+
+        if ($fetchUser) {
+            $userDataFetched = $feed->fetchUserData($this->userName);
+            $hydrator->setUserData($userDataFetched);
+        }
+
+        if ($fetchMedia) {
+            $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->maxId);
+            $hydrator->setMediaData($mediaDataFetched);
+        }
 
         return $hydrator->getHydratedData();
     }

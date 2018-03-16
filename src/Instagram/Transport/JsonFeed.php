@@ -6,40 +6,38 @@ use Instagram\Exception\InstagramException;
 
 class JsonFeed
 {
-    const INSTAGRAM_ENDPOINT = 'https://www.instagram.com/';
+    const INSTAGRAM_ENDPOINT   = 'https://www.instagram.com/';
+    const INSTAGRAM_QUERY_HASH = '472f257a40c653c64c666ce877d59d2b';
 
     /**
      * @var Client
      */
-    private $client;
+    private $clientUser;
 
     /**
-     * @var string
+     * @var Client
      */
-    private $endpoint;
+    private $clientMedia;
 
     /**
      * JsonFeed constructor.
-     * @param Client $client
-     * @param $userName
-     * @param $maxId
+     * @param Client $clientUser
+     * @param Client $clientMedia
      */
-    public function __construct(Client $client, $userName, $maxId)
+    public function __construct(Client $clientUser, Client $clientMedia)
     {
-        $this->client   = $client;
-        $this->endpoint = self::INSTAGRAM_ENDPOINT . $userName . '?__a=1';
-
-        if ($maxId) {
-            $this->endpoint .= '&max_id=' . $maxId;
-        }
+        $this->clientUser  = $clientUser;
+        $this->clientMedia = $clientMedia;
     }
 
     /**
      * @throws InstagramException
      */
-    public function fetch()
+    public function fetchUserData($userName)
     {
-        $res = $this->client->request('GET', $this->endpoint);
+        $endpoint = self::INSTAGRAM_ENDPOINT . $userName . '?__a=1';
+
+        $res = $this->clientUser->request('GET', $endpoint);
 
         $json = (string)$res->getBody();
         $data = json_decode($json, JSON_OBJECT_AS_ARRAY);
@@ -49,5 +47,32 @@ class JsonFeed
         }
 
         return $data['graphql']['user'];
+    }
+
+    /**
+     * @param $userId
+     * @param null $maxId
+     * @return mixed
+     * @throws InstagramException
+     */
+    public function fetchMediaData($userId, $maxId = null)
+    {
+        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . self::INSTAGRAM_QUERY_HASH . '&first=12&id=' .
+            $userId;
+
+        if ($maxId) {
+            $endpoint .= '&after=' . $maxId;
+        }
+
+        $res = $this->clientMedia->request('GET', $endpoint);
+
+        $json = (string)$res->getBody();
+        $data = json_decode($json, JSON_OBJECT_AS_ARRAY);
+
+        if (!is_array($data)) {
+            throw new InstagramException('Invalid JSON');
+        }
+
+        return $data['data']['user'];
     }
 }
