@@ -48,6 +48,6 @@ class JsonFeed
             throw new InstagramException('Invalid JSON');
         }
 
-        return $data['user'];
+        return $data['graphql']['user'];
     }
 }
