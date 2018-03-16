@@ -149,8 +149,8 @@ Instagram\Hydrator\Feed Object
                     [comments] => 0
                     [likes] => 29
                 )
+                ...
         )
-        ...
 )
 ```
 
@@ -251,8 +251,7 @@ Instagram\Hydrator\Feed Object
                     [comments] => 0
                     [likes] => 29
                 )
+                ...
         )
-        ...
 )        
 ```
-
