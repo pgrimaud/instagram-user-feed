@@ -12,6 +12,12 @@
 composer require pgrimaud/instagram-user-feed
 ```
 
+## Warning
+
+**Due to changes of the Instagram API, you have to upgrade to version ^2.0.**
+
+*Edit 2018-03-16 : Pagination seems to be broken - waiting for a fix or fallback*
+
 ## Usage
 
 ```php
