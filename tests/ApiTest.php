@@ -40,6 +40,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->invalidClient = new Client(['handler' => $handler]);
     }
 
+    /**
+     * @throws InstagramException
+     */
     public function testValidFeedReturn()
     {
         $api = new Api($this->validClient);
@@ -49,6 +52,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Feed::class, $feed);
     }
 
+    /**
+     * @throws InstagramException
+     */
     public function testValidEmptyFeedReturn()
     {
         $this->expectException(InstagramException::class);
@@ -58,6 +64,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api->getFeed();
     }
 
+    /**
+     * @throws InstagramException
+     */
     public function testValidFeedWithMaxIdReturn()
     {
         $api = new Api($this->validClient);
@@ -68,6 +77,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Feed::class, $feed);
     }
 
+    /**
+     * @throws InstagramException
+     */
     public function testValidFeedWithoutUserNameReturn()
     {
         $this->expectException(InstagramException::class);
@@ -76,6 +88,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api->getFeed();
     }
 
+    /**
+     * @throws InstagramException
+     */
     public function testFeedContent()
     {
         $api = new Api($this->validClient);
@@ -97,11 +112,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(true, $feed->getHasNextPage());
         $this->assertSame(false, $feed->getisVerified());
 
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePictureHd());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/faf7cfb2f6ea29b57d3032717d8789bf/5B34242E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/faf7cfb2f6ea29b57d3032717d8789bf/5B34242E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePictureHd());
 
-        $this->assertSame(336, $feed->getFollowers());
-        $this->assertSame(110, $feed->getFollowing());
+        $this->assertSame(337, $feed->getFollowers());
+        $this->assertSame(112, $feed->getFollowing());
 
         $this->assertSame('https://p.ier.re/', $feed->getExternalUrl());
         $this->assertSame(30, $feed->getMediaCount());
@@ -109,6 +124,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(12, $feed->getMedias());
     }
 
+    /**
+     * @throws InstagramException
+     */
     public function testMediaContent()
     {
         $api = new Api($this->validClient);
@@ -130,8 +148,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1080, $media->getWidth());
         $this->assertSame(1080, $media->getHeight());
 
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/25024600_726096737595175_9198105573181095936_n.jpg', $media->getThumbnailSrc());
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/t51.2885-15/e35/25024600_726096737595175_9198105573181095936_n.jpg', $media->getDisplaySrc());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/90b54127c36ce17fefee861606db228e/5B430967/t51.2885-15/s640x640/sh0.08/e35/25024600_726096737595175_9198105573181095936_n.jpg', $media->getThumbnailSrc());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/89ddb8f8c3466e7436c29d041ece4300/5B4AF306/t51.2885-15/e35/25024600_726096737595175_9198105573181095936_n.jpg', $media->getDisplaySrc());
         $this->assertSame(1080, $media->getHeight());
 
         $this->assertCount(5, $media->getThumbnailResources());
@@ -144,6 +162,6 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('🎄🎅💸🙃 #casino #monaco', $media->getCaption());
 
         $this->assertSame(0, $media->getComments());
-        $this->assertSame(28, $media->getLikes());
+        $this->assertSame(29, $media->getLikes());
     }
 }

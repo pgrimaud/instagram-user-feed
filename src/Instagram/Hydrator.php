@@ -31,9 +31,11 @@ class Hydrator
 
             $media = new Media();
 
-            $media->setId(['id']);
+            $media->setId($node['id']);
             $media->setTypeName($node['__typename']);
-            $media->setCaption(isset($node['caption']) ? $node['caption'] : null);
+
+            $caption = isset($node['edge_media_to_caption']['edges'][0]['node']['text']) ? $node['edge_media_to_caption']['edges'][0]['node']['text'] : null;
+            $media->setCaption($caption);
 
             $media->setHeight($node['dimensions']['height']);
             $media->setWidth($node['dimensions']['width']);
@@ -61,12 +63,12 @@ class Hydrator
 
             $media->setDate($date);
 
-            //$media->setComments($node['comments']['count']); // seems to be moved
+            $media->setComments($node['edge_media_to_comment']['count']);
             $media->setLikes($node['edge_liked_by']['count']);
 
             $feed->addMedia($media);
         }
-     
+
         return $feed;
     }
 
@@ -83,8 +85,8 @@ class Hydrator
         $feed->setBiography($this->data['biography']);
 
         $feed->setIsVerified($this->data['is_verified']);
-        $feed->setFollowers($this->data['followed_by_viewer']['count']);
-        $feed->setFollowing($this->data['follows_viewer']['count']);
+        $feed->setFollowers($this->data['edge_followed_by']['count']);
+        $feed->setFollowing($this->data['edge_follow']['count']);
 
         $feed->setProfilePicture($this->data['profile_pic_url']);
         $feed->setProfilePictureHd($this->data['profile_pic_url_hd']);
