@@ -6,7 +6,7 @@ use Instagram\Exception\InstagramException;
 
 class JsonFeed
 {
-    const INSTAGRAM_ENDPOINT   = 'https://www.instagram.com/';
+    const INSTAGRAM_ENDPOINT = 'https://www.instagram.com/';
     const INSTAGRAM_QUERY_HASH = '472f257a40c653c64c666ce877d59d2b';
 
     /**
@@ -20,18 +20,27 @@ class JsonFeed
     private $clientMedia;
 
     /**
+     * @var string
+     */
+    private $queryHash;
+
+    /**
      * JsonFeed constructor.
      * @param Client $clientUser
      * @param Client $clientMedia
      */
-    public function __construct(Client $clientUser, Client $clientMedia)
+    public function __construct(Client $clientUser, Client $clientMedia, $queryHash = null)
     {
         $this->clientUser  = $clientUser;
         $this->clientMedia = $clientMedia;
+        $this->queryHash   = $queryHash;
     }
 
     /**
+     * @param $userName
+     * @return mixed
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function fetchUserData($userName)
     {
@@ -49,15 +58,21 @@ class JsonFeed
         return $data['graphql']['user'];
     }
 
+    private function getQueryHash()
+    {
+        return $this->queryHash ? $this->queryHash : self::INSTAGRAM_QUERY_HASH;
+    }
+
     /**
      * @param $userId
      * @param null $maxId
      * @return mixed
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function fetchMediaData($userId, $maxId = null)
     {
-        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . self::INSTAGRAM_QUERY_HASH . '&first=12&id=' .
+        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&first=12&id=' .
             $userId;
 
         if ($maxId) {
