@@ -64,6 +64,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyUserIdAndEmptyUserName()
     {
@@ -77,6 +78,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyUserIdAndMaxId()
     {
@@ -92,6 +94,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidFeedReturn()
     {
@@ -100,6 +103,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $api->retrieveMediaData(false);
         $api->retrieveUserData(true);
+        $api->setQueryHash('xxxx');
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
@@ -107,6 +111,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyUserName()
     {
@@ -122,6 +127,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyUserFeedReturn()
     {
@@ -136,6 +142,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyMediaFeedReturn()
     {
@@ -151,6 +158,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidFeedWithMaxIdReturn()
     {
@@ -167,6 +175,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidFeedWithoutUserNameReturn()
     {
@@ -178,6 +187,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testFeedContent()
     {
@@ -217,6 +227,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testMediaContent()
     {

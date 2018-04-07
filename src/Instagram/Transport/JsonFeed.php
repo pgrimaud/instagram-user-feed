@@ -6,7 +6,7 @@ use Instagram\Exception\InstagramException;
 
 class JsonFeed
 {
-    const INSTAGRAM_ENDPOINT = 'https://www.instagram.com/';
+    const INSTAGRAM_ENDPOINT   = 'https://www.instagram.com/';
     const INSTAGRAM_QUERY_HASH = '472f257a40c653c64c666ce877d59d2b';
 
     /**
@@ -28,6 +28,7 @@ class JsonFeed
      * JsonFeed constructor.
      * @param Client $clientUser
      * @param Client $clientMedia
+     * @param null $queryHash
      */
     public function __construct(Client $clientUser, Client $clientMedia, $queryHash = null)
     {
@@ -72,14 +73,19 @@ class JsonFeed
      */
     public function fetchMediaData($userId, $maxId = null)
     {
-        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&first=12&id=' .
-            $userId;
+        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&variables={"id":"' . $userId . '","first":12';
 
         if ($maxId) {
-            $endpoint .= '&after=' . $maxId;
+            $endpoint .= '",after":"' . $maxId . '""';
         }
 
-        $res = $this->clientMedia->request('GET', $endpoint);
+        $endpoint .= '}';
+
+        $headers = [
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'
+        ];
+
+        $res = $this->clientMedia->request('GET', $endpoint, $headers);
 
         $json = (string)$res->getBody();
         $data = json_decode($json, JSON_OBJECT_AS_ARRAY);

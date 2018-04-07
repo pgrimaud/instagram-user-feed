@@ -43,14 +43,21 @@ class Api
     private $retrieveUserData = false;
 
     /**
+     * @var string
+     */
+    private $queryHash = false;
+
+    /**
      * Api constructor.
      * @param Client|null $clientUser
      * @param Client|null $clientMedia
+     * @param null $queryHash
      */
-    public function __construct(Client $clientUser = null, Client $clientMedia = null)
+    public function __construct(Client $clientUser = null, Client $clientMedia = null, $queryHash = null)
     {
         $this->clientUser  = $clientUser ?: new Client();
         $this->clientMedia = $clientMedia ?: new Client();
+        $this->queryHash   = $queryHash;
     }
 
     /**
@@ -80,6 +87,7 @@ class Api
     /**
      * @return Hydrator\Feed
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFeed()
     {
@@ -95,7 +103,7 @@ class Api
             throw new InstagramException('You must specify a userId to retrieve mediaData');
         }
 
-        $feed     = new JsonFeed($this->clientUser, $this->clientMedia);
+        $feed     = new JsonFeed($this->clientUser, $this->clientMedia, $this->queryHash);
         $hydrator = new Hydrator();
 
         if ($this->retrieveUserData) {
@@ -125,5 +133,13 @@ class Api
     public function retrieveUserData($retrieveUserData)
     {
         $this->retrieveUserData = $retrieveUserData;
+    }
+
+    /**
+     * @param string $queryHash
+     */
+    public function setQueryHash($queryHash)
+    {
+        $this->queryHash = $queryHash;
     }
 }
