@@ -2,6 +2,7 @@
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 use Instagram\Exception\InstagramException;
 
 class JsonFeed
@@ -66,23 +67,29 @@ class JsonFeed
 
     /**
      * @param $userId
-     * @param null $maxId
+     * @param null $cursor
      * @return mixed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchMediaData($userId, $maxId = null)
+    public function fetchMediaData($userId, $cursor = null)
     {
-        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&variables={"id":"' . $userId . '","first":12';
+        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&variables={"id":"' . $userId . '","first":"12"';
 
-        if ($maxId) {
-            $endpoint .= '",after":"' . $maxId . '""';
+
+        if ($cursor) {
+            $endpoint .= ',"after":"' . $cursor . '"';
         }
 
         $endpoint .= '}';
 
+        $cookieJar = CookieJar::fromArray([
+            'ig_pr' => '2'
+        ], 'instagram.com');
+
         $headers = [
-            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+            'cookies'    => $cookieJar
         ];
 
         $res = $this->clientMedia->request('GET', $endpoint, $headers);

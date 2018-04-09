@@ -64,6 +64,11 @@ class Feed
     public $hasNextPage = false;
 
     /**
+     * @var string
+     */
+    public $endCursor;
+
+    /**
      * @var array
      */
     public $medias = [];
@@ -274,5 +279,21 @@ class Feed
     public function addMedia($media)
     {
         $this->medias[] = $media;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndCursor()
+    {
+        return $this->endCursor;
+    }
+
+    /**
+     * @param string $endCursor
+     */
+    public function setEndCursor($endCursor)
+    {
+        $this->endCursor = $endCursor;
     }
 }

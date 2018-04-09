@@ -80,12 +80,12 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testEmptyUserIdAndMaxId()
+    public function testEmptyUserIdAndCursor()
     {
         $this->expectException(InstagramException::class);
 
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setMaxId(123);
+        $api->setCursor(123);
         $api->setUserName('pgrimaud');
         $api->retrieveUserData(true);
         $api->retrieveMediaData(true);
@@ -160,12 +160,12 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testValidFeedWithMaxIdReturn()
+    public function testValidFeedWithCursorReturn()
     {
         $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserName('pgrimaud');
         $api->setUserId(12345);
-        $api->setMaxId(1);
+        $api->setCursor(1);
 
         $api->retrieveMediaData(true);
         $feed = $api->getFeed();

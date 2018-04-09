@@ -14,7 +14,8 @@ composer require pgrimaud/instagram-user-feed
 
 ## Warning
 
-**2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1**
+**2018-04-08 : Due to changes of the Instagram API (again...), you must upgrade to version ^3.0**
+~~2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1~~
 
 ## Usage
 

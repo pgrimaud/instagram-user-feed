@@ -84,6 +84,7 @@ class Hydrator
             }
 
             $feed->setHasNextPage($this->mediaData['edge_owner_to_timeline_media']['page_info']['has_next_page']);
+            $feed->setEndCursor($this->mediaData['edge_owner_to_timeline_media']['page_info']['end_cursor']);
         }
 
         return $feed;
