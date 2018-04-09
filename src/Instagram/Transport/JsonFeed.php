@@ -67,18 +67,18 @@ class JsonFeed
 
     /**
      * @param $userId
-     * @param null $cursor
+     * @param null $endCursor
      * @return mixed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchMediaData($userId, $cursor = null)
+    public function fetchMediaData($userId, $endCursor = null)
     {
         $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&variables={"id":"' . $userId . '","first":"12"';
 
 
-        if ($cursor) {
-            $endpoint .= ',"after":"' . $cursor . '"';
+        if ($endCursor) {
+            $endpoint .= ',"after":"' . $endCursor . '"';
         }
 
         $endpoint .= '}';

@@ -28,9 +28,9 @@ class Api
     private $userId = null;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $cursor = false;
+    private $endCursor = false;
 
     /**
      * @var bool
@@ -69,11 +69,11 @@ class Api
     }
 
     /**
-     * @param string $cursor
+     * @param string $endCursor
      */
-    public function setCursor($cursor)
+    public function setEndCursor($endCursor)
     {
-        $this->cursor = $cursor;
+        $this->endCursor = $endCursor;
     }
 
     /**
@@ -99,7 +99,7 @@ class Api
             throw new InstagramException('You must specify a userName to retrieve userData');
         }
 
-        if (($this->retrieveMediaData || $this->cursor) && !$this->userId) {
+        if (($this->retrieveMediaData || $this->endCursor) && !$this->userId) {
             throw new InstagramException('You must specify a userId to retrieve mediaData');
         }
 
@@ -112,7 +112,7 @@ class Api
         }
 
         if ($this->retrieveMediaData) {
-            $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->cursor);
+            $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->endCursor);
             $hydrator->setMediaData($mediaDataFetched);
         }
 

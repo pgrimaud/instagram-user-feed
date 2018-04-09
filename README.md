@@ -277,7 +277,7 @@ $endCursor = $feed->getEndCursor();
 $api = new Api();
 $api->setUserId(184263228);
 $api->retrieveMediaData(true);
-$api->setCursor($endCursor);
+$api->setEndCursor($endCursor);
 
 $feed = $api->getFeed();
 

@@ -85,7 +85,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->expectException(InstagramException::class);
 
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setCursor(123);
+        $api->setEndCursor(123);
         $api->setUserName('pgrimaud');
         $api->retrieveUserData(true);
         $api->retrieveMediaData(true);
@@ -165,7 +165,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->validUserClient, $this->validMediaClient);
         $api->setUserName('pgrimaud');
         $api->setUserId(12345);
-        $api->setCursor(1);
+        $api->setEndCursor('xxxxx');
 
         $api->retrieveMediaData(true);
         $feed = $api->getFeed();
@@ -223,6 +223,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(30, $feed->getMediaCount());
 
         $this->assertCount(12, $feed->getMedias());
+
+        $this->assertSame('AQDt7mwufgiNOm233ZFUKmdUv5AqQ3SDYAM9UgY1wC1bjteFPQxRuhm0A6pTEZNRZaYlJIb0bmEQAEtLvwHd6COidVHtBo4Ehx8n7K5n5dJ3dw', $feed->getEndCursor());
     }
 
     /**
