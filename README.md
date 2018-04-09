@@ -262,8 +262,7 @@ Instagram\Hydrator\Feed Object
 If you want to use paginate for user media data, retrieve `endCursor` from previous call and add it to your next call.
 
 ```php
-
-// First call
+// First call :
 
 $api = new Api();
 $api->setUserId(184263228);
@@ -282,6 +281,7 @@ $api->setCursor($endCursor);
 
 $feed = $api->getFeed();
 
+// And etc...
 ```
 
 
