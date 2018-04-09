@@ -15,6 +15,7 @@ composer require pgrimaud/instagram-user-feed
 ## Warning
 
 **2018-04-08 : Due to changes of the Instagram API (again...), you must upgrade to version ^3.0**
+
 ~~2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1~~
 
 ## Usage
@@ -256,3 +257,31 @@ Instagram\Hydrator\Feed Object
         )
 )        
 ```
+
+### Paginate
+If you want to use paginate for user media data, retrieve `endCursor` from previous call and add it to your next call.
+
+```php
+
+// First call
+
+$api = new Api();
+$api->setUserId(184263228);
+$api->retrieveMediaData(true);
+
+$feed = $api->getFeed();
+
+$endCursor = $feed->getEndCursor();
+
+// Second call : 
+
+$api = new Api();
+$api->setUserId(184263228);
+$api->retrieveMediaData(true);
+$api->setCursor($endCursor);
+
+$feed = $api->getFeed();
+
+```
+
+
