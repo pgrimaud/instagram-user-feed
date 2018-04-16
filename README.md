@@ -11,6 +11,17 @@
 ```
 composer require pgrimaud/instagram-user-feed
 ```
+1. Visit [http://instagram.pixelunion.net/](http://instagram.pixelunion.net/) and create an access token
+
+2. The first part of the access token is your User Id
+
+```
+$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
+$api->setUserId(1234578);
+```
+
+
+
 
 ## Warning
 
