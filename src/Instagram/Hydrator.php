@@ -1,4 +1,5 @@
 <?php
+
 namespace Instagram;
 
 use Instagram\Hydrator\Feed;
@@ -39,24 +40,25 @@ class Hydrator
     {
         $feed = $this->generateFeed();
 
-        if (isset($this->mediaData['edge_owner_to_timeline_media'])) {
-            foreach ($this->mediaData['edge_owner_to_timeline_media']['edges'] as $node) {
-                $node = $node['node'];
+        if (isset($this->userData)) {
+            foreach ($this->userData as $node) {
+                //$node = $node['images'];
 
                 $media = new Media();
 
-                $media->setId($node['id']);
-                $media->setTypeName($node['__typename']);
+                //$media->setId($node['id']);
+                //$media->setTypeName($node['__typename']);
 
-                $caption = isset($node['edge_media_to_caption']['edges'][0]['node']['text']) ? $node['edge_media_to_caption']['edges'][0]['node']['text'] : null;
-                $media->setCaption($caption);
+                //$caption = isset($node['edge_media_to_caption']['edges'][0]['node']['text']) ? $node['edge_media_to_caption']['edges'][0]['node']['text'] : null;
+                //$media->setCaption($caption);
 
-                $media->setHeight($node['dimensions']['height']);
-                $media->setWidth($node['dimensions']['width']);
+                $media->setHeight($node['images']['standard_resolution']['height']);
+                $media->setWidth($node['images']['standard_resolution']['width']);
 
-                $media->setThumbnailSrc($node['thumbnail_src']);
-                $media->setDisplaySrc($node['display_url']);
+                $media->setThumbnailSrc($node['images']['thumbnail']['url']);
+                $media->setDisplaySrc($node['images']['standard_resolution']['url']);
 
+                /*
                 $resources = [];
 
                 foreach ($node['thumbnail_resources'] as $resource) {
@@ -67,18 +69,19 @@ class Hydrator
                     ];
                 }
 
-                $media->setThumbnailResources($resources);
 
-                $media->setCode($node['shortcode']);
-                $media->setLink('https://www.instagram.com/p/' . $node['shortcode'] . '/');
+                $media->setThumbnailResources($resources);
+                */
+                //$media->setCode($node['shortcode']);
+                $media->setLink($node['link']);
 
                 $date = new \DateTime();
-                $date->setTimestamp($node['taken_at_timestamp']);
+                $date->setTimestamp($node['created_time']);
 
                 $media->setDate($date);
 
-                $media->setComments($node['edge_media_to_comment']['count']);
-                $media->setLikes($node['edge_media_preview_like']['count']);
+                //$media->setComments($node['edge_media_to_comment']['count']);
+                //$media->setLikes($node['edge_media_preview_like']['count']);
 
                 $feed->addMedia($media);
             }
@@ -98,20 +101,15 @@ class Hydrator
         $feed = new Feed();
 
         if ($this->userData) {
-            $feed->setId($this->userData['id']);
-            $feed->setUserName($this->userData['username']);
-            $feed->setFullName($this->userData['full_name']);
-            $feed->setBiography($this->userData['biography']);
+            $total = count($this->userData);
 
-            $feed->setIsVerified($this->userData['is_verified']);
-            $feed->setFollowers($this->userData['edge_followed_by']['count']);
-            $feed->setFollowing($this->userData['edge_follow']['count']);
-
-            $feed->setProfilePicture($this->userData['profile_pic_url']);
-            $feed->setProfilePictureHd($this->userData['profile_pic_url_hd']);
-            $feed->setExternalUrl($this->userData['external_url']);
-
-            $feed->setMediaCount($this->userData['edge_owner_to_timeline_media']['count']);
+            if ($total > 0) {
+                $feed->setId($this->userData[0]['id']);
+                $feed->setUserName($this->userData[0]['user']['username']);
+                $feed->setFullName($this->userData[0]['user']['full_name']);
+                $feed->setProfilePicture($this->userData[0]['user']['profile_picture']);
+                $feed->setMediaCount($total);
+            }
         }
 
         return $feed;

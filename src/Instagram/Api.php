@@ -1,4 +1,5 @@
 <?php
+
 namespace Instagram;
 
 use GuzzleHttp\Client;
@@ -48,6 +49,11 @@ class Api
     private $queryHash = false;
 
     /**
+     * @var string
+     */
+    private $accessToken = null;
+
+    /**
      * Api constructor.
      * @param Client|null $clientUser
      * @param Client|null $clientMedia
@@ -55,9 +61,9 @@ class Api
      */
     public function __construct(Client $clientUser = null, Client $clientMedia = null, $queryHash = null)
     {
-        $this->clientUser  = $clientUser ?: new Client();
+        $this->clientUser = $clientUser ?: new Client();
         $this->clientMedia = $clientMedia ?: new Client();
-        $this->queryHash   = $queryHash;
+        $this->queryHash = $queryHash;
     }
 
     /**
@@ -84,6 +90,11 @@ class Api
         $this->userId = $userId;
     }
 
+    public function setAccessToken($token) 
+    {
+    	$this->accessToken = $token;
+    }
+
     /**
      * @return Hydrator\Feed
      * @throws InstagramException
@@ -91,23 +102,27 @@ class Api
      */
     public function getFeed()
     {
-        if (!$this->userName && !$this->userId) {
+        if (!$this->userId) {
             throw new InstagramException('Missing userName or userId');
         }
 
-        if ($this->retrieveUserData && !$this->userName) {
-            throw new InstagramException('You must specify a userName to retrieve userData');
+        if (!$this->accessToken) {
+            throw new InstagramException('Missing access token');
         }
+
+        /*if ($this->retrieveUserData && !$this->userName) {
+            throw new InstagramException('You must specify a userName to retrieve userData');
+        }*/
 
         if (($this->retrieveMediaData || $this->endCursor) && !$this->userId) {
             throw new InstagramException('You must specify a userId to retrieve mediaData');
         }
 
-        $feed     = new JsonFeed($this->clientUser, $this->clientMedia, $this->queryHash);
+        $feed = new JsonFeed($this->clientUser, $this->clientMedia, $this->queryHash);
         $hydrator = new Hydrator();
 
         if ($this->retrieveUserData) {
-            $userDataFetched = $feed->fetchUserData($this->userName);
+            $userDataFetched = $feed->fetchUserData($this->userId, $this->accessToken);
             $hydrator->setUserData($userDataFetched);
         }
 
