@@ -16,7 +16,7 @@ composer require pgrimaud/instagram-user-feed
 
 2. The first part of the access token is your User Id
 
-```
+```php
 $api = new Api();
 
 $api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
