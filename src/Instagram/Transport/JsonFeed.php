@@ -1,4 +1,5 @@
 <?php
+
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
@@ -7,7 +8,7 @@ use Instagram\Exception\InstagramException;
 
 class JsonFeed
 {
-    const INSTAGRAM_ENDPOINT   = 'https://www.instagram.com/';
+    const INSTAGRAM_ENDPOINT = 'https://api.instagram.com/v1';
     const INSTAGRAM_QUERY_HASH = '472f257a40c653c64c666ce877d59d2b';
 
     /**
@@ -33,9 +34,9 @@ class JsonFeed
      */
     public function __construct(Client $clientUser, Client $clientMedia, $queryHash = null)
     {
-        $this->clientUser  = $clientUser;
+        $this->clientUser = $clientUser;
         $this->clientMedia = $clientMedia;
-        $this->queryHash   = $queryHash;
+        $this->queryHash = $queryHash;
     }
 
     /**
@@ -44,9 +45,9 @@ class JsonFeed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchUserData($userName)
+    public function fetchUserData($userId, $accessToken)
     {
-        $endpoint = self::INSTAGRAM_ENDPOINT . $userName . '?__a=1';
+        $endpoint = sprintf('%s/users/%s/media/recent/?access_token=%s', self::INSTAGRAM_ENDPOINT, $userId, $accessToken);
 
         $res = $this->clientUser->request('GET', $endpoint);
 
@@ -57,7 +58,7 @@ class JsonFeed
             throw new InstagramException('Invalid JSON');
         }
 
-        return $data['graphql']['user'];
+        return $data['data'];
     }
 
     private function getQueryHash()
@@ -76,7 +77,6 @@ class JsonFeed
     {
         $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&variables={"id":"' . $userId . '","first":"12"';
 
-
         if ($endCursor) {
             $endpoint .= ',"after":"' . $endCursor . '"';
         }
@@ -89,7 +89,7 @@ class JsonFeed
 
         $headers = [
             'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
-            'cookies'    => $cookieJar
+            'cookies' => $cookieJar
         ];
 
         $res = $this->clientMedia->request('GET', $endpoint, $headers);
