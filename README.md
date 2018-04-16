@@ -27,7 +27,7 @@ Seems like you can only access your own media until 2020 other user's media Dece
 
 ## Warning
 
-**2018-04-16 : Now fetching data with access token, only for your account (thanks @jannejava), please upgrade to version ^4.0**
+**2018-04-16 : Now fetching data with access token, only for your account (thanks [@jannejava](https://github.com/jannejava)), please upgrade to version ^4.0**
 
 ~~2018-04-08 : Due to changes of the Instagram API (again...), you must upgrade to version ^3.0~~
 
@@ -55,7 +55,7 @@ Instagram\Hydrator\Feed Object
     [id] => 184263228
     [userName] => pgrimaud
     [fullName] => Pierre G
-    [biography] => Gladiator retired - ESGI 14'
+    [biography] => Gladiator retired - ESGI 14
     [followers] => 342
     [following] => 114
     [profilePicture] => https://scontent.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg
