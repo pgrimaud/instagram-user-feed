@@ -4,94 +4,41 @@ namespace Instagram;
 
 use GuzzleHttp\Client;
 use Instagram\Exception\InstagramException;
-use Instagram\Transport\JsonFeed;
+use Instagram\Transport\HTMLPage;
 
 class Api
 {
     /**
      * @var Client
      */
-    private $clientUser = null;
-
-    /**
-     * @var Client
-     */
-    private $clientMedia = null;
-
-    /**
-     * @var integer
-     */
-    private $userId = null;
-
-    /**
-     * @var string
-     */
-    private $accessToken = null;
-
-    /**
-     * @var string
-     */
-    private $maxId = null;
+    private $client = null;
 
     /**
      * Api constructor.
-     * @param Client|null $clientUser
-     * @param Client|null $clientMedia
+     * @param Client|null $client
      */
-    public function __construct(Client $clientUser = null, Client $clientMedia = null)
+    public function __construct(Client $client = null)
     {
-        $this->clientUser  = $clientUser ?: new Client();
-        $this->clientMedia = $clientMedia ?: new Client();
+        $this->client = $client ?: new Client();
     }
 
     /**
-     * @param int $userId
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-    }
-
-    /**
-     * @param $token
-     */
-    public function setAccessToken($token)
-    {
-        $this->accessToken = $token;
-    }
-
-    /**
+     * @param string $username
      * @return Hydrator\Feed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getFeed()
+    public function getFeed($username)
     {
-        if (!$this->userId) {
-            throw new InstagramException('Missing userId');
+        if(empty($username)) {
+            throw new InstagramException('username cannot be empty');
         }
-
-        if (!$this->accessToken) {
-            throw new InstagramException('Missing access token');
-        }
-
-        $feed     = new JsonFeed($this->clientUser, $this->clientMedia, $this->accessToken);
+        $feed     = new HTMLPage($this->client);
         $hydrator = new Hydrator();
 
-        $userDataFetched = $feed->fetchUserData($this->userId);
-        $hydrator->setUserData($userDataFetched);
-
-        $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->maxId);
-        $hydrator->setMediaData($mediaDataFetched);
+        $dataFetched = $feed->fetchData($username);
+        $hydrator->setData($dataFetched);
 
         return $hydrator->getHydratedData();
-    }
-
-    /**
-     * @param string $maxId
-     */
-    public function setMaxId($maxId)
-    {
-        $this->maxId = $maxId;
     }
 }
