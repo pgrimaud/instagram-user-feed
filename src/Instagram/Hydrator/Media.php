@@ -29,19 +29,9 @@ class Media
     public $thumbnailSrc;
 
     /**
-     * @var array
-     */
-    public $thumbnailResources = [];
-
-    /**
      * @var string
      */
     public $link;
-
-    /**
-     * @var string
-     */
-    public $code;
 
     /**
      * @var \DateTime
@@ -146,38 +136,6 @@ class Media
     public function setThumbnailSrc($thumbnailSrc)
     {
         $this->thumbnailSrc = $thumbnailSrc;
-    }
-
-    /**
-     * @return array
-     */
-    public function getThumbnailResources()
-    {
-        return $this->thumbnailResources;
-    }
-
-    /**
-     * @param array $thumbnailResources
-     */
-    public function setThumbnailResources($thumbnailResources)
-    {
-        $this->thumbnailResources = $thumbnailResources;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param string $code
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
     }
 
     /**

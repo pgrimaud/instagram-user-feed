@@ -40,17 +40,14 @@ class Hydrator
     {
         $feed = $this->generateFeed();
 
-        if (isset($this->userData)) {
-            foreach ($this->userData as $node) {
-                //$node = $node['images'];
-
+        if (isset($this->mediaData['data'][0])) {
+            foreach ($this->mediaData['data'] as $node) {
                 $media = new Media();
 
-                //$media->setId($node['id']);
-                //$media->setTypeName($node['__typename']);
+                $media->setId($node['id']);
+                $media->setTypeName($node['type']);
 
-                //$caption = isset($node['edge_media_to_caption']['edges'][0]['node']['text']) ? $node['edge_media_to_caption']['edges'][0]['node']['text'] : null;
-                //$media->setCaption($caption);
+                $media->setCaption($node['caption']['text']);
 
                 $media->setHeight($node['images']['standard_resolution']['height']);
                 $media->setWidth($node['images']['standard_resolution']['width']);
@@ -58,21 +55,6 @@ class Hydrator
                 $media->setThumbnailSrc($node['images']['thumbnail']['url']);
                 $media->setDisplaySrc($node['images']['standard_resolution']['url']);
 
-                /*
-                $resources = [];
-
-                foreach ($node['thumbnail_resources'] as $resource) {
-                    $resources[] = [
-                        'src'    => $resource['src'],
-                        'width'  => $resource['config_width'],
-                        'height' => $resource['config_height'],
-                    ];
-                }
-
-
-                $media->setThumbnailResources($resources);
-                */
-                //$media->setCode($node['shortcode']);
                 $media->setLink($node['link']);
 
                 $date = new \DateTime();
@@ -80,14 +62,14 @@ class Hydrator
 
                 $media->setDate($date);
 
-                //$media->setComments($node['edge_media_to_comment']['count']);
-                //$media->setLikes($node['edge_media_preview_like']['count']);
+                $media->setComments($node['comments']['count']);
+                $media->setLikes($node['likes']['count']);
 
                 $feed->addMedia($media);
             }
 
-            $feed->setHasNextPage($this->mediaData['edge_owner_to_timeline_media']['page_info']['has_next_page']);
-            $feed->setEndCursor($this->mediaData['edge_owner_to_timeline_media']['page_info']['end_cursor']);
+            $feed->setHasNextPage(isset($this->mediaData['pagination']['next_max_id']));
+            $feed->setMaxId(isset($this->mediaData['pagination']['next_max_id']) ? $this->mediaData['pagination']['next_max_id'] : null);
         }
 
         return $feed;
@@ -101,15 +83,15 @@ class Hydrator
         $feed = new Feed();
 
         if ($this->userData) {
-            $total = count($this->userData);
-
-            if ($total > 0) {
-                $feed->setId($this->userData[0]['id']);
-                $feed->setUserName($this->userData[0]['user']['username']);
-                $feed->setFullName($this->userData[0]['user']['full_name']);
-                $feed->setProfilePicture($this->userData[0]['user']['profile_picture']);
-                $feed->setMediaCount($total);
-            }
+            $feed->setId($this->userData['id']);
+            $feed->setUserName($this->userData['username']);
+            $feed->setBiography($this->userData['bio']);
+            $feed->setFullName($this->userData['full_name']);
+            $feed->setProfilePicture($this->userData['profile_picture']);
+            $feed->setMediaCount($this->userData['counts']['media']);
+            $feed->setFollowers($this->userData['counts']['followed_by']);
+            $feed->setFollowing($this->userData['counts']['follows']);
+            $feed->setExternalUrl($this->userData['website']);
         }
 
         return $feed;

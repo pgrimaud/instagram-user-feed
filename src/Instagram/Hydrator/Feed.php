@@ -24,11 +24,6 @@ class Feed
     public $biography;
 
     /**
-     * @var boolean
-     */
-    public $isVerified = false;
-
-    /**
      * @var integer
      */
     public $followers = 0;
@@ -42,11 +37,6 @@ class Feed
      * @var string
      */
     public $profilePicture;
-
-    /**
-     * @var string
-     */
-    public $profilePictureHd;
 
     /**
      * @var string
@@ -66,7 +56,7 @@ class Feed
     /**
      * @var string
      */
-    public $endCursor;
+    public $maxId;
 
     /**
      * @var array
@@ -124,22 +114,6 @@ class Feed
     /**
      * @return string
      */
-    public function getisVerified()
-    {
-        return $this->isVerified;
-    }
-
-    /**
-     * @param string $isVerified
-     */
-    public function setIsVerified($isVerified)
-    {
-        $this->isVerified = $isVerified;
-    }
-
-    /**
-     * @return string
-     */
     public function getFollowers()
     {
         return $this->followers;
@@ -183,22 +157,6 @@ class Feed
     public function setProfilePicture($profilePicture)
     {
         $this->profilePicture = $profilePicture;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProfilePictureHd()
-    {
-        return $this->profilePictureHd;
-    }
-
-    /**
-     * @param string $profilePictureHd
-     */
-    public function setProfilePictureHd($profilePictureHd)
-    {
-        $this->profilePictureHd = $profilePictureHd;
     }
 
     /**
@@ -284,16 +242,16 @@ class Feed
     /**
      * @return string
      */
-    public function getEndCursor()
+    public function getMaxId()
     {
-        return $this->endCursor;
+        return $this->maxId;
     }
 
     /**
-     * @param string $endCursor
+     * @param string $maxId
      */
-    public function setEndCursor($endCursor)
+    public function setMaxId($maxId)
     {
-        $this->endCursor = $endCursor;
+        $this->maxId = $maxId;
     }
 }

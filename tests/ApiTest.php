@@ -66,13 +66,12 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testEmptyUserIdAndEmptyUserName()
+    public function testEmptyUserId()
     {
         $this->expectException(InstagramException::class);
 
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->retrieveUserData(true);
-        $api->retrieveMediaData(true);
+        $api->setAccessToken('123.123.1233');
         $api->getFeed();
     }
 
@@ -80,15 +79,13 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testEmptyUserIdAndCursor()
+    public function testMissingAccessToken()
     {
         $this->expectException(InstagramException::class);
 
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setEndCursor(123);
-        $api->setUserName('pgrimaud');
-        $api->retrieveUserData(true);
-        $api->retrieveMediaData(true);
+        $api->setUserId(123);
+
         $api->getFeed();
     }
 
@@ -99,30 +96,12 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testValidFeedReturn()
     {
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setUserName('pgrimaud');
+        $api->setUserId(1234);
+        $api->setAccessToken('123.123.1233');
 
-        $api->retrieveMediaData(false);
-        $api->retrieveUserData(true);
-        $api->setQueryHash('xxxx');
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
-    }
-
-    /**
-     * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function testEmptyUserName()
-    {
-        $this->expectException(InstagramException::class);
-
-        $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setUserId(123);
-
-        $api->retrieveMediaData(false);
-        $api->retrieveUserData(true);
-        $api->getFeed();
     }
 
     /**
@@ -134,9 +113,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->expectException(InstagramException::class);
 
         $api = new Api($this->invalidUserClient, $this->invalidMediaClient);
-        $api->setUserName('pgrimaud');
-        $api->retrieveMediaData(false);
-        $api->retrieveUserData(true);
+        $api->setUserId(123);
+        $api->setAccessToken('123.123.1234');
         $api->getFeed();
     }
 
@@ -149,10 +127,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->expectException(InstagramException::class);
 
         $api = new Api($this->validUserClient, $this->invalidMediaClient);
-        $api->setUserName('pgrimaud');
         $api->setUserId(123);
-        $api->retrieveMediaData(true);
-        $api->retrieveUserData(true);
+        $api->setAccessToken('123.123.1234');
         $api->getFeed();
     }
 
@@ -160,14 +136,13 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testValidFeedWithCursorReturn()
+    public function testValidFeedReturnWithMaxId()
     {
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setUserName('pgrimaud');
-        $api->setUserId(12345);
-        $api->setEndCursor('xxxxx');
+        $api->setUserId(123);
+        $api->setAccessToken('123.123.1234');
+        $api->setMaxId('123_1234');
 
-        $api->retrieveMediaData(true);
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
@@ -177,27 +152,13 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testValidFeedWithoutUserNameReturn()
-    {
-        $this->expectException(InstagramException::class);
-
-        $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->getFeed();
-    }
-
-    /**
-     * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testFeedContent()
     {
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setUserName('pgrimaud');
         $api->setUserId(123);
+        $api->setAccessToken('123.123.1233');
 
         /** @var Feed $feed */
-        $api->retrieveMediaData(true);
-        $api->retrieveUserData(true);
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
@@ -211,20 +172,18 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Pierre G', $feed->getFullName());
 
         $this->assertSame(true, $feed->getHasNextPage());
-        $this->assertSame(false, $feed->getisVerified());
 
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/faf7cfb2f6ea29b57d3032717d8789bf/5B34242E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/faf7cfb2f6ea29b57d3032717d8789bf/5B34242E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePictureHd());
+        $this->assertSame('https://scontent.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
 
-        $this->assertSame(337, $feed->getFollowers());
-        $this->assertSame(112, $feed->getFollowing());
+        $this->assertSame(342, $feed->getFollowers());
+        $this->assertSame(114, $feed->getFollowing());
 
         $this->assertSame('https://p.ier.re/', $feed->getExternalUrl());
-        $this->assertSame(30, $feed->getMediaCount());
+        $this->assertSame(33, $feed->getMediaCount());
 
-        $this->assertCount(12, $feed->getMedias());
+        $this->assertCount(20, $feed->getMedias());
 
-        $this->assertSame('AQDt7mwufgiNOm233ZFUKmdUv5AqQ3SDYAM9UgY1wC1bjteFPQxRuhm0A6pTEZNRZaYlJIb0bmEQAEtLvwHd6COidVHtBo4Ehx8n7K5n5dJ3dw', $feed->getEndCursor());
+        $this->assertSame('1230468487398454311_184263228', $feed->getMaxId());
     }
 
     /**
@@ -234,11 +193,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testMediaContent()
     {
         $api = new Api($this->validUserClient, $this->validMediaClient);
-        $api->setUserName('pgrimaud');
         $api->setUserId(123);
+        $api->setAccessToken('123.123.1233');
 
         /** @var Feed $feed */
-        $api->retrieveMediaData(true);
         $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
@@ -248,26 +206,23 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(Media::class, $media);
 
-        $this->assertSame('1676900800864278214', $media->getId());
-        $this->assertSame('GraphImage', $media->getTypeName());
+        $this->assertSame('1758133053345287778_184263228', $media->getId());
+        $this->assertSame('image', $media->getTypeName());
 
-        $this->assertSame(1080, $media->getWidth());
-        $this->assertSame(1080, $media->getHeight());
+        $this->assertSame(640, $media->getWidth());
+        $this->assertSame(640, $media->getHeight());
 
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/90b54127c36ce17fefee861606db228e/5B430967/t51.2885-15/s640x640/sh0.08/e35/25024600_726096737595175_9198105573181095936_n.jpg', $media->getThumbnailSrc());
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/89ddb8f8c3466e7436c29d041ece4300/5B4AF306/t51.2885-15/e35/25024600_726096737595175_9198105573181095936_n.jpg', $media->getDisplaySrc());
-        $this->assertSame(1080, $media->getHeight());
+        $this->assertSame('https://scontent.cdninstagram.com/vp/e64c51de7f5401651670fd0bbdfd9837/5B69AF2B/t51.2885-15/s150x150/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getThumbnailSrc());
+        $this->assertSame('https://scontent.cdninstagram.com/vp/dd39e08d3c740e764c61bc694d36f5a7/5B643B2F/t51.2885-15/s640x640/sh0.08/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getDisplaySrc());
+        $this->assertSame(640, $media->getHeight());
 
-        $this->assertCount(5, $media->getThumbnailResources());
-
-        $this->assertSame('BdFjGTPFVbG', $media->getCode());
-        $this->assertSame('https://www.instagram.com/p/BdFjGTPFVbG/', $media->getLink());
+        $this->assertSame('https://www.instagram.com/p/BhmJLJwhM5i/', $media->getLink());
 
         $this->assertInstanceOf(\DateTime::class, $media->getDate());
 
-        $this->assertSame('🎄🎅💸🙃 #casino #monaco', $media->getCaption());
+        $this->assertSame(null, $media->getCaption());
 
-        $this->assertSame(0, $media->getComments());
-        $this->assertSame(29, $media->getLikes());
+        $this->assertSame(2, $media->getComments());
+        $this->assertSame(14, $media->getLikes());
     }
 }

@@ -3,13 +3,11 @@
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
 use Instagram\Exception\InstagramException;
 
 class JsonFeed
 {
-    const INSTAGRAM_ENDPOINT = 'https://api.instagram.com/v1';
-    const INSTAGRAM_QUERY_HASH = '472f257a40c653c64c666ce877d59d2b';
+    const INSTAGRAM_ENDPOINT = 'https://api.instagram.com/v1/users/';
 
     /**
      * @var Client
@@ -24,30 +22,30 @@ class JsonFeed
     /**
      * @var string
      */
-    private $queryHash;
+    private $accessToken;
 
     /**
      * JsonFeed constructor.
      * @param Client $clientUser
      * @param Client $clientMedia
-     * @param null $queryHash
+     * @param null $accessToken
      */
-    public function __construct(Client $clientUser, Client $clientMedia, $queryHash = null)
+    public function __construct(Client $clientUser, Client $clientMedia, $accessToken = null)
     {
-        $this->clientUser = $clientUser;
+        $this->clientUser  = $clientUser;
         $this->clientMedia = $clientMedia;
-        $this->queryHash = $queryHash;
+        $this->accessToken = $accessToken;
     }
 
     /**
-     * @param $userName
+     * @param $userId
      * @return mixed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchUserData($userId, $accessToken)
+    public function fetchUserData($userId)
     {
-        $endpoint = sprintf('%s/users/%s/media/recent/?access_token=%s', self::INSTAGRAM_ENDPOINT, $userId, $accessToken);
+        $endpoint = self::INSTAGRAM_ENDPOINT . $userId . '?access_token=' . $this->accessToken;
 
         $res = $this->clientUser->request('GET', $endpoint);
 
@@ -61,38 +59,22 @@ class JsonFeed
         return $data['data'];
     }
 
-    private function getQueryHash()
-    {
-        return $this->queryHash ? $this->queryHash : self::INSTAGRAM_QUERY_HASH;
-    }
-
     /**
      * @param $userId
-     * @param null $endCursor
+     * @param null $maxId
      * @return mixed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchMediaData($userId, $endCursor = null)
+    public function fetchMediaData($userId, $maxId = null)
     {
-        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . $this->getQueryHash() . '&variables={"id":"' . $userId . '","first":"12"';
+        $endpoint = self::INSTAGRAM_ENDPOINT . $userId . '/media/recent/?access_token=' . $this->accessToken;
 
-        if ($endCursor) {
-            $endpoint .= ',"after":"' . $endCursor . '"';
+        if ($maxId) {
+            $endpoint .= '&max_id=' . $maxId;
         }
 
-        $endpoint .= '}';
-
-        $cookieJar = CookieJar::fromArray([
-            'ig_pr' => '2'
-        ], 'instagram.com');
-
-        $headers = [
-            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
-            'cookies' => $cookieJar
-        ];
-
-        $res = $this->clientMedia->request('GET', $endpoint, $headers);
+        $res = $this->clientMedia->request('GET', $endpoint);
 
         $json = (string)$res->getBody();
         $data = json_decode($json, JSON_OBJECT_AS_ARRAY);
@@ -101,6 +83,6 @@ class JsonFeed
             throw new InstagramException('Invalid JSON');
         }
 
-        return $data['data']['user'];
+        return $data;
     }
 }
