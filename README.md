@@ -89,4 +89,3 @@ $feed = $api->getFeed('pgrimaud');
 // And etc...
 ```
 
-
