@@ -26,12 +26,12 @@ class Feed
     /**
      * @var integer
      */
-    public $followers = 0;
+    public $followers;
 
     /**
      * @var integer
      */
-    public $following = 0;
+    public $following;
 
     /**
      * @var string
@@ -49,17 +49,7 @@ class Feed
     public $mediaCount = 0;
 
     /**
-     * @var boolean
-     */
-    public $hasNextPage = false;
-
-    /**
-     * @var string
-     */
-    public $maxId;
-
-    /**
-     * @var array
+     * @var Media[]
      */
     public $medias = [];
 
@@ -208,23 +198,7 @@ class Feed
     }
 
     /**
-     * @return bool
-     */
-    public function getHasNextPage()
-    {
-        return $this->hasNextPage;
-    }
-
-    /**
-     * @param bool $hasNextPage
-     */
-    public function setHasNextPage($hasNextPage)
-    {
-        $this->hasNextPage = $hasNextPage;
-    }
-
-    /**
-     * @return array
+     * @return Media[]
      */
     public function getMedias()
     {
@@ -232,26 +206,10 @@ class Feed
     }
 
     /**
-     * @param $media
+     * @param Media $media
      */
-    public function addMedia($media)
+    public function addMedia(Media $media)
     {
         $this->medias[] = $media;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMaxId()
-    {
-        return $this->maxId;
-    }
-
-    /**
-     * @param string $maxId
-     */
-    public function setMaxId($maxId)
-    {
-        $this->maxId = $maxId;
     }
 }

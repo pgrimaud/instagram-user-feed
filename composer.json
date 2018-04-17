@@ -13,6 +13,10 @@
     {
       "name": "Charles Salvan",
       "email": "charles.salvan@hotmail.fr"
+    },
+    {
+      "name": "Tim Bond",
+      "email": "cookieguru@gmail.com"
     }
   ],
   "autoload": {

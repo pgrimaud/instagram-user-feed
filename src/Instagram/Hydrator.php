@@ -4,33 +4,21 @@ namespace Instagram;
 
 use Instagram\Hydrator\Feed;
 use Instagram\Hydrator\Media;
+use Instagram\Transport\HTMLPage;
 
 class Hydrator
 {
     /**
-     * @var array
+     * @var \stdClass
      */
-    private $userData;
+    private $data;
 
     /**
-     * @var array
+     * @param array $data
      */
-    private $mediaData;
-
-    /**
-     * @param array $userData
-     */
-    public function setUserData($userData)
+    public function setData($data)
     {
-        $this->userData = $userData;
-    }
-
-    /**
-     * @param array $mediaData
-     */
-    public function setMediaData($mediaData)
-    {
-        $this->mediaData = $mediaData;
+        $this->data = $data;
     }
 
     /**
@@ -40,36 +28,35 @@ class Hydrator
     {
         $feed = $this->generateFeed();
 
-        if (isset($this->mediaData['data'][0])) {
-            foreach ($this->mediaData['data'] as $node) {
-                $media = new Media();
+        foreach ($this->data->edge_owner_to_timeline_media->edges as $edge) {
+            $node = $edge->node;
+            /** @var \stdClass $node */
+            $media = new Media();
 
-                $media->setId($node['id']);
-                $media->setTypeName($node['type']);
+            $media->setId($node->id);
+            $media->setTypeName($node->__typename);
 
-                $media->setCaption($node['caption']['text']);
-
-                $media->setHeight($node['images']['standard_resolution']['height']);
-                $media->setWidth($node['images']['standard_resolution']['width']);
-
-                $media->setThumbnailSrc($node['images']['thumbnail']['url']);
-                $media->setDisplaySrc($node['images']['standard_resolution']['url']);
-
-                $media->setLink($node['link']);
-
-                $date = new \DateTime();
-                $date->setTimestamp($node['created_time']);
-
-                $media->setDate($date);
-
-                $media->setComments($node['comments']['count']);
-                $media->setLikes($node['likes']['count']);
-
-                $feed->addMedia($media);
+            if($node->edge_media_to_caption->edges) {
+                $media->setCaption($node->edge_media_to_caption->edges[0]->node->text);
             }
 
-            $feed->setHasNextPage(isset($this->mediaData['pagination']['next_max_id']));
-            $feed->setMaxId(isset($this->mediaData['pagination']['next_max_id']) ? $this->mediaData['pagination']['next_max_id'] : null);
+            $media->setHeight($node->dimensions->height);
+            $media->setWidth($node->dimensions->width);
+
+            $media->setThumbnailSrc($node->thumbnail_src);
+            $media->setDisplaySrc($node->display_url);
+
+            $date = new \DateTime();
+            $date->setTimestamp($node->taken_at_timestamp);
+
+            $media->setDate($date);
+
+            $media->setComments($node->edge_media_to_comment->count);
+            $media->setLikes($node->edge_liked_by->count);
+
+            $media->setLink(HTMLPage::INSTAGRAM_ENDPOINT . "p/{$node->shortcode}/");
+
+            $feed->addMedia($media);
         }
 
         return $feed;
@@ -82,17 +69,15 @@ class Hydrator
     {
         $feed = new Feed();
 
-        if ($this->userData) {
-            $feed->setId($this->userData['id']);
-            $feed->setUserName($this->userData['username']);
-            $feed->setBiography($this->userData['bio']);
-            $feed->setFullName($this->userData['full_name']);
-            $feed->setProfilePicture($this->userData['profile_picture']);
-            $feed->setMediaCount($this->userData['counts']['media']);
-            $feed->setFollowers($this->userData['counts']['followed_by']);
-            $feed->setFollowing($this->userData['counts']['follows']);
-            $feed->setExternalUrl($this->userData['website']);
-        }
+        $feed->setId($this->data->id);
+        $feed->setUserName($this->data->username);
+        $feed->setBiography($this->data->biography);
+        $feed->setFullName($this->data->full_name);
+        $feed->setProfilePicture($this->data->profile_pic_url_hd);
+        $feed->setMediaCount($this->data->edge_owner_to_timeline_media->count);
+        $feed->setFollowers($this->data->edge_followed_by->count);
+        $feed->setFollowing($this->data->edge_follow->count);
+        $feed->setExternalUrl($this->data->external_url);
 
         return $feed;
     }

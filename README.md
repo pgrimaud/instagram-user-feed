@@ -12,22 +12,11 @@
 composer require pgrimaud/instagram-user-feed
 ```
 
-1. Visit [http://instagram.pixelunion.net/](http://instagram.pixelunion.net/) and create an access token
-
-2. The first part of the access token is your User Id
-
-```php
-$api = new Api();
-
-$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
-$api->setUserId(1234578);
-```
-
-Seems like you can only access your own media until 2020 other user's media December 11, 2018. Hope to find a solution for long term.
-
 ## Warning
 
-**2018-04-16 : Now fetching data with access token, only for your account (thanks [@jannejava](https://github.com/jannejava)), please upgrade to version ^4.0**
+**2018-04-17 : Now fetching data with screen scraping (thanks [@cookieguru](https://github.com/cookieguru)), please upgrade to version ^5.0**
+
+~~2018-04-16 : Now fetching data with access token, only for your account (thanks [@jannejava](https://github.com/jannejava)), please upgrade to version ^4.0~~
 
 ~~2018-04-08 : Due to changes of the Instagram API (again...), you must upgrade to version ^3.0~~
 
@@ -40,10 +29,7 @@ Seems like you can only access your own media until 2020 other user's media Dece
 ```php
 $api = new Api();
 
-$api->setUserId(184263228);
-$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
-
-$feed = $api->getFeed();
+$feed = $api->getFeed('pgrimaud');
 
 print_r($feed);
 
@@ -90,30 +76,16 @@ Instagram\Hydrator\Feed Object
 )
 ```
 
-### Paginate
-If you want to use paginate, retrieve `maxId` from previous call and add it to your next call.
+### Setting a custom User Agent
+Since this method is using screen scraping, it is recommended that you spoof a user agent:
 
 ```php
-// First call :
+$client = new GuzzleHttp\Client(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0']);
 
-$api = new Api();
-$api->setUserId(184263228);
-$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
+$api = new Api($client);
 
-$feed = $api->getFeed();
-
-$endCursor = $feed->getMaxId();
-
-// Second call : 
-
-$api = new Api();
-$api->setUserId(184263228);
-$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
-$api->setMaxId('1230468487398454311_184263228');
-
-$feed = $api->getFeed();
+$feed = $api->getFeed('pgrimaud');
 
 // And etc...
 ```
-
 
