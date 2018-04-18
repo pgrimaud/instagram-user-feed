@@ -2,3 +2,5 @@
 vendor
 build
 .php_cs.cache
+cache
+!cache/.gitkeep

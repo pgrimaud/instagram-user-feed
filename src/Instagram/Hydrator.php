@@ -29,14 +29,16 @@ class Hydrator
         $feed = $this->generateFeed();
 
         foreach ($this->data->edge_owner_to_timeline_media->edges as $edge) {
-            $node = $edge->node;
+
             /** @var \stdClass $node */
+            $node = $edge->node;
+
             $media = new Media();
 
             $media->setId($node->id);
             $media->setTypeName($node->__typename);
 
-            if($node->edge_media_to_caption->edges) {
+            if ($node->edge_media_to_caption->edges) {
                 $media->setCaption($node->edge_media_to_caption->edges[0]->node->text);
             }
 
@@ -78,6 +80,7 @@ class Hydrator
         $feed->setFollowers($this->data->edge_followed_by->count);
         $feed->setFollowing($this->data->edge_follow->count);
         $feed->setExternalUrl($this->data->external_url);
+        $feed->setEndCursor($this->data->edge_owner_to_timeline_media->page_info->end_cursor);
 
         return $feed;
     }

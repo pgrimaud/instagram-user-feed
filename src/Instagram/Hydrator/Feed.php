@@ -1,4 +1,5 @@
 <?php
+
 namespace Instagram\Hydrator;
 
 class Feed
@@ -52,6 +53,11 @@ class Feed
      * @var Media[]
      */
     public $medias = [];
+
+    /**
+     * @var string
+     */
+    public $endCursor = null;
 
     /**
      * @return string
@@ -211,5 +217,21 @@ class Feed
     public function addMedia(Media $media)
     {
         $this->medias[] = $media;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndCursor()
+    {
+        return $this->endCursor;
+    }
+
+    /**
+     * @param string $endCursor
+     */
+    public function setEndCursor($endCursor)
+    {
+        $this->endCursor = $endCursor;
     }
 }

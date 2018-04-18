@@ -5,6 +5,7 @@ namespace Instagram;
 use GuzzleHttp\Client;
 use Instagram\Exception\InstagramException;
 use Instagram\Transport\HTMLPage;
+use Instagram\Transport\JsonFeed;
 
 class Api
 {
@@ -12,6 +13,16 @@ class Api
      * @var Client
      */
     private $client = null;
+
+    /**
+     * @var string
+     */
+    private $userName;
+
+    /**
+     * @var string
+     */
+    private $endCursor = null;
 
     /**
      * Api constructor.
@@ -23,22 +34,42 @@ class Api
     }
 
     /**
-     * @param string $username
      * @return Hydrator\Feed
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getFeed($username)
+    public function getFeed()
     {
-        if(empty($username)) {
-            throw new InstagramException('username cannot be empty');
+        if (empty($this->userName)) {
+            throw new InstagramException('Username cannot be empty');
         }
-        $feed     = new HTMLPage($this->client);
-        $hydrator = new Hydrator();
 
-        $dataFetched = $feed->fetchData($username);
+        if ($this->endCursor) {
+            $feed = new JsonFeed($this->client, $this->endCursor);
+        } else {
+            $feed = new HTMLPage($this->client);
+        }
+
+        $dataFetched = $feed->fetchData($this->userName);
+
+        $hydrator = new Hydrator();
         $hydrator->setData($dataFetched);
 
         return $hydrator->getHydratedData();
+    }
+
+    /**
+     * @param string $userName
+     */
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
+    }
+
+    /**
+     * @param string $endCursor
+     */
+    public function setEndCursor($endCursor)
+    {
+        $this->endCursor = $endCursor;
     }
 }
