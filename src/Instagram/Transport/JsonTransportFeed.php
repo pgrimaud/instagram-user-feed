@@ -8,7 +8,7 @@ use Instagram\Exception\InstagramException;
 use Instagram\Storage\Cache;
 use Instagram\Storage\CacheManager;
 
-class JsonFeed extends Transport
+class JsonTransportFeed extends TransportFeed
 {
     /**
      * @var string
@@ -16,14 +16,15 @@ class JsonFeed extends Transport
     private $endCursor;
 
     /**
-     * JsonFeed constructor.
+     * JsonTransportFeed constructor.
+     * @param CacheManager $cacheManager
      * @param Client $client
      * @param $endCursor
      */
-    public function __construct(Client $client, $endCursor)
+    public function __construct(CacheManager $cacheManager, Client $client, $endCursor)
     {
         $this->endCursor = $endCursor;
-        parent::__construct($client);
+        parent::__construct($cacheManager, $client);
     }
 
     /**
@@ -33,10 +34,7 @@ class JsonFeed extends Transport
      */
     private function generateGis($rhxgis, $variables)
     {
-        return md5(join(':', [
-            $rhxgis,
-            json_encode($variables)
-        ]));
+        return md5($rhxgis . ':' . json_encode($variables));
     }
 
     /**
@@ -48,9 +46,8 @@ class JsonFeed extends Transport
      */
     public function fetchData($userName)
     {
-        $cacheManager = new CacheManager();
         /** @var Cache $cache */
-        $cache = $cacheManager->getCache($userName);
+        $cache = $this->cacheManager->getCache($userName);
 
         $variables = [
             'id'    => $cache->getUserId(),
@@ -86,8 +83,7 @@ class JsonFeed extends Transport
         $newCache->setCookie($res->getHeaders()['Set-Cookie']);
         $newCache->setUserId($cache->getUserId());
 
-        $cacheManager = new CacheManager();
-        $cacheManager->set($newCache, $userName);
+        $this->cacheManager->set($newCache, $userName);
 
         return $data->data->user;
     }

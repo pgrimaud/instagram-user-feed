@@ -7,15 +7,16 @@ use Instagram\Exception\InstagramException;
 use Instagram\Storage\Cache;
 use Instagram\Storage\CacheManager;
 
-class HTMLPage extends Transport
+class HtmlTransportFeed extends TransportFeed
 {
     /**
-     * HTMLPage constructor.
+     * HtmlTransportFeed constructor.
+     * @param CacheManager $cacheManager
      * @param Client $client
      */
-    public function __construct(Client $client)
+    public function __construct(CacheManager $cacheManager, Client $client)
     {
-        parent::__construct($client);
+        parent::__construct($cacheManager, $client);
     }
 
     /**
@@ -47,17 +48,12 @@ class HTMLPage extends Transport
 
         $data = json_decode($matches[1]);
 
-        if ($data === null) {
-            throw new InstagramException(json_last_error_msg());
-        }
-
         $newCache = new Cache();
         $newCache->setRhxGis($data->rhx_gis);
         $newCache->setCookie($res->getHeaders()['Set-Cookie']);
         $newCache->setUserId($data->entry_data->ProfilePage[0]->graphql->user->id);
 
-        $cacheManager = new CacheManager();
-        $cacheManager->set($newCache, $userName);
+        $this->cacheManager->set($newCache, $userName);
 
         return $data->entry_data->ProfilePage[0]->graphql->user;
     }

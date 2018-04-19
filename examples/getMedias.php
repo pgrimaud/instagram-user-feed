@@ -1,8 +1,12 @@
 <?php
 
+use Instagram\Storage\CacheManager;
+
 require __DIR__ . '/../vendor/autoload.php';
 
-$api = new Instagram\Api();
+$cache = new CacheManager();
+
+$api = new Instagram\Api($cache);
 $api->setUserName('pgrimaud');
 
 /** @var \Instagram\Hydrator\Feed $feed */

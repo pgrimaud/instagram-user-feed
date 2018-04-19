@@ -4,11 +4,19 @@ namespace Instagram;
 
 use GuzzleHttp\Client;
 use Instagram\Exception\InstagramException;
-use Instagram\Transport\HTMLPage;
-use Instagram\Transport\JsonFeed;
+use Instagram\Hydrator\HtmlHydrator;
+use Instagram\Hydrator\JsonHydrator;
+use Instagram\Storage\CacheManager;
+use Instagram\Transport\HtmlTransportFeed;
+use Instagram\Transport\JsonTransportFeed;
 
 class Api
 {
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
+
     /**
      * @var Client
      */
@@ -27,14 +35,16 @@ class Api
     /**
      * Api constructor.
      * @param Client|null $client
+     * @param CacheManager|null $cacheManager
      */
-    public function __construct(Client $client = null)
+    public function __construct(CacheManager $cacheManager, Client $client = null)
     {
-        $this->client = $client ?: new Client();
+        $this->cacheManager = $cacheManager;
+        $this->client       = $client ?: new Client();
     }
 
     /**
-     * @return Hydrator\Feed
+     * @return Hydrator\Component\Feed
      * @throws InstagramException
      */
     public function getFeed()
@@ -44,14 +54,15 @@ class Api
         }
 
         if ($this->endCursor) {
-            $feed = new JsonFeed($this->client, $this->endCursor);
+            $feed     = new JsonTransportFeed($this->cacheManager, $this->client, $this->endCursor);
+            $hydrator = new JsonHydrator();
         } else {
-            $feed = new HTMLPage($this->client);
+            $feed     = new HtmlTransportFeed($this->cacheManager, $this->client);
+            $hydrator = new HtmlHydrator();
         }
 
         $dataFetched = $feed->fetchData($this->userName);
 
-        $hydrator = new Hydrator();
         $hydrator->setData($dataFetched);
 
         return $hydrator->getHydratedData();

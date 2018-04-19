@@ -1,12 +1,12 @@
 <?php
 
-namespace Instagram;
+namespace Instagram\Hydrator;
 
-use Instagram\Hydrator\Feed;
-use Instagram\Hydrator\Media;
-use Instagram\Transport\HTMLPage;
+use Instagram\Hydrator\Component\Feed;
+use Instagram\Hydrator\Component\Media;
+use Instagram\Transport\TransportFeed;
 
-class Hydrator
+class HtmlHydrator
 {
     /**
      * @var \stdClass
@@ -56,7 +56,7 @@ class Hydrator
             $media->setComments($node->edge_media_to_comment->count);
             $media->setLikes($node->edge_liked_by->count);
 
-            $media->setLink(HTMLPage::INSTAGRAM_ENDPOINT . "p/{$node->shortcode}/");
+            $media->setLink(TransportFeed::INSTAGRAM_ENDPOINT . "p/{$node->shortcode}/");
 
             $feed->addMedia($media);
         }

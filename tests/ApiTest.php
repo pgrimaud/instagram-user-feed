@@ -8,11 +8,17 @@ use GuzzleHttp\Psr7\Response;
 
 use Instagram\Api;
 use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\Feed;
-use Instagram\Hydrator\Media;
+use Instagram\Hydrator\Component\Feed;
+use Instagram\Hydrator\Component\Media;
+use Instagram\Storage\CacheManager;
 
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
+
     /**
      * @var Client
      */
@@ -23,70 +29,77 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     private $invalidClient;
 
+    /**
+     * @return void
+     */
     public function setUp()
     {
         $validFixtures   = file_get_contents(__DIR__ . '/fixtures/pgrimaud.html');
         $invalidFixtures = '<html></html>';
 
-        $response              = new Response(200, [], $validFixtures);
-        $mock                  = new MockHandler([$response]);
-        $handler               = HandlerStack::create($mock);
+        $headers = [
+            'Set-Cookie' => 'cookie'
+        ];
+
+        $response          = new Response(200, $headers, $validFixtures);
+        $mock              = new MockHandler([$response]);
+        $handler           = HandlerStack::create($mock);
         $this->validClient = new Client(['handler' => $handler]);
 
-        $response                = new Response(200, [], $invalidFixtures);
-        $mock                    = new MockHandler([$response]);
-        $handler                 = HandlerStack::create($mock);
+        $response            = new Response(200, [], $invalidFixtures);
+        $mock                = new MockHandler([$response]);
+        $handler             = HandlerStack::create($mock);
         $this->invalidClient = new Client(['handler' => $handler]);
+
+        $this->cacheManager = new CacheManager();
+
     }
 
     /**
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyUserName()
     {
         $this->expectException(InstagramException::class);
 
-        $api = new Api($this->validClient);
-        $api->getFeed('');
+        $api = new Api($this->cacheManager, $this->validClient);
+        $api->getFeed();
     }
 
     /**
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidFeedReturn()
     {
-        $api = new Api($this->validClient);
+        $api = new Api($this->cacheManager, $this->validClient);
+        $api->setUserName('pgrimaud');
 
-        $feed = $api->getFeed('pgrimaud');
+        $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
     }
 
     /**
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyUserFeedReturn()
     {
         $this->expectException(InstagramException::class);
 
-        $api = new Api($this->invalidClient);
-        $api->getFeed('pgrimaud');
+        $api = new Api($this->cacheManager, $this->invalidClient);
+        $api->setUserName('pgrimaud');
+        $api->getFeed();
     }
 
     /**
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testFeedContent()
     {
-        $api = new Api($this->validClient);
+        $api = new Api($this->cacheManager, $this->validClient);
+        $api->setUserName('pgrimaud');
 
-        $feed = $api->getFeed('pgrimaud');
-
-        $this->assertInstanceOf(Feed::class, $feed);
+        $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
 
@@ -95,27 +108,28 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Gladiator retired - ESGI 14\'', $feed->getBiography());
         $this->assertSame('Pierre G', $feed->getFullName());
 
-        $this->assertSame('https://instagram.fsea1-1.fna.fbcdn.net/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
 
-        $this->assertSame(341, $feed->getFollowers());
+        $this->assertSame(342, $feed->getFollowers());
         $this->assertSame(114, $feed->getFollowing());
 
         $this->assertSame('https://p.ier.re/', $feed->getExternalUrl());
         $this->assertSame(33, $feed->getMediaCount());
+        $this->assertSame('AQCHJTRY7cTG6nZCLrX6HkDIcHSfgNvslHRkLJK9X5u892u7moUUJdTARhZkXahDsd8iJtXYRvq12FxbqqAXsV3pEq9ST0wlMBdznqoZpFa-Xw', $feed->getEndCursor());
 
         $this->assertCount(12, $feed->getMedias());
     }
 
     /**
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testMediaContent()
     {
-        $api = new Api($this->validClient);
+        $api = new Api($this->cacheManager, $this->validClient);
+        $api->setUserName('pgrimaud');
 
         /** @var Feed $feed */
-        $feed = $api->getFeed('pgrimaud');
+        $feed = $api->getFeed();
 
         $this->assertInstanceOf(Feed::class, $feed);
 
@@ -130,8 +144,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1080, $media->getWidth());
         $this->assertSame(1080, $media->getHeight());
 
-        $this->assertSame('https://instagram.fsea1-1.fna.fbcdn.net/vp/dd39e08d3c740e764c61bc694d36f5a7/5B643B2F/t51.2885-15/s640x640/sh0.08/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getThumbnailSrc());
-        $this->assertSame('https://instagram.fsea1-1.fna.fbcdn.net/vp/51a54157b8868d715b8dd51a5ecbc46d/5B632D4E/t51.2885-15/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getDisplaySrc());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/dd39e08d3c740e764c61bc694d36f5a7/5B643B2F/t51.2885-15/s640x640/sh0.08/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getThumbnailSrc());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/51a54157b8868d715b8dd51a5ecbc46d/5B632D4E/t51.2885-15/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getDisplaySrc());
 
         $this->assertSame('https://www.instagram.com/p/BhmJLJwhM5i/', $media->getLink());
 
