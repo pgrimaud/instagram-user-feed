@@ -48,6 +48,10 @@ class HtmlTransportFeed extends TransportFeed
 
         $data = json_decode($matches[1]);
 
+        if ($data === null) {
+            throw new InstagramException(json_last_error_msg());
+        }
+
         $newCache = new Cache();
         $newCache->setRhxGis($data->rhx_gis);
         $newCache->setCookie($res->getHeaders()['Set-Cookie']);

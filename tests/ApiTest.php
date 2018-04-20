@@ -17,42 +17,150 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @var CacheManager
      */
-    private $cacheManager;
+    private $validCacheManager;
+
+    /**
+     * @var CacheManager
+     */
+    private $invalidCacheManager;
+
+    /**
+     * @var CacheManager
+     */
+    private $emptyCacheManager;
+
+    /**
+     * @var CacheManager
+     */
+    private $unwritableCacheManager;
 
     /**
      * @var Client
      */
-    private $validClient;
+    private $validHtmlClient;
 
     /**
      * @var Client
      */
-    private $invalidClient;
+    private $invalidJsonHtmlClient;
+
+    /**
+     * @var Client
+     */
+    private $invalidHtmlClient;
+
+    /**
+     * @var Client
+     */
+    private $validJsonClient;
+
+    /**
+     * @var Client
+     */
+    private $invalidJsonClient;
 
     /**
      * @return void
      */
     public function setUp()
     {
-        $validFixtures   = file_get_contents(__DIR__ . '/fixtures/pgrimaud.html');
-        $invalidFixtures = '<html></html>';
+        if (is_file(__DIR__ . '/cache/empty/pgrimaud.cache')) {
+            unlink(__DIR__ . '/cache/empty/pgrimaud.cache');
+        }
+
+        copy(__DIR__ . '/cache/invalid/demo.cache', __DIR__ . '/cache/invalid/pgrimaud.cache');
+
+        $validHtmlFixtures       = file_get_contents(__DIR__ . '/fixtures/pgrimaud.html');
+        $invalidHtmlJsonFixtures = file_get_contents(__DIR__ . '/fixtures/invalid_pgrimaud.html');
+        $invalidHtmlFixtures     = '<html></html>';
+
+        $validJsonFixtures   = file_get_contents(__DIR__ . '/fixtures/pgrimaud.json');
+        $invalidJsonFixtures = '<html></html>';
 
         $headers = [
             'Set-Cookie' => 'cookie'
         ];
 
-        $response          = new Response(200, $headers, $validFixtures);
-        $mock              = new MockHandler([$response]);
-        $handler           = HandlerStack::create($mock);
-        $this->validClient = new Client(['handler' => $handler]);
+        $response              = new Response(200, $headers, $validHtmlFixtures);
+        $mock                  = new MockHandler([$response]);
+        $handler               = HandlerStack::create($mock);
+        $this->validHtmlClient = new Client(['handler' => $handler]);
 
-        $response            = new Response(200, [], $invalidFixtures);
-        $mock                = new MockHandler([$response]);
-        $handler             = HandlerStack::create($mock);
-        $this->invalidClient = new Client(['handler' => $handler]);
+        $response                = new Response(200, [], $invalidHtmlFixtures);
+        $mock                    = new MockHandler([$response]);
+        $handler                 = HandlerStack::create($mock);
+        $this->invalidHtmlClient = new Client(['handler' => $handler]);
 
-        $this->cacheManager = new CacheManager();
+        $response                    = new Response(200, $headers, $invalidHtmlJsonFixtures);
+        $mock                        = new MockHandler([$response]);
+        $handler                     = HandlerStack::create($mock);
+        $this->invalidJsonHtmlClient = new Client(['handler' => $handler]);
 
+        $response              = new Response(200, $headers, $validJsonFixtures);
+        $mock                  = new MockHandler([$response]);
+        $handler               = HandlerStack::create($mock);
+        $this->validJsonClient = new Client(['handler' => $handler]);
+
+        $response                = new Response(200, [], $invalidJsonFixtures);
+        $mock                    = new MockHandler([$response]);
+        $handler                 = HandlerStack::create($mock);
+        $this->invalidJsonClient = new Client(['handler' => $handler]);
+
+        if (is_dir(__DIR__ . '/cache/unwritable')) {
+            rmdir(__DIR__ . '/cache/unwritable');
+        }
+        mkdir(__DIR__ . '/cache/unwritable', 0555);
+
+        $this->validCacheManager      = new CacheManager(__DIR__ . '/cache/valid/');
+        $this->invalidCacheManager    = new CacheManager(__DIR__ . '/cache/invalid/');
+        $this->emptyCacheManager      = new CacheManager(__DIR__ . '/cache/empty/');
+        $this->unwritableCacheManager = new CacheManager(__DIR__ . '/cache/unwritable/');
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testEmptyCacheValueOnJsonFeed()
+    {
+        $api = new Api($this->emptyCacheManager, $this->validJsonClient);
+        $api->setUserName('pgrimaud');
+        $api->setEndCursor('endCursor');
+        $api->getFeed();
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testInvalidCacheValueOnJsonFeed()
+    {
+        $api = new Api($this->invalidCacheManager, $this->validJsonClient);
+        $api->setUserName('pgrimaud');
+        $api->setEndCursor('endCursor');
+        $api->getFeed();
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testValidCacheValueOnJsonFeed()
+    {
+        $api = new Api($this->validCacheManager, $this->validJsonClient);
+        $api->setUserName('pgrimaud');
+        $api->setEndCursor('endCursor');
+        $api->getFeed();
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testInvalidJsonFeedReturn()
+    {
+        $this->expectException(InstagramException::class);
+
+        $api = new Api($this->validCacheManager, $this->invalidJsonClient);
+        $api->setUserName('pgrimaud');
+        $api->setEndCursor('endCursor');
+        $api->getFeed();
     }
 
     /**
@@ -62,7 +170,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     {
         $this->expectException(InstagramException::class);
 
-        $api = new Api($this->cacheManager, $this->validClient);
+        $api = new Api($this->validCacheManager, $this->validHtmlClient);
         $api->getFeed();
     }
 
@@ -71,7 +179,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidFeedReturn()
     {
-        $api = new Api($this->cacheManager, $this->validClient);
+        $api = new Api($this->validCacheManager, $this->validHtmlClient);
         $api->setUserName('pgrimaud');
 
         $feed = $api->getFeed();
@@ -82,12 +190,37 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @throws InstagramException
      */
-    public function testEmptyUserFeedReturn()
+    public function testInvalidHtmlFeedReturn()
     {
         $this->expectException(InstagramException::class);
 
-        $api = new Api($this->cacheManager, $this->invalidClient);
+        $api = new Api($this->validCacheManager, $this->invalidHtmlClient);
         $api->setUserName('pgrimaud');
+        $api->getFeed();
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testValidHtmlFeedAndInvalidJsonValue()
+    {
+        $this->expectException(InstagramException::class);
+
+        $api = new Api($this->validCacheManager, $this->invalidJsonHtmlClient);
+        $api->setUserName('pgrimaud');
+        $api->getFeed();
+    }
+
+    /**
+     * @throws InstagramException
+     */
+    public function testUnwritableCacheManager()
+    {
+        $this->expectException(InstagramException::class);
+
+        $api = new Api($this->unwritableCacheManager, $this->validJsonClient);
+        $api->setUserName('pgrimaud');
+        $api->setEndCursor('endCursor');
         $api->getFeed();
     }
 
@@ -96,7 +229,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testFeedContent()
     {
-        $api = new Api($this->cacheManager, $this->validClient);
+        $api = new Api($this->validCacheManager, $this->validHtmlClient);
         $api->setUserName('pgrimaud');
 
         $feed = $api->getFeed();
@@ -125,7 +258,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testMediaContent()
     {
-        $api = new Api($this->cacheManager, $this->validClient);
+        $api = new Api($this->validCacheManager, $this->validHtmlClient);
         $api->setUserName('pgrimaud');
 
         /** @var Feed $feed */
