@@ -10,18 +10,18 @@
 This library offers 2 packages to retrieve your or any Instagram feed without oAuth for PHP.
 
 ## Version ^4.0
-This version can retrieve **YOUR** Instagram feed using an access token.
+This version can retrieve **YOUR** Instagram feed using an **access token**.
 
-- [Installation](#installation-of-version-^4.0)
-- [Usage](#usage-of-version-^4.0)
-- [Paginate](#paginate-for-version-^4.0)
+- [Installation](#installation-of-version-40)
+- [Usage](#usage-of-version-40)
+- [Paginate](#paginate-for-version-40)
 
 ## Version ^5.0
-This version can retrieve **ANY** Instagram feed using web scrapping.
+This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
-- [Installation](#installation-of-version-^5.0)
-- [Usage](#usage-of-version-^5.0)
-- [Paginate](#paginate-for-version-^5.0)
+- [Installation](#installation-of-version-50)
+- [Usage](#usage-of-version-50)
+- [Paginate](#paginate-for-version-50)
 
 ## Changelog
 
@@ -106,7 +106,7 @@ Instagram\Hydrator\Feed Object
 )
 ```
 
-## Usage for version ^4.0
+## Paginate for version ^4.0
 If you want to use paginate, retrieve `maxId` from previous call and add it to your next call.
 
 ```php
@@ -127,6 +127,96 @@ $api->setUserId(184263228);
 $api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
 $api->setMaxId('1230468487398454311_184263228');
 
+$feed = $api->getFeed();
+
+// And etc...
+```
+
+## Installation of version ^5.0
+
+```
+composer require pgrimaud/instagram-user-feed "^5.0"
+```
+
+## Usage of version ^5.0
+
+```php
+
+$cache = new Instagram\Storage\CacheManager();
+
+$api = new Instagram\Api($cache);
+$api->setUserName('pgrimaud');
+
+$feed = $api->getFeed();
+
+print_r($feed):
+
+```
+
+```php
+Instagram\Hydrator\Component\Feed Object
+(
+    [id] => 184263228
+    [userName] => pgrimaud
+    [fullName] => Pierre G
+    [biography] => Gladiator retired - ESGI 14'
+    [followers] => 342
+    [following] => 114
+    [profilePicture] => https://scontent-cdg2-1.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg
+    [externalUrl] => https://p.ier.re/
+    [mediaCount] => 33
+    [medias] => Array
+        (
+            [0] => Instagram\Hydrator\Component\Media Object
+                (
+                    [id] => 1758133053345287778
+                    [typeName] => GraphImage
+                    [height] => 1080
+                    [width] => 1080
+                    [thumbnailSrc] => https://scontent-cdg2-1.cdninstagram.com/vp/dd39e08d3c740e764c61bc694d36f5a7/5B643B2F/t51.2885-15/s640x640/sh0.08/e35/30604700_183885172242354_7971196573931536384_n.jpg
+                    [link] => https://www.instagram.com/p/BhmJLJwhM5i/
+                    [date] => DateTime Object
+                        (
+                            [date] => 2018-04-15 17:23:33.000000
+                            [timezone_type] => 3
+                            [timezone] => Europe/Paris
+                        )
+
+                    [displaySrc] => https://scontent-cdg2-1.cdninstagram.com/vp/51a54157b8868d715b8dd51a5ecbc46d/5B632D4E/t51.2885-15/e35/30604700_183885172242354_7971196573931536384_n.jpg
+                    [caption] => 
+                    [comments] => 2
+                    [likes] => 14
+                )
+
+        )
+        
+        ...
+        
+    [endCursor] => AQBkklLNRIkvdOUFDHvLEZrssIcYn2TauR6cpvDgxiGJZq8mHb8ZFWNVwql1W78We0aOgfJZyQDF32yoP_h2zRKZ2iRY6zVJdDaLaGfUU23iXA
+)
+
+```
+
+## Paginate for version ^5.0
+If you want to use paginate, retrieve `endCursor` from previous call and add it to your next call.
+
+```php
+// Initialization
+
+$cache = new Instagram\Storage\CacheManager();
+
+$api = new Instagram\Api($cache);
+$api->setUserName('pgrimaud');
+
+// First call :
+
+$feed = $api->getFeed();
+
+$endCursor = $feed->getEndCursor();
+
+// Second call : 
+
+$api->setEndCursor($endCursor);
 $feed = $api->getFeed();
 
 // And etc...

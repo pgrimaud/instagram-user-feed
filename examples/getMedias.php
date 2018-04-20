@@ -1,24 +1,15 @@
 <?php
 
-use Instagram\Storage\CacheManager;
-
 require __DIR__ . '/../vendor/autoload.php';
 
-$cache = new CacheManager();
+$cache = new Instagram\Storage\CacheManager();
 
 $api = new Instagram\Api($cache);
 $api->setUserName('pgrimaud');
 
-/** @var \Instagram\Hydrator\Feed $feed */
-$feed = $api->getFeed();
-
-foreach ($feed->getMedias() as $media) {
-    echo $media->getCaption() . "\n";
-}
-
-$api->setEndCursor($feed->getEndCursor());
-$feed = $api->getFeed();
-
-foreach ($feed->getMedias() as $media) {
-    echo $media->getCaption() . "\n";
+try {
+    /** @var \Instagram\Hydrator\Component\Feed $feed */
+    $feed = $api->getFeed();
+} Catch (\Instagram\Exception\InstagramException $exception) {
+    print_r($exception->getMessage());
 }
