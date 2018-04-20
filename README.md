@@ -6,15 +6,28 @@
 [![Test Coverage](https://codeclimate.com/github/pgrimaud/instagram-user-feed/badges/coverage.svg)](https://codeclimate.com/github/pgrimaud/instagram-user-feed/coverage)
 [![Issue Count](https://codeclimate.com/github/pgrimaud/instagram-user-feed/badges/issue_count.svg)](https://codeclimate.com/github/pgrimaud/instagram-user-feed)
 
-## Installation
+## Information
+This library offers 2 packages to retrieve your or any Instagram feed without oAuth for PHP.
 
-```
-composer require pgrimaud/instagram-user-feed
-```
+## Version ^4.0
+This version can retrieve **YOUR** Instagram feed using an access token.
 
-## Warning
+- [Installation](#installation-of-version-^4.0)
+- [Usage](#usage-of-version-^4.0)
+- [Paginate](#paginate-for-version-^4.0)
 
-**2018-04-17 : Now fetching data with screen scraping (thanks [@cookieguru](https://github.com/cookieguru)), please upgrade to version ^5.0**
+## Version ^5.0
+This version can retrieve **ANY** Instagram feed using web scrapping.
+
+- [Installation](#installation-of-version-^5.0)
+- [Usage](#usage-of-version-^5.0)
+- [Paginate](#paginate-for-version-^5.0)
+
+## Changelog
+
+2018-04-20 : Release of version ^5.0 in parallel of version ^4.0 which still working. (Kudos for [@jannejava](https://github.com/jannejava) and [@cookieguru](https://github.com/cookieguru)
+
+~~2018-04-17 : Now fetching data with screen scraping (thanks [@cookieguru](https://github.com/cookieguru)), please upgrade to version ^5.0~~
 
 ~~2018-04-16 : Now fetching data with access token, only for your account (thanks [@jannejava](https://github.com/jannejava)), please upgrade to version ^4.0~~
 
@@ -22,7 +35,15 @@ composer require pgrimaud/instagram-user-feed
 
 ~~2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1~~
 
-## Usage
+
+
+## Installation of version ^4.0
+
+```
+composer require pgrimaud/instagram-user-feed "^4.0"
+```
+
+## Usage of version ^4.0
 
 ### Retrieve data
 
@@ -76,16 +97,28 @@ Instagram\Hydrator\Feed Object
 )
 ```
 
-### Setting a custom User Agent
-Since this method is using screen scraping, it is recommended that you spoof a user agent:
+### Paginate
+If you want to use paginate, retrieve `maxId` from previous call and add it to your next call.
 
 ```php
-$client = new GuzzleHttp\Client(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0']);
+// First call :
 
-$api = new Api($client);
+$api = new Api();
+$api->setUserId(184263228);
+$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
 
-$feed = $api->getFeed('pgrimaud');
+$feed = $api->getFeed();
+
+$endCursor = $feed->getMaxId();
+
+// Second call : 
+
+$api = new Api();
+$api->setUserId(184263228);
+$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
+$api->setMaxId('1230468487398454311_184263228');
+
+$feed = $api->getFeed();
 
 // And etc...
 ```
-
