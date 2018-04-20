@@ -25,7 +25,7 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
 ## Changelog
 
-2018-04-20 : Release of version ^5.0 in parallel of version ^4.0 which still working. (Kudos for [@jannejava](https://github.com/jannejava) and [@cookieguru](https://github.com/cookieguru)
+**2018-04-20 : Release of version ^5.0 in parallel of version ^4.0 which still working. (Kudos for [@jannejava](https://github.com/jannejava) and [@cookieguru](https://github.com/cookieguru)**
 
 ~~2018-04-17 : Now fetching data with screen scraping (thanks [@cookieguru](https://github.com/cookieguru)), please upgrade to version ^5.0~~
 
@@ -35,7 +35,7 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
 ~~2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1~~
 
-## Installation of version ^4.0
+# Installation of version ^4.0
 
 ```
 composer require pgrimaud/instagram-user-feed "^4.0"
@@ -131,8 +131,9 @@ $feed = $api->getFeed();
 
 // And etc...
 ```
+___
 
-## Installation of version ^5.0
+# Installation of version ^5.0
 
 ```
 composer require pgrimaud/instagram-user-feed "^5.0"
@@ -141,10 +142,8 @@ composer require pgrimaud/instagram-user-feed "^5.0"
 ## Usage of version ^5.0
 
 ```php
-
 $cache = new Instagram\Storage\CacheManager();
-
-$api = new Instagram\Api($cache);
+$api   = new Instagram\Api($cache);
 $api->setUserName('pgrimaud');
 
 $feed = $api->getFeed();
@@ -204,18 +203,16 @@ If you want to use paginate, retrieve `endCursor` from previous call and add it 
 // Initialization
 
 $cache = new Instagram\Storage\CacheManager();
-
-$api = new Instagram\Api($cache);
+$api   = new Instagram\Api($cache);
 $api->setUserName('pgrimaud');
 
 // First call :
 
 $feed = $api->getFeed();
 
-$endCursor = $feed->getEndCursor();
-
 // Second call : 
 
+$endCursor = $feed->getEndCursor();
 $api->setEndCursor($endCursor);
 $feed = $api->getFeed();
 
