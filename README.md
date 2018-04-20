@@ -35,20 +35,29 @@ This version can retrieve **ANY** Instagram feed using web scrapping.
 
 ~~2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1~~
 
-
-
 ## Installation of version ^4.0
 
 ```
 composer require pgrimaud/instagram-user-feed "^4.0"
 ```
 
+1. Visit [http://instagram.pixelunion.net/](http://instagram.pixelunion.net/) and create an access token
+
+2. The first part of the access token is your User Id
+
+```
+$api = new \Instagram\Api();
+
+$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
+$api->setUserId(1234578);
+```
+
+**Seems like you can only access your own media until 2020.**
+
 ## Usage of version ^4.0
 
-### Retrieve data
-
 ```php
-$api = new Api();
+$api = new \Instagram\Api();
 
 $feed = $api->getFeed('pgrimaud');
 
@@ -97,7 +106,7 @@ Instagram\Hydrator\Feed Object
 )
 ```
 
-### Paginate
+## Usage for version ^4.0
 If you want to use paginate, retrieve `maxId` from previous call and add it to your next call.
 
 ```php
