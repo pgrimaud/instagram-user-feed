@@ -4,94 +4,83 @@ namespace Instagram;
 
 use GuzzleHttp\Client;
 use Instagram\Exception\InstagramException;
-use Instagram\Transport\JsonFeed;
+use Instagram\Hydrator\HtmlHydrator;
+use Instagram\Hydrator\JsonHydrator;
+use Instagram\Storage\CacheManager;
+use Instagram\Transport\HtmlTransportFeed;
+use Instagram\Transport\JsonTransportFeed;
 
 class Api
 {
     /**
-     * @var Client
+     * @var CacheManager
      */
-    private $clientUser = null;
+    private $cacheManager;
 
     /**
      * @var Client
      */
-    private $clientMedia = null;
-
-    /**
-     * @var integer
-     */
-    private $userId = null;
+    private $client = null;
 
     /**
      * @var string
      */
-    private $accessToken = null;
+    private $userName;
 
     /**
      * @var string
      */
-    private $maxId = null;
+    private $endCursor = null;
 
     /**
      * Api constructor.
-     * @param Client|null $clientUser
-     * @param Client|null $clientMedia
+     * @param Client|null $client
+     * @param CacheManager|null $cacheManager
      */
-    public function __construct(Client $clientUser = null, Client $clientMedia = null)
+    public function __construct(CacheManager $cacheManager, Client $client = null)
     {
-        $this->clientUser  = $clientUser ?: new Client();
-        $this->clientMedia = $clientMedia ?: new Client();
+        $this->cacheManager = $cacheManager;
+        $this->client       = $client ?: new Client();
     }
 
     /**
-     * @param int $userId
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-    }
-
-    /**
-     * @param $token
-     */
-    public function setAccessToken($token)
-    {
-        $this->accessToken = $token;
-    }
-
-    /**
-     * @return Hydrator\Feed
+     * @return Hydrator\Component\Feed
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFeed()
     {
-        if (!$this->userId) {
-            throw new InstagramException('Missing userId');
+        if (empty($this->userName)) {
+            throw new InstagramException('Username cannot be empty');
         }
 
-        if (!$this->accessToken) {
-            throw new InstagramException('Missing access token');
+        if ($this->endCursor) {
+            $feed     = new JsonTransportFeed($this->cacheManager, $this->client, $this->endCursor);
+            $hydrator = new JsonHydrator();
+        } else {
+            $feed     = new HtmlTransportFeed($this->cacheManager, $this->client);
+            $hydrator = new HtmlHydrator();
         }
 
-        $feed     = new JsonFeed($this->clientUser, $this->clientMedia, $this->accessToken);
-        $hydrator = new Hydrator();
+        $dataFetched = $feed->fetchData($this->userName);
 
-        $userDataFetched = $feed->fetchUserData($this->userId);
-        $hydrator->setUserData($userDataFetched);
-
-        $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->maxId);
-        $hydrator->setMediaData($mediaDataFetched);
+        $hydrator->setData($dataFetched);
 
         return $hydrator->getHydratedData();
     }
 
     /**
-     * @param string $maxId
+     * @param string $userName
      */
-    public function setMaxId($maxId)
+    public function setUserName($userName)
     {
-        $this->maxId = $maxId;
+        $this->userName = $userName;
+    }
+
+    /**
+     * @param string $endCursor
+     */
+    public function setEndCursor($endCursor)
+    {
+        $this->endCursor = $endCursor;
     }
 }

@@ -6,10 +6,39 @@
 [![Test Coverage](https://codeclimate.com/github/pgrimaud/instagram-user-feed/badges/coverage.svg)](https://codeclimate.com/github/pgrimaud/instagram-user-feed/coverage)
 [![Issue Count](https://codeclimate.com/github/pgrimaud/instagram-user-feed/badges/issue_count.svg)](https://codeclimate.com/github/pgrimaud/instagram-user-feed)
 
-## Installation
+## Information
+This library offers 2 packages to retrieve your or any Instagram feed without oAuth for PHP.
+
+## Version ^4.0
+This version can retrieve **YOUR** Instagram feed using an **access token**.
+
+- [Installation](#installation-of-version-40)
+- [Usage](#usage-of-version-40)
+- [Paginate](#paginate-for-version-40)
+
+## Version ^5.0
+This version can retrieve **ANY** Instagram feed using **web scrapping**.
+
+- [Installation](#installation-of-version-50)
+- [Usage](#usage-of-version-50)
+- [Paginate](#paginate-for-version-50)
+
+## Changelog
+
+**2018-04-20 : Release of version ^5.0 in parallel of version ^4.0 which still working. (Kudos for [@jannejava](https://github.com/jannejava) and [@cookieguru](https://github.com/cookieguru)**
+
+~~2018-04-17 : Now fetching data with screen scraping (thanks [@cookieguru](https://github.com/cookieguru)), please upgrade to version ^5.0~~
+
+~~2018-04-16 : Now fetching data with access token, only for your account (thanks [@jannejava](https://github.com/jannejava)), please upgrade to version ^4.0~~
+
+~~2018-04-08 : Due to changes of the Instagram API (again...), you must upgrade to version ^3.0~~
+
+~~2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1~~
+
+# Installation of version ^4.0
 
 ```
-composer require pgrimaud/instagram-user-feed
+composer require pgrimaud/instagram-user-feed "^4.0"
 ```
 
 1. Visit [http://instagram.pixelunion.net/](http://instagram.pixelunion.net/) and create an access token
@@ -17,33 +46,20 @@ composer require pgrimaud/instagram-user-feed
 2. The first part of the access token is your User Id
 
 ```
-$api = new Api();
+$api = new \Instagram\Api();
 
 $api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
 $api->setUserId(1234578);
 ```
 
-Seems like you can only access your own media until 2020 other user's media December 11, 2018. Hope to find a solution for long term.
+**Seems like you can only access your own media until 2020.**
 
-## Warning
-
-**2018-04-16 : Now fetching data with access token, only for your account (thanks [@jannejava](https://github.com/jannejava)), please upgrade to version ^4.0**
-
-~~2018-04-08 : Due to changes of the Instagram API (again...), you must upgrade to version ^3.0~~
-
-~~2018-03-16 : Due to changes of the Instagram API, you must upgrade to version ^2.1~~
-
-## Usage
-
-### Retrieve data
+## Usage of version ^4.0
 
 ```php
-$api = new Api();
+$api = new \Instagram\Api();
 
-$api->setUserId(184263228);
-$api->setAccessToken('1234578.abcabc.abcabcabcabcabcabcabcabcabcabc');
-
-$feed = $api->getFeed();
+$feed = $api->getFeed('pgrimaud');
 
 print_r($feed);
 
@@ -90,7 +106,7 @@ Instagram\Hydrator\Feed Object
 )
 ```
 
-### Paginate
+## Paginate for version ^4.0
 If you want to use paginate, retrieve `maxId` from previous call and add it to your next call.
 
 ```php
@@ -115,5 +131,90 @@ $feed = $api->getFeed();
 
 // And etc...
 ```
+___
 
+# Installation of version ^5.0
 
+```
+composer require pgrimaud/instagram-user-feed "^5.0"
+```
+
+## Usage of version ^5.0
+
+```php
+$cache = new Instagram\Storage\CacheManager();
+$api   = new Instagram\Api($cache);
+$api->setUserName('pgrimaud');
+
+$feed = $api->getFeed();
+
+print_r($feed):
+
+```
+
+```php
+Instagram\Hydrator\Component\Feed Object
+(
+    [id] => 184263228
+    [userName] => pgrimaud
+    [fullName] => Pierre G
+    [biography] => Gladiator retired - ESGI 14'
+    [followers] => 342
+    [following] => 114
+    [profilePicture] => https://scontent-cdg2-1.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg
+    [externalUrl] => https://p.ier.re/
+    [mediaCount] => 33
+    [medias] => Array
+        (
+            [0] => Instagram\Hydrator\Component\Media Object
+                (
+                    [id] => 1758133053345287778
+                    [typeName] => GraphImage
+                    [height] => 1080
+                    [width] => 1080
+                    [thumbnailSrc] => https://scontent-cdg2-1.cdninstagram.com/vp/dd39e08d3c740e764c61bc694d36f5a7/5B643B2F/t51.2885-15/s640x640/sh0.08/e35/30604700_183885172242354_7971196573931536384_n.jpg
+                    [link] => https://www.instagram.com/p/BhmJLJwhM5i/
+                    [date] => DateTime Object
+                        (
+                            [date] => 2018-04-15 17:23:33.000000
+                            [timezone_type] => 3
+                            [timezone] => Europe/Paris
+                        )
+
+                    [displaySrc] => https://scontent-cdg2-1.cdninstagram.com/vp/51a54157b8868d715b8dd51a5ecbc46d/5B632D4E/t51.2885-15/e35/30604700_183885172242354_7971196573931536384_n.jpg
+                    [caption] => 
+                    [comments] => 2
+                    [likes] => 14
+                )
+
+        )
+        
+        ...
+        
+    [endCursor] => AQBkklLNRIkvdOUFDHvLEZrssIcYn2TauR6cpvDgxiGJZq8mHb8ZFWNVwql1W78We0aOgfJZyQDF32yoP_h2zRKZ2iRY6zVJdDaLaGfUU23iXA
+)
+
+```
+
+## Paginate for version ^5.0
+If you want to use paginate, retrieve `endCursor` from previous call and add it to your next call.
+
+```php
+// Initialization
+
+$cache = new Instagram\Storage\CacheManager();
+$api   = new Instagram\Api($cache);
+$api->setUserName('pgrimaud');
+
+// First call :
+
+$feed = $api->getFeed();
+
+// Second call : 
+
+$endCursor = $feed->getEndCursor();
+$api->setEndCursor($endCursor);
+$feed = $api->getFeed();
+
+// And etc...
+```

@@ -1,5 +1,6 @@
 <?php
-namespace Instagram\Hydrator;
+
+namespace Instagram\Hydrator\Component;
 
 class Feed
 {
@@ -26,12 +27,12 @@ class Feed
     /**
      * @var integer
      */
-    public $followers = 0;
+    public $followers;
 
     /**
      * @var integer
      */
-    public $following = 0;
+    public $following;
 
     /**
      * @var string
@@ -49,19 +50,14 @@ class Feed
     public $mediaCount = 0;
 
     /**
-     * @var boolean
+     * @var Media[]
      */
-    public $hasNextPage = false;
+    public $medias = [];
 
     /**
      * @var string
      */
-    public $maxId;
-
-    /**
-     * @var array
-     */
-    public $medias = [];
+    public $endCursor = null;
 
     /**
      * @return string
@@ -208,23 +204,7 @@ class Feed
     }
 
     /**
-     * @return bool
-     */
-    public function getHasNextPage()
-    {
-        return $this->hasNextPage;
-    }
-
-    /**
-     * @param bool $hasNextPage
-     */
-    public function setHasNextPage($hasNextPage)
-    {
-        $this->hasNextPage = $hasNextPage;
-    }
-
-    /**
-     * @return array
+     * @return Media[]
      */
     public function getMedias()
     {
@@ -232,9 +212,9 @@ class Feed
     }
 
     /**
-     * @param $media
+     * @param Media $media
      */
-    public function addMedia($media)
+    public function addMedia(Media $media)
     {
         $this->medias[] = $media;
     }
@@ -242,16 +222,16 @@ class Feed
     /**
      * @return string
      */
-    public function getMaxId()
+    public function getEndCursor()
     {
-        return $this->maxId;
+        return $this->endCursor;
     }
 
     /**
-     * @param string $maxId
+     * @param string $endCursor
      */
-    public function setMaxId($maxId)
+    public function setEndCursor($endCursor)
     {
-        $this->maxId = $maxId;
+        $this->endCursor = $endCursor;
     }
 }
