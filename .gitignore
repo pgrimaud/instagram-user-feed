@@ -4,9 +4,9 @@ build
 .php_cs.cache
 /cache
 !/cache/.gitkeep
-/tests/cache/
-!/tests/cache/empty/.gitkeep
-!/tests/cache/invalid/.gitkeep
-!/tests/cache/invalid/demo.cache
-!/tests/cache/valid/.gitkeep
-!/tests/cache/valid/pgrimaud.cache
+#/tests/cache/
+#!/tests/cache/empty/.gitkeep
+#!/tests/cache/invalid/.gitkeep
+#!/tests/cache/invalid/demo.cache
+#!/tests/cache/valid/.gitkeep
+#!/tests/cache/valid/pgrimaud.cache
