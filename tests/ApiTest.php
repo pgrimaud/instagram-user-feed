@@ -7,6 +7,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 
 use Instagram\Api;
+use Instagram\Exception\CacheException;
 use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\Component\Feed;
 use Instagram\Hydrator\Component\Media;
@@ -216,7 +217,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnwritableCacheManager()
     {
-        $this->expectException(InstagramException::class);
+        $this->expectException(CacheException::class);
 
         $api = new Api($this->unwritableCacheManager, $this->validJsonClient);
         $api->setUserName('pgrimaud');
