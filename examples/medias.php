@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$cache = new Instagram\Storage\CacheManager();
+$cache = new Instagram\Storage\CacheManager(__DIR__ . '/../cache/');
 
 $api = new Instagram\Api($cache);
 $api->setUserName('pgrimaud');

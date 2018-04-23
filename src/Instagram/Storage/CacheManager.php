@@ -13,11 +13,11 @@ class CacheManager
 
     /**
      * CacheManager constructor.
-     * @param null $cacheDir
+     * @param $cacheDir
      */
-    public function __construct($cacheDir = null)
+    public function __construct($cacheDir)
     {
-        $this->cacheDir = $cacheDir ?: $this->cacheDir;
+        $this->cacheDir = $cacheDir;
     }
 
     /**
@@ -26,7 +26,7 @@ class CacheManager
      */
     private function getCacheFile($userId)
     {
-        return ($this->cacheDir ? $this->cacheDir : __DIR__ . '/../../../cache/') . $userId . '.cache';
+        return $this->cacheDir . $userId . '.cache';
     }
 
     /**

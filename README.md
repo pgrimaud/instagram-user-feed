@@ -142,7 +142,7 @@ composer require pgrimaud/instagram-user-feed "^5.0"
 ## Usage of version ^5.0
 
 ```php
-$cache = new Instagram\Storage\CacheManager();
+$cache = new Instagram\Storage\CacheManager('/path/to/your/cache/folder');
 $api   = new Instagram\Api($cache);
 $api->setUserName('pgrimaud');
 
@@ -202,7 +202,7 @@ If you want to use paginate, retrieve `endCursor` from previous call and add it 
 ```php
 // Initialization
 
-$cache = new Instagram\Storage\CacheManager();
+$cache = new Instagram\Storage\CacheManager('/path/to/your/cache/folder');
 $api   = new Instagram\Api($cache);
 $api->setUserName('pgrimaud');
 
