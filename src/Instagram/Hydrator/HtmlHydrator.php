@@ -58,6 +58,8 @@ class HtmlHydrator
 
             $media->setLink(TransportFeed::INSTAGRAM_ENDPOINT . "p/{$node->shortcode}/");
 
+            $media->setThumbnails($node->thumbnail_resources);
+
             $feed->addMedia($media);
         }
 

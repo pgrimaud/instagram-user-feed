@@ -60,6 +60,11 @@ class Media
     public $likes;
 
     /**
+     * @var array
+     */
+    public $thumbnails = [];
+
+    /**
      * @return int
      */
     public function getId()
@@ -233,5 +238,21 @@ class Media
     public function setLink($link)
     {
         $this->link = $link;
+    }
+
+    /**
+     * @return array
+     */
+    public function getThumbnails()
+    {
+        return $this->thumbnails;
+    }
+
+    /**
+     * @param array $thumbnails
+     */
+    public function setThumbnails($thumbnails)
+    {
+        $this->thumbnails = $thumbnails;
     }
 }
