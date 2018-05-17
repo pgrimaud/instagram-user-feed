@@ -10,3 +10,4 @@ build
 !/tests/cache/invalid/demo.cache
 !/tests/cache/valid/.gitkeep
 !/tests/cache/valid/pgrimaud.cache
+composer.lock
