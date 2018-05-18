@@ -12,5 +12,5 @@ before_script:
 script:
     - vendor/bin/phpunit --coverage-clover ./build/clover.xml
 
-after_script:
+after_success:
     - php vendor/bin/php-coveralls -v
