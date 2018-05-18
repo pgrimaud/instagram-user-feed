@@ -31,6 +31,6 @@
   "require-dev": {
     "phpunit/phpunit": "^5.7",
     "friendsofphp/php-cs-fixer": "^2.4",
-    "satooshi/php-coveralls": "^2.0"
+    "php-coveralls/php-coveralls": "^2.0"
   }
 }
