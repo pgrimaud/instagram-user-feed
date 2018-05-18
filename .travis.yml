@@ -8,3 +8,7 @@ php:
 
 before_script:
     - composer install
+
+script: phpunit --coverage-clover coverage.cov tests
+after_script:
+  - php vendor/bin/coveralls

@@ -1,0 +1,4 @@
+src_dir: .
+coverage_clover:
+ - coverage.cov
+json_path: coverage.json
