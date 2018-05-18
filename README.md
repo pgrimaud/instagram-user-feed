@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pgrimaud/instagram-user-feed.svg?branch=master)](https://travis-ci.org/pgrimaud/instagram-user-feed)
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
+[![Coverage Status](https://coveralls.io/repos/github/pgrimaud/instagram-user-feed/badge.svg)](https://coveralls.io/github/pgrimaud/instagram-user-feed)
 
 ## Information
 This library offers 2 packages to retrieve your or any Instagram feed without oAuth for PHP.
