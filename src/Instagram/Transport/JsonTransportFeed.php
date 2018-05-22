@@ -80,8 +80,10 @@ class JsonTransportFeed extends TransportFeed
         // save to cache for next request
         $newCache = new Cache();
         $newCache->setRhxGis($cache->getRhxGis());
-        $newCache->setCookie($res->getHeaders()['Set-Cookie']);
         $newCache->setUserId($cache->getUserId());
+        if ($res->hasHeader('Set-Cookie')) {
+            $newCache->setCookie($res->getHeaders()['Set-Cookie']);
+        }
 
         $this->cacheManager->set($newCache, $userName);
 
