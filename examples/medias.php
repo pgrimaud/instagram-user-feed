@@ -62,8 +62,8 @@ try {
 
     // And etc...
 
-} Catch (\Instagram\Exception\InstagramException $exception) {
+} catch (Exception $exception) {
+    print_r($exception->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
     print_r($exception->getMessage());
 }
-
-// Second page
