@@ -23,7 +23,7 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
 ## Changelog
 
-**2018-04-20 : Release of version ^5.0 in parallel of version ^4.0 which still working. (Kudos for [@jannejava](https://github.com/jannejava) and [@cookieguru](https://github.com/cookieguru)**
+**2018-04-20 : Release of version ^5.0 in parallel of version ^4.0 which still working. (Kudos for [@jannejava](https://github.com/jannejava) and [@cookieguru](https://github.com/cookieguru)**)
 
 ~~2018-04-17 : Now fetching data with screen scraping (thanks [@cookieguru](https://github.com/cookieguru)), please upgrade to version ^5.0~~
 
@@ -146,7 +146,7 @@ $api->setUserName('pgrimaud');
 
 $feed = $api->getFeed();
 
-print_r($feed):
+print_r($feed);
 
 ```
 

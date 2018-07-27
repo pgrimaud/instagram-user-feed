@@ -45,7 +45,9 @@ class Api
 
     /**
      * @return Hydrator\Component\Feed
+     * @throws Exception\CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFeed()
     {
