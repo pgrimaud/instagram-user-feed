@@ -119,7 +119,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyCacheValueOnJsonFeed()
     {
@@ -130,7 +132,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testInvalidCacheValueOnJsonFeed()
     {
@@ -141,7 +145,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidCacheValueOnJsonFeed()
     {
@@ -152,7 +158,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testInvalidJsonFeedReturn()
     {
@@ -165,7 +173,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testEmptyUserName()
     {
@@ -176,7 +186,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidFeedReturn()
     {
@@ -189,7 +201,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testInvalidHtmlFeedReturn()
     {
@@ -201,7 +215,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidHtmlFeedAndInvalidJsonValue()
     {
@@ -213,7 +229,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testUnwritableCacheManager()
     {
@@ -226,7 +244,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testFeedContent()
     {
@@ -242,6 +262,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Gladiator retired - ESGI 14\'', $feed->getBiography());
         $this->assertSame('Pierre G', $feed->getFullName());
 
+        $this->assertSame(false, $feed->isPrivate());
+        $this->assertSame(false, $feed->isVerified());
+
         $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
 
         $this->assertSame(342, $feed->getFollowers());
@@ -255,7 +278,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @throws CacheException
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testMediaContent()
     {

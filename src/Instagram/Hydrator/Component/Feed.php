@@ -184,7 +184,7 @@ class Feed
     /**
      * @return bool
      */
-    public function getPrivate()
+    public function isPrivate()
     {
         return $this->private;
     }
@@ -200,7 +200,7 @@ class Feed
     /**
      * @return bool
      */
-    public function getVerified()
+    public function isVerified()
     {
         return $this->verified;
     }
