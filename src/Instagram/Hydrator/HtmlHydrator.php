@@ -82,6 +82,8 @@ class HtmlHydrator
         $feed->setFollowers($this->data->edge_followed_by->count);
         $feed->setFollowing($this->data->edge_follow->count);
         $feed->setExternalUrl($this->data->external_url);
+        $feed->setPrivate($this->data->is_private);
+        $feed->setVerified($this->data->is_verified);
         $feed->setEndCursor($this->data->edge_owner_to_timeline_media->page_info->end_cursor);
 
         return $feed;
