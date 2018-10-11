@@ -45,6 +45,16 @@ class Feed
     public $externalUrl;
 
     /**
+     * @var bool
+     */
+    public $private;
+
+    /**
+     * @var bool
+     */
+    public $verified;
+
+    /**
      * @var integer
      */
     public $mediaCount = 0;
@@ -169,6 +179,38 @@ class Feed
     public function setExternalUrl($externalUrl)
     {
         $this->externalUrl = $externalUrl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPrivate()
+    {
+        return $this->private;
+    }
+
+    /**
+     * @param bool $private
+     */
+    public function setPrivate($private)
+    {
+        $this->private = $private;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * @param bool $verified
+     */
+    public function setVerified($verified)
+    {
+        $this->verified = $verified;
     }
 
     /**
