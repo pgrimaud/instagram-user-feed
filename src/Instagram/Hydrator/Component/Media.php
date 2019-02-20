@@ -65,6 +65,16 @@ class Media
     public $thumbnails = [];
 
     /**
+     * @var bool
+     */
+    public $video = false;
+
+    /**
+     * @var int
+     */
+    public $videoViewCount = 0;
+
+    /**
      * @return int
      */
     public function getId()
@@ -254,5 +264,37 @@ class Media
     public function setThumbnails($thumbnails)
     {
         $this->thumbnails = $thumbnails;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVideo()
+    {
+        return $this->video;
+    }
+
+    /**
+     * @param bool $video
+     */
+    public function setVideo($video)
+    {
+        $this->video = $video;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVideoViewCount()
+    {
+        return $this->videoViewCount;
+    }
+
+    /**
+     * @param int $videoViewCount
+     */
+    public function setVideoViewCount($videoViewCount)
+    {
+        $this->videoViewCount = $videoViewCount;
     }
 }

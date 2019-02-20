@@ -13,6 +13,7 @@ class CacheManager
 
     /**
      * CacheManager constructor.
+     *
      * @param $cacheDir
      */
     public function __construct($cacheDir)
@@ -22,6 +23,7 @@ class CacheManager
 
     /**
      * @param $userId
+     *
      * @return string
      */
     private function getCacheFile($userId)
@@ -31,6 +33,7 @@ class CacheManager
 
     /**
      * @param $userId
+     *
      * @return Cache|mixed
      */
     public function getCache($userId)
@@ -53,6 +56,7 @@ class CacheManager
     /**
      * @param Cache $cache
      * @param $userName
+     *
      * @throws CacheException
      */
     public function set(Cache $cache, $userName)

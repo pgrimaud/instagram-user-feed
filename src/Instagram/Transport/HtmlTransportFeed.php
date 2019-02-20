@@ -11,6 +11,7 @@ class HtmlTransportFeed extends TransportFeed
 {
     /**
      * HtmlTransportFeed constructor.
+     *
      * @param CacheManager $cacheManager
      * @param Client $client
      */
@@ -21,7 +22,9 @@ class HtmlTransportFeed extends TransportFeed
 
     /**
      * @param $userName
+     *
      * @return mixed
+     *
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Instagram\Exception\CacheException

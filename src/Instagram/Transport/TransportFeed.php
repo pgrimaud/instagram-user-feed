@@ -23,6 +23,7 @@ abstract class TransportFeed
 
     /**
      * TransportFeed constructor.
+     *
      * @param Client $client
      * @param CacheManager $cacheManager
      */

@@ -23,6 +23,8 @@ class HtmlHydrator
 
     /**
      * @return Feed
+     *
+     * @throws \Exception
      */
     public function getHydratedData()
     {
@@ -60,6 +62,12 @@ class HtmlHydrator
 
             $media->setThumbnails($node->thumbnail_resources);
 
+            $media->setVideo((bool)$node->is_video);
+
+            if (property_exists($node, 'video_view_count')) {
+                $media->setVideoViewCount((int)$node->video_view_count);
+            }
+            
             $feed->addMedia($media);
         }
 

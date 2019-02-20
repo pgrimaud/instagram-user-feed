@@ -17,6 +17,7 @@ class JsonTransportFeed extends TransportFeed
 
     /**
      * JsonTransportFeed constructor.
+     *
      * @param CacheManager $cacheManager
      * @param Client $client
      * @param $endCursor
@@ -30,6 +31,7 @@ class JsonTransportFeed extends TransportFeed
     /**
      * @param $rhxgis
      * @param $variables
+     *
      * @return string
      */
     private function generateGis($rhxgis, $variables)
@@ -39,7 +41,9 @@ class JsonTransportFeed extends TransportFeed
 
     /**
      * @param $userName
+     *
      * @return mixed
+     *
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Instagram\Exception\CacheException
