@@ -316,5 +316,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(14, $media->getLikes());
 
         $this->assertCount(5, $media->getThumbnails());
+        $this->assertSame(false, $media->isVideo());
+        $this->assertSame(0, $media->getVideoViewCount());
     }
 }
