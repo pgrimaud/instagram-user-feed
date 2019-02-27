@@ -319,4 +319,19 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(false, $media->isVideo());
         $this->assertSame(0, $media->getVideoViewCount());
     }
+
+    /**
+     * @throws CacheException
+     * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function testHtmlFeedWithNoCacheManager()
+    {
+        $this->expectException(CacheException::class);
+
+        $api = new Api(null, $this->validHtmlClient);
+        $api->setUserName('pgrimaud');
+        $api->setEndCursor('endCursor');
+        $api->getFeed();
+    }
 }
