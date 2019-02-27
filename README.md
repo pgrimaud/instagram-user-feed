@@ -142,6 +142,25 @@ composer require pgrimaud/instagram-user-feed "^5.0"
 
 ## Usage of version ^5.0
 
+**New in 5.3** : CacheManager is no more mandatory is you want to retrieve only Instagram profile. (no pagination)
+
+```php
+$api = new Instagram\Api();
+$api->setUserName('pgrimaud');
+
+$feed = $api->getFeed();
+
+echo $feed->getUserName();
+// pgrimaud
+
+echo $feed->getFullName();
+// Pierre Grimaud
+
+```
+
+### Basic usage : 
+
+
 ```php
 $cache = new Instagram\Storage\CacheManager('/path/to/your/cache/folder');
 $api   = new Instagram\Api($cache);
