@@ -178,7 +178,7 @@ Instagram\Hydrator\Component\Feed Object
     [id] => 184263228
     [userName] => pgrimaud
     [fullName] => Pierre G
-    [biography] => Gladiator retired - ESGI 14'
+    [biography] => Gladiator retired - ESGI 14
     [followers] => 342
     [following] => 114
     [profilePicture] => https://scontent-cdg2-1.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg
