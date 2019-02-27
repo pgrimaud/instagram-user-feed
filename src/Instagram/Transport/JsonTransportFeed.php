@@ -18,14 +18,14 @@ class JsonTransportFeed extends TransportFeed
     /**
      * JsonTransportFeed constructor.
      *
-     * @param CacheManager $cacheManager
-     * @param Client $client
-     * @param $endCursor
+     * @param Client            $client
+     * @param                   $endCursor
+     * @param CacheManager|null $cacheManager
      */
-    public function __construct(CacheManager $cacheManager, Client $client, $endCursor)
+    public function __construct(Client $client, $endCursor, CacheManager $cacheManager = null)
     {
         $this->endCursor = $endCursor;
-        parent::__construct($cacheManager, $client);
+        parent::__construct($client, $cacheManager);
     }
 
     /**

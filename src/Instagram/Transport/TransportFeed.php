@@ -12,7 +12,7 @@ abstract class TransportFeed
     const QUERY_HASH         = '42323d64886122307be10013ad2dcc44';
 
     /**
-     * @var CacheManager
+     * @var CacheManager|null
      */
     protected $cacheManager;
 
@@ -24,10 +24,10 @@ abstract class TransportFeed
     /**
      * TransportFeed constructor.
      *
-     * @param Client $client
-     * @param CacheManager $cacheManager
+     * @param Client            $client
+     * @param CacheManager|null $cacheManager
      */
-    public function __construct(CacheManager $cacheManager, Client $client)
+    public function __construct(Client $client, CacheManager $cacheManager = null)
     {
         $this->cacheManager = $cacheManager;
         $this->client       = $client;

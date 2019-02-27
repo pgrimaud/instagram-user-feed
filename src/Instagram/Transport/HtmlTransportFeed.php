@@ -12,12 +12,12 @@ class HtmlTransportFeed extends TransportFeed
     /**
      * HtmlTransportFeed constructor.
      *
-     * @param CacheManager $cacheManager
-     * @param Client $client
+     * @param Client            $client
+     * @param CacheManager|null $cacheManager
      */
-    public function __construct(CacheManager $cacheManager, Client $client)
+    public function __construct(Client $client, CacheManager $cacheManager = null)
     {
-        parent::__construct($cacheManager, $client);
+        parent::__construct($client, $cacheManager);
     }
 
     /**
@@ -55,14 +55,16 @@ class HtmlTransportFeed extends TransportFeed
             throw new InstagramException(json_last_error_msg());
         }
 
-        $newCache = new Cache();
-        $newCache->setRhxGis($data->rhx_gis);
-        $newCache->setUserId($data->entry_data->ProfilePage[0]->graphql->user->id);
-        if ($res->hasHeader('Set-Cookie')) {
-            $newCache->setCookie($res->getHeaders()['Set-Cookie']);
-        }
+        if ($this->cacheManager instanceof CacheManager) {
+            $newCache = new Cache();
+            $newCache->setRhxGis($data->rhx_gis);
+            $newCache->setUserId($data->entry_data->ProfilePage[0]->graphql->user->id);
+            if ($res->hasHeader('Set-Cookie')) {
+                $newCache->setCookie($res->getHeaders()['Set-Cookie']);
+            }
 
-        $this->cacheManager->set($newCache, $userName);
+            $this->cacheManager->set($newCache, $userName);
+        }
 
         return $data->entry_data->ProfilePage[0]->graphql->user;
     }

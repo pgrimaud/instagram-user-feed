@@ -3,6 +3,7 @@
 namespace Instagram;
 
 use GuzzleHttp\Client;
+use Instagram\Exception\CacheException;
 use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\HtmlHydrator;
 use Instagram\Hydrator\JsonHydrator;
@@ -34,10 +35,10 @@ class Api
 
     /**
      * Api constructor.
-     * @param Client|null $client
+     * @param Client|null       $client
      * @param CacheManager|null $cacheManager
      */
-    public function __construct(CacheManager $cacheManager, Client $client = null)
+    public function __construct(CacheManager $cacheManager = null, Client $client = null)
     {
         $this->cacheManager = $cacheManager;
         $this->client       = $client ?: new Client();
@@ -45,9 +46,11 @@ class Api
 
     /**
      * @return Hydrator\Component\Feed
+     *
      * @throws Exception\CacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function getFeed()
     {
@@ -56,10 +59,15 @@ class Api
         }
 
         if ($this->endCursor) {
-            $feed     = new JsonTransportFeed($this->cacheManager, $this->client, $this->endCursor);
+
+            if (!$this->cacheManager instanceof CacheManager) {
+                throw new CacheException('CacheManager object must be specified to use pagination');
+            }
+
+            $feed     = new JsonTransportFeed($this->client, $this->endCursor, $this->cacheManager);
             $hydrator = new JsonHydrator();
         } else {
-            $feed     = new HtmlTransportFeed($this->cacheManager, $this->client);
+            $feed     = new HtmlTransportFeed($this->client, $this->cacheManager);
             $hydrator = new HtmlHydrator();
         }
 

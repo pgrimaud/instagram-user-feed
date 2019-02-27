@@ -14,7 +14,7 @@ class CacheManager
     /**
      * CacheManager constructor.
      *
-     * @param $cacheDir
+     * @param string $cacheDir
      */
     public function __construct($cacheDir)
     {
