@@ -62,16 +62,21 @@ class JsonFeed
     /**
      * @param $userId
      * @param null $maxId
+     * @param int|null $count
      * @return mixed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchMediaData($userId, $maxId = null)
+    public function fetchMediaData($userId, $maxId = null, $count = null)
     {
         $endpoint = self::INSTAGRAM_ENDPOINT . $userId . '/media/recent/?access_token=' . $this->accessToken;
 
         if ($maxId) {
             $endpoint .= '&max_id=' . $maxId;
+        }
+        
+        if ($count) {
+            $endpoint .= '&count=' . (int)$count;
         }
 
         $res = $this->clientMedia->request('GET', $endpoint);
