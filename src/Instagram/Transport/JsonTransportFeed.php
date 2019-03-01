@@ -40,7 +40,8 @@ class JsonTransportFeed extends TransportFeed
     }
 
     /**
-     * @param $userName
+     * @param string $userName
+     * @param int $limit
      *
      * @return mixed
      *
@@ -48,14 +49,14 @@ class JsonTransportFeed extends TransportFeed
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Instagram\Exception\CacheException
      */
-    public function fetchData($userName)
+    public function fetchData($userName, $limit = 12)
     {
         /** @var Cache $cache */
         $cache = $this->cacheManager->getCache($userName);
 
         $variables = [
             'id'    => $cache->getUserId(),
-            'first' => '12',
+            'first' => $limit,
             'after' => $this->endCursor,
         ];
 
