@@ -61,11 +61,12 @@ class Api
     }
 
     /**
+     * @param null $mediaCount
      * @return Hydrator\Feed
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getFeed()
+    public function getFeed($mediaCount = null)
     {
         if (!$this->userId) {
             throw new InstagramException('Missing userId');
@@ -81,7 +82,7 @@ class Api
         $userDataFetched = $feed->fetchUserData($this->userId);
         $hydrator->setUserData($userDataFetched);
 
-        $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->maxId);
+        $mediaDataFetched = $feed->fetchMediaData($this->userId, $this->maxId, $mediaCount);
         $hydrator->setMediaData($mediaDataFetched);
 
         return $hydrator->getHydratedData();

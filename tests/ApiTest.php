@@ -99,7 +99,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api->setUserId(1234);
         $api->setAccessToken('123.123.1233');
 
-        $feed = $api->getFeed();
+        $feed = $api->getFeed(12);
 
         $this->assertInstanceOf(Feed::class, $feed);
     }
