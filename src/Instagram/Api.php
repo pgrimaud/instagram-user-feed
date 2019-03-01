@@ -45,21 +45,21 @@ class Api
     }
 
     /**
+     * @param integer $limit
      * @return Hydrator\Component\Feed
      *
-     * @throws Exception\CacheException
+     * @throws CacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Exception
      */
-    public function getFeed()
+    public function getFeed($limit = 12)
     {
         if (empty($this->userName)) {
             throw new InstagramException('Username cannot be empty');
         }
 
         if ($this->endCursor) {
-
             if (!$this->cacheManager instanceof CacheManager) {
                 throw new CacheException('CacheManager object must be specified to use pagination');
             }
@@ -71,7 +71,7 @@ class Api
             $hydrator = new HtmlHydrator();
         }
 
-        $dataFetched = $feed->fetchData($this->userName);
+        $dataFetched = $feed->fetchData($this->userName, $limit);
 
         $hydrator->setData($dataFetched);
 

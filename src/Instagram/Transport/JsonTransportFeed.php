@@ -49,7 +49,7 @@ class JsonTransportFeed extends TransportFeed
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Instagram\Exception\CacheException
      */
-    public function fetchData($userName, $limit = 12)
+    public function fetchData($userName, $limit)
     {
         /** @var Cache $cache */
         $cache = $this->cacheManager->getCache($userName);
