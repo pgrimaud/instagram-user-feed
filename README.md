@@ -8,7 +8,7 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 ## Information
-This library offers 2 packages to retrieve your or any Instagram feed without oAuth for PHP.
+This library offers 2 packages to retrieve your or any Instagram feed without OAuth for PHP.
 
 ## Version ^4.0
 This version can retrieve **YOUR** Instagram feed using an **access token**.

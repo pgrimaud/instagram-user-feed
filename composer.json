@@ -1,7 +1,7 @@
 {
   "name": "pgrimaud/instagram-user-feed",
   "type": "library",
-  "description": "Easily fetch any user's Instagram feed without oAuth for PHP",
+  "description": "Easily fetch any user's Instagram feed without OAuth for PHP",
   "keywords": ["instagram", "api", "php", "feed", "social", "sdk"],
   "homepage": "https://github.com/pgrimaud/instagram-user-feed",
   "license": "MIT",
