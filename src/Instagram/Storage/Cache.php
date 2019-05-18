@@ -5,11 +5,6 @@ namespace Instagram\Storage;
 class Cache
 {
     /**
-     * @var string
-     */
-    public $rhxGis;
-
-    /**
      * @var int
      */
     public $userId;
@@ -18,22 +13,6 @@ class Cache
      * @var array
      */
     public $cookie = [];
-
-    /**
-     * @return string
-     */
-    public function getRhxGis()
-    {
-        return $this->rhxGis;
-    }
-
-    /**
-     * @param string $rhxGis
-     */
-    public function setRhxGis($rhxGis)
-    {
-        $this->rhxGis = $rhxGis;
-    }
 
     /**
      * @return array

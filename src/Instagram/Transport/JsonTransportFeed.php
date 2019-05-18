@@ -29,14 +29,13 @@ class JsonTransportFeed extends TransportFeed
     }
 
     /**
-     * @param $rhxgis
      * @param $variables
      *
      * @return string
      */
-    private function generateGis($rhxgis, $variables)
+    private function generateGis($variables)
     {
-        return md5($rhxgis . ':' . json_encode($variables));
+        return md5(json_encode($variables));
     }
 
     /**
@@ -66,7 +65,7 @@ class JsonTransportFeed extends TransportFeed
             'headers' => [
                 'user-agent'       => self::USER_AGENT,
                 'x-requested-with' => 'XMLHttpRequest',
-                'x-instagram-gis'  => $this->generateGis($cache->getRhxGis(), $variables)
+                'x-instagram-gis'  => $this->generateGis($variables)
             ],
             'cookies' => $cookieJar
         ];
@@ -84,7 +83,6 @@ class JsonTransportFeed extends TransportFeed
 
         // save to cache for next request
         $newCache = new Cache();
-        $newCache->setRhxGis($cache->getRhxGis());
         $newCache->setUserId($cache->getUserId());
         if ($res->hasHeader('Set-Cookie')) {
             $newCache->setCookie($res->getHeaders()['Set-Cookie']);

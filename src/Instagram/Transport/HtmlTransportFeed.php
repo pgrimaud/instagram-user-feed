@@ -57,7 +57,6 @@ class HtmlTransportFeed extends TransportFeed
 
         if ($this->cacheManager instanceof CacheManager) {
             $newCache = new Cache();
-            $newCache->setRhxGis($data->rhx_gis);
             $newCache->setUserId($data->entry_data->ProfilePage[0]->graphql->user->id);
             if ($res->hasHeader('Set-Cookie')) {
                 $newCache->setCookie($res->getHeaders()['Set-Cookie']);
