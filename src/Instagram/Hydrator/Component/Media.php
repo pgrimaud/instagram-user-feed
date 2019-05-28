@@ -65,6 +65,11 @@ class Media
     public $thumbnails = [];
 
     /**
+     * @var mixed
+     */
+    public $location;
+
+    /**
      * @var bool
      */
     public $video = false;
@@ -264,6 +269,22 @@ class Media
     public function setThumbnails($thumbnails)
     {
         $this->thumbnails = $thumbnails;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param mixed $location
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
     }
 
     /**
