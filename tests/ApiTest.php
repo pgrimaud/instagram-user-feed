@@ -316,6 +316,14 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(14, $media->getLikes());
 
         $this->assertCount(5, $media->getThumbnails());
+
+        $this->assertSame([
+            'has_public_page' => true,
+            'id' => 350380063,
+            'name' => 'Casino Barcelona',
+            'slug' => 'casino-barcelona',
+        ], $media->getLocation());
+
         $this->assertSame(false, $media->isVideo());
         $this->assertSame(0, $media->getVideoViewCount());
     }
