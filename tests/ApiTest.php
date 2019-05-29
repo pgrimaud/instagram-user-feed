@@ -259,20 +259,20 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('184263228', $feed->getId());
         $this->assertSame('pgrimaud', $feed->getUserName());
-        $this->assertSame('Gladiator retired - ESGI 14\'', $feed->getBiography());
-        $this->assertSame('Pierre G', $feed->getFullName());
+        $this->assertSame('Mercenary developer & retired gladiator', $feed->getBiography());
+        $this->assertSame('Pierre Grimaud', $feed->getFullName());
 
         $this->assertSame(false, $feed->isPrivate());
         $this->assertSame(false, $feed->isVerified());
 
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg', $feed->getProfilePicture());
+        $this->assertSame('https://scontent-sea1-1.cdninstagram.com/vp/1dd1ba2f432f6614be04ca9607e48800/5D5DDA2E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg?_nc_ht=scontent-sea1-1.cdninstagram.com', $feed->getProfilePicture());
 
-        $this->assertSame(342, $feed->getFollowers());
-        $this->assertSame(114, $feed->getFollowing());
+        $this->assertSame(369, $feed->getFollowers());
+        $this->assertSame(151, $feed->getFollowing());
 
         $this->assertSame('https://p.ier.re/', $feed->getExternalUrl());
-        $this->assertSame(33, $feed->getMediaCount());
-        $this->assertSame('AQCHJTRY7cTG6nZCLrX6HkDIcHSfgNvslHRkLJK9X5u892u7moUUJdTARhZkXahDsd8iJtXYRvq12FxbqqAXsV3pEq9ST0wlMBdznqoZpFa-Xw', $feed->getEndCursor());
+        $this->assertSame(40, $feed->getMediaCount());
+        $this->assertSame('QVFBbWp4dC1aYUFMc1p1czgtdEU2VFgxemVSem5XN3M0cnhxc0NxOTRHWmRBNWhqX3JoZnFRZE1pVzZmNndybDN2S2g3RXp2aXRfSjV0MTk1RV9lM09vSA==', $feed->getEndCursor());
 
         $this->assertCount(12, $feed->getMedias());
     }
@@ -297,32 +297,40 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(Media::class, $media);
 
-        $this->assertSame('1758133053345287778', $media->getId());
+        $this->assertSame('1855305733072311817', $media->getId());
         $this->assertSame('GraphImage', $media->getTypeName());
 
         $this->assertSame(1080, $media->getWidth());
         $this->assertSame(1080, $media->getHeight());
 
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/dd39e08d3c740e764c61bc694d36f5a7/5B643B2F/t51.2885-15/s640x640/sh0.08/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getThumbnailSrc());
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/vp/51a54157b8868d715b8dd51a5ecbc46d/5B632D4E/t51.2885-15/e35/30604700_183885172242354_7971196573931536384_n.jpg', $media->getDisplaySrc());
+        $this->assertSame('https://scontent-sea1-1.cdninstagram.com/vp/0d2e66f5dfb7330bd57621a76625e532/5D796EB6/t51.2885-15/sh0.08/e35/s640x640/39309315_472046209872119_3843556148607188992_n.jpg?_nc_ht=scontent-sea1-1.cdninstagram.com', $media->getThumbnailSrc());
+        $this->assertSame('https://scontent-sea1-1.cdninstagram.com/vp/ff940b758ed4dfbd5f182b3a6b068e3e/5D6D0C53/t51.2885-15/e35/39309315_472046209872119_3843556148607188992_n.jpg?_nc_ht=scontent-sea1-1.cdninstagram.com', $media->getDisplaySrc());
 
-        $this->assertSame('https://www.instagram.com/p/BhmJLJwhM5i/', $media->getLink());
+        $this->assertSame('https://www.instagram.com/p/Bm_XrwBhVYJ/', $media->getLink());
 
         $this->assertInstanceOf(\DateTime::class, $media->getDate());
 
-        $this->assertSame(null, $media->getCaption());
+        $this->assertSame('Ola ! #casino #paella #ept #pokerstars', $media->getCaption());
 
-        $this->assertSame(2, $media->getComments());
-        $this->assertSame(14, $media->getLikes());
+        $this->assertSame(10, $media->getComments());
+        $this->assertSame(35, $media->getLikes());
 
         $this->assertCount(5, $media->getThumbnails());
 
-        $this->assertSame([
-            'has_public_page' => true,
-            'id' => 350380063,
-            'name' => 'Casino Barcelona',
-            'slug' => 'casino-barcelona',
-        ], $media->getLocation());
+        $fakeLocation                  = new \StdClass();
+        $fakeLocation->id              = '350380063';
+        $fakeLocation->has_public_page = true;
+        $fakeLocation->name            = 'Casino Barcelona';
+        $fakeLocation->slug            = 'casino-barcelona';
+
+        $location = $media->getLocation();
+
+        $this->assertInstanceOf(\StdClass::class, $location);
+        $this->assertSame($fakeLocation->id, $location->id);
+        $this->assertSame($fakeLocation->has_public_page, $location->has_public_page);
+        $this->assertSame($fakeLocation->name, $location->name);
+        $this->assertSame($fakeLocation->slug, $location->slug);
+
 
         $this->assertSame(false, $media->isVideo());
         $this->assertSame(0, $media->getVideoViewCount());
