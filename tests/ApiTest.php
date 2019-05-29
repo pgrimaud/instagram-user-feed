@@ -43,6 +43,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Client
      */
+    private $validStatementHtmlClient;
+
+    /**
+     * @var Client
+     */
     private $invalidJsonHtmlClient;
 
     /**
@@ -71,9 +76,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         copy(__DIR__ . '/cache/invalid/demo.cache', __DIR__ . '/cache/invalid/pgrimaud.cache');
 
-        $validHtmlFixtures       = file_get_contents(__DIR__ . '/fixtures/pgrimaud.html');
-        $invalidHtmlJsonFixtures = file_get_contents(__DIR__ . '/fixtures/invalid_pgrimaud.html');
-        $invalidHtmlFixtures     = '<html></html>';
+        $validHtmlFixtures          = file_get_contents(__DIR__ . '/fixtures/pgrimaud.html');
+        $validStatementHtmlFixtures = file_get_contents(__DIR__ . '/fixtures/statement.paris.html');
+        $invalidHtmlJsonFixtures    = file_get_contents(__DIR__ . '/fixtures/invalid_pgrimaud.html');
+        $invalidHtmlFixtures        = '<html></html>';
 
         $validJsonFixtures   = file_get_contents(__DIR__ . '/fixtures/pgrimaud.json');
         $invalidJsonFixtures = '<html></html>';
@@ -86,6 +92,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $mock                  = new MockHandler([$response]);
         $handler               = HandlerStack::create($mock);
         $this->validHtmlClient = new Client(['handler' => $handler]);
+
+        $response                       = new Response(200, $headers, $validStatementHtmlFixtures);
+        $mock                           = new MockHandler([$response]);
+        $handler                        = HandlerStack::create($mock);
+        $this->validStatementHtmlClient = new Client(['handler' => $handler]);
 
         $response                = new Response(200, [], $invalidHtmlFixtures);
         $mock                    = new MockHandler([$response]);
@@ -349,5 +360,23 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api->setUserName('pgrimaud');
         $api->setEndCursor('endCursor');
         $api->getFeed();
+    }
+
+    /**
+     * @throws CacheException
+     * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function testStatementHtmlFeedWithVideoPost()
+    {
+        $api = new Api($this->validCacheManager, $this->validStatementHtmlClient);
+        $api->setUserName('statement.paris');
+
+        $feed = $api->getFeed();
+
+        // fist media is a video
+        /** @var Media $post */
+        $media = $feed->getMedias()[0];
+        $this->assertSame(199, $media->getVideoViewCount());
     }
 }
