@@ -4,6 +4,7 @@ namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use Instagram\Exception\InstagramException;
 use Instagram\Storage\Cache;
 use Instagram\Storage\CacheManager;
@@ -14,6 +15,8 @@ class JsonTransportFeed extends TransportFeed
      * @var string
      */
     private $endCursor;
+
+    const REQUIRES_COOKIES_KEYS = ['rur', 'mid', 'mcd', 'urlgen', 'csrftoken'];
 
     /**
      * JsonTransportFeed constructor.
@@ -85,7 +88,14 @@ class JsonTransportFeed extends TransportFeed
         $newCache = new Cache();
         $newCache->setUserId($cache->getUserId());
         if ($res->hasHeader('Set-Cookie')) {
-            $newCache->setCookie($res->getHeaders()['Set-Cookie']);
+            $saveCookies = [];
+            foreach ($res->getHeaders()['Set-Cookie'] as $cookie) {
+                $setCookie = SetCookie::fromString($cookie);
+                if (in_array($setCookie->getName(), self::REQUIRES_COOKIES_KEYS, true)) {
+                    $saveCookies[] = $cookie;
+                }
+            }
+            $newCache->setCookie($saveCookies);
         }
 
         $this->cacheManager->set($newCache, $userName);
