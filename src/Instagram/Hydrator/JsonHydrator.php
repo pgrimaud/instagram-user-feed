@@ -62,7 +62,9 @@ class JsonHydrator
 
             $media->setThumbnails($node->thumbnail_resources);
 
-            $media->setLocation($node->location);
+            if(isset($node->location)){
+                $media->setLocation($node->location);
+            }
 
             $media->setVideo((bool)$node->is_video);
 
