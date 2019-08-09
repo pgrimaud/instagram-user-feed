@@ -21,7 +21,7 @@ class JsonTransportFeed extends TransportFeed
     /**
      * JsonTransportFeed constructor.
      *
-     * @param Client            $client
+     * @param Client $client
      * @param                   $endCursor
      * @param CacheManager|null $cacheManager
      */
@@ -68,7 +68,8 @@ class JsonTransportFeed extends TransportFeed
             'headers' => [
                 'user-agent'       => self::USER_AGENT,
                 'x-requested-with' => 'XMLHttpRequest',
-                'x-instagram-gis'  => $this->generateGis($variables)
+                'x-instagram-gis'  => $this->generateGis($variables),
+                'x-csrftoken'      => md5(uniqid(rand(), true)),
             ],
             'cookies' => $cookieJar
         ];
