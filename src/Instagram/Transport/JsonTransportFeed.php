@@ -69,7 +69,7 @@ class JsonTransportFeed extends TransportFeed
                 'user-agent'       => self::USER_AGENT,
                 'x-requested-with' => 'XMLHttpRequest',
                 'x-instagram-gis'  => $this->generateGis($variables),
-                'x-csrftoken'      => md5(uniqid(rand(), true)),
+                'x-csrftoken'      => $cache->getCsrfToken(),
             ],
             'cookies' => $cookieJar
         ];

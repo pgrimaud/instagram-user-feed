@@ -15,6 +15,11 @@ class Cache
     public $cookie = [];
 
     /**
+     * @var string
+     */
+    public $csrfToken;
+
+    /**
      * @return array
      */
     public function getCookie()
@@ -44,5 +49,21 @@ class Cache
     public function setUserId($userId)
     {
         $this->userId = $userId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCsrfToken()
+    {
+        return $this->csrfToken;
+    }
+
+    /**
+     * @param string $csrfToken
+     */
+    public function setCsrfToken($csrfToken)
+    {
+        $this->csrfToken = $csrfToken;
     }
 }
