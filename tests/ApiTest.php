@@ -7,7 +7,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 
 use Instagram\Api;
-use Instagram\Exception\CacheException;
+use Instagram\Exception\InstagramCacheException;
 use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\Component\Feed;
 use Instagram\Hydrator\Component\Media;
@@ -130,7 +130,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -143,7 +143,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -156,7 +156,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -169,7 +169,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -184,7 +184,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -197,7 +197,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -212,7 +212,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -226,7 +226,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -240,13 +240,13 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testUnwritableCacheManager()
     {
-        $this->expectException(CacheException::class);
+        $this->expectException(InstagramCacheException::class);
 
         $api = new Api($this->unwritableCacheManager, $this->validJsonClient);
         $api->setUserName('pgrimaud');
@@ -255,7 +255,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -289,7 +289,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -348,13 +348,13 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testHtmlFeedWithNoCacheManager()
     {
-        $this->expectException(CacheException::class);
+        $this->expectException(InstagramCacheException::class);
 
         $api = new Api(null, $this->validHtmlClient);
         $api->setUserName('pgrimaud');
@@ -363,7 +363,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */

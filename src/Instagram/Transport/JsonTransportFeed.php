@@ -21,7 +21,7 @@ class JsonTransportFeed extends TransportFeed
     /**
      * JsonTransportFeed constructor.
      *
-     * @param Client $client
+     * @param Client            $client
      * @param                   $endCursor
      * @param CacheManager|null $cacheManager
      */
@@ -43,13 +43,13 @@ class JsonTransportFeed extends TransportFeed
 
     /**
      * @param string $userName
-     * @param int $limit
+     * @param int    $limit
      *
      * @return mixed
      *
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Instagram\Exception\CacheException
+     * @throws \Instagram\Exception\InstagramCacheException
      */
     public function fetchData($userName, $limit)
     {
@@ -74,7 +74,7 @@ class JsonTransportFeed extends TransportFeed
             'cookies' => $cookieJar
         ];
 
-        $endpoint = self::INSTAGRAM_ENDPOINT . 'graphql/query/?query_hash=' . self::QUERY_HASH . '&variables=' . json_encode($variables);
+        $endpoint = self::BASE_URL . 'graphql/query/?query_hash=' . self::QUERY_HASH . '&variables=' . json_encode($variables);
 
         $res = $this->client->request('GET', $endpoint, $headers);
 

@@ -3,6 +3,8 @@
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
+use Instagram\Exception\InstagramAuthException;
 use Instagram\Exception\InstagramException;
 use Instagram\Storage\Cache;
 use Instagram\Storage\CacheManager;
@@ -25,19 +27,31 @@ class HtmlTransportFeed extends TransportFeed
      *
      * @return mixed
      *
+     * @throws InstagramAuthException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Instagram\Exception\CacheException
+     * @throws \Instagram\Exception\InstagramCacheException
      */
     public function fetchData($userName)
     {
-        $endpoint = self::INSTAGRAM_ENDPOINT . $userName . '/';
+        $endpoint = self::BASE_URL . $userName . '/';
 
-        $headers = [
-            'headers' => [
-                'user-agent' => self::USER_AGENT
-            ]
-        ];
+        if ($this->cacheManager instanceof CacheManager && $this->cacheManager->sessionName) {
+            $cookieJar = $this->cacheManager->getSession();
+
+            $headers = [
+                'headers' => [
+                    'user-agent' => self::USER_AGENT,
+                ],
+                'cookies' => $cookieJar
+            ];
+        } else {
+            $headers = [
+                'headers' => [
+                    'user-agent' => self::USER_AGENT,
+                ]
+            ];
+        }
 
         $res = $this->client->request('GET', $endpoint, $headers);
 
@@ -55,10 +69,17 @@ class HtmlTransportFeed extends TransportFeed
             throw new InstagramException(json_last_error_msg());
         }
 
-        if ($this->cacheManager instanceof CacheManager) {
+        if (isset($data->entry_data->LoginAndSignupPage)) {
+            throw new InstagramAuthException('Instagram blocked your IP. Login is required.');
+        }
+
+        if ($this->cacheManager->sessionName) {
+            $this->cacheManager->setSession($this->cacheManager->sessionName, $cookieJar);
+        } elseif ($this->cacheManager instanceof CacheManager) {
             $newCache = new Cache();
             $newCache->setUserId($data->entry_data->ProfilePage[0]->graphql->user->id);
             $newCache->setCsrfToken($data->config->csrf_token);
+
             if ($res->hasHeader('Set-Cookie')) {
                 $newCache->setCookie($res->getHeaders()['Set-Cookie']);
             }

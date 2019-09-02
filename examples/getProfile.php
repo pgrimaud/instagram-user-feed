@@ -26,20 +26,6 @@ try {
     echo 'Private Account  : ' . ($feed->isPrivate() ? 'Yes' : 'No') . "\n";
     echo 'Media Count      : ' . $feed->getMediaCount() . "\n\n";
 
-    echo '============================' . "\n";
-    echo 'Medias first page : ' . "\n";
-    echo '============================' . "\n\n";
-
-    /** @var \Instagram\Hydrator\Component\Media $media */
-    foreach ($feed->getMedias() as $media) {
-        echo 'ID        : ' . $media->getId() . "\n";
-        echo 'Caption   : ' . $media->getCaption() . "\n";
-        echo 'Link      : ' . $media->getLink() . "\n";
-        echo 'Likes     : ' . $media->getLikes() . "\n";
-        echo 'Date      : ' . $media->getDate()->format('Y-m-d h:i:s') . "\n";
-        echo '============================' . "\n";
-    }
-
 } catch (Exception $exception) {
     print_r($exception->getMessage());
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

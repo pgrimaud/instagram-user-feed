@@ -58,7 +58,7 @@ class JsonHydrator
             $media->setComments($node->edge_media_to_comment->count);
             $media->setLikes($node->edge_media_preview_like->count);
 
-            $media->setLink(TransportFeed::INSTAGRAM_ENDPOINT . "p/{$node->shortcode}/");
+            $media->setLink(TransportFeed::BASE_URL . "p/{$node->shortcode}/");
 
             $media->setThumbnails($node->thumbnail_resources);
 

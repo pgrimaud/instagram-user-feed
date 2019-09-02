@@ -3,7 +3,9 @@
 namespace Instagram;
 
 use GuzzleHttp\Client;
-use Instagram\Exception\CacheException;
+use GuzzleHttp\Cookie\CookieJar;
+use Instagram\Auth\Login;
+use Instagram\Exception\InstagramCacheException;
 use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\HtmlHydrator;
 use Instagram\Hydrator\JsonHydrator;
@@ -35,6 +37,7 @@ class Api
 
     /**
      * Api constructor.
+     *
      * @param Client|null       $client
      * @param CacheManager|null $cacheManager
      */
@@ -46,9 +49,10 @@ class Api
 
     /**
      * @param integer $limit
+     *
      * @return Hydrator\Component\Feed
      *
-     * @throws CacheException
+     * @throws InstagramCacheException
      * @throws InstagramException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Exception
@@ -61,7 +65,7 @@ class Api
 
         if ($this->endCursor) {
             if (!$this->cacheManager instanceof CacheManager) {
-                throw new CacheException('CacheManager object must be specified to use pagination');
+                throw new InstagramCacheException('CacheManager object must be specified to use pagination');
             }
 
             $feed     = new JsonTransportFeed($this->client, $this->endCursor, $this->cacheManager);
@@ -92,5 +96,30 @@ class Api
     public function setEndCursor($endCursor)
     {
         $this->endCursor = $endCursor;
+    }
+
+    /**
+     * @param             $username
+     * @param             $password
+     * @param Client|null $client
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws InstagramCacheException
+     * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function login($username, $password, Client $client = null)
+    {
+        if (!$this->cacheManager instanceof CacheManager) {
+            throw new InstagramCacheException('CacheManager is required with login');
+        }
+
+        $login   = new Login($client);
+        $cookies = $login->execute($username, $password);
+
+        if ($cookies instanceof CookieJar) {
+            $this->cacheManager->sessionName = $username;
+            $this->cacheManager->setSession($username, $cookies);
+        }
     }
 }
