@@ -81,7 +81,11 @@ class HtmlTransportFeed extends TransportFeed
             $newCache->setCsrfToken($data->config->csrf_token);
 
             if ($res->hasHeader('Set-Cookie')) {
-                $newCache->setCookie($res->getHeaders()['Set-Cookie']);
+                $h = $res->getHeaders();
+                if(isset($h['Set-Cookie']))
+                    $newCache->setCookie($res->getHeaders()['Set-Cookie']);
+                if(isset($h['set-cookie']))
+                    $newCache->setCookie($res->getHeaders()['set-cookie']);
             }
 
             $this->cacheManager->set($newCache, $userName);

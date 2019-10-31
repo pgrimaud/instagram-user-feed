@@ -90,7 +90,14 @@ class JsonTransportFeed extends TransportFeed
         $newCache->setUserId($cache->getUserId());
         if ($res->hasHeader('Set-Cookie')) {
             $saveCookies = [];
-            foreach ($res->getHeaders()['Set-Cookie'] as $cookie) {
+
+            $h = $res->getHeaders();
+            if(isset($h['Set-Cookie']))
+                $cookies = $res->getHeaders()['Set-Cookie'];
+            if(isset($h['set-cookie']))
+                $cookies = $res->getHeaders()['set-cookie'];
+
+            foreach ($cookies as $cookie) {
                 $setCookie = SetCookie::fromString($cookie);
                 if (in_array($setCookie->getName(), self::REQUIRES_COOKIES_KEYS, true)) {
                     $saveCookies[] = $cookie;
