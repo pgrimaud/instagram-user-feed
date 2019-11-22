@@ -6,12 +6,13 @@ php:
     - 7.1
     - 7.2
     - 7.3
+    - 7.4snapshot
 
 before_script:
     - composer install
 
 script:
-    - vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
+    - vendor/bin/phpunit --coverage-clover coverage.xml
 
 after_success:
-    - php vendor/bin/php-coveralls -v
+    - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
