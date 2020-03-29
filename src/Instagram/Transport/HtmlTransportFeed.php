@@ -73,7 +73,7 @@ class HtmlTransportFeed extends TransportFeed
             throw new InstagramAuthException('Instagram blocked your IP. Login is required.');
         }
 
-        if ($this->cacheManager->sessionName) {
+        if ($this->cacheManager && $this->cacheManager->sessionName) {
             $this->cacheManager->setSession($this->cacheManager->sessionName, $cookieJar);
         } elseif ($this->cacheManager instanceof CacheManager) {
             $newCache = new Cache();
