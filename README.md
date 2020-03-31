@@ -45,6 +45,7 @@ composer require pgrimaud/instagram-user-feed
 
 ```php
 $api = new Instagram\Api();
+$api->login('username', 'password'); // optional, may be required on shared hosting
 $api->setUserName('pgrimaud');
 
 $feed = $api->getFeed();
