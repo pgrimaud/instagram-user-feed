@@ -3,7 +3,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 $api = new Instagram\Api();
-$api->setUserName('pgrimaud');
+$api->setUserName('robertdowneyjr');
 
 try {
     // only the first page

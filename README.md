@@ -46,15 +46,15 @@ composer require pgrimaud/instagram-user-feed
 ```php
 $api = new Instagram\Api();
 $api->login('username', 'password'); // optional, may be required on shared hosting
-$api->setUserName('pgrimaud');
+$api->setUserName('robertdowneyjr');
 
 $feed = $api->getFeed();
 
 echo $feed->getUserName();
-// pgrimaud
+// robertdowneyjr
 
 echo $feed->getFullName();
-// Pierre Grimaud
+// Robert Downey Jr. Official
 
 ```
 
@@ -64,7 +64,7 @@ echo $feed->getFullName();
 ```php
 $cache = new Instagram\Storage\CacheManager('/path/to/your/cache/folder');
 $api   = new Instagram\Api($cache);
-$api->setUserName('pgrimaud');
+$api->setUserName('robertdowneyjr');
 
 $feed = $api->getFeed();
 
@@ -75,82 +75,85 @@ print_r($feed);
 ```php
 Instagram\Hydrator\Component\Feed Object
 (
-    [id] => 184263228
-    [userName] => pgrimaud
-    [fullName] => Pierre G
-    [biography] => Gladiator retired - ESGI 14
-    [followers] => 342
-    [following] => 114
-    [profilePicture] => https://scontent-cdg2-1.cdninstagram.com/vp/f49bc1ac9af43314d3354b4c4a987c6d/5B5BB12E/t51.2885-19/10483606_1498368640396196_604136733_a.jpg
-    [externalUrl] => https://p.ier.re/
-    [mediaCount] => 33
+    [id] => 1518284433
+    [userName] => robertdowneyjr
+    [fullName] => Robert Downey Jr. Official
+    [biography] => @officialfootprintcoalition @coreresponse
+    [followers] => 46338039
+    [following] => 50
+    [profilePicture] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-19/s320x320/72702032_542075739927421_3928117925747097600_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_ohc=hGF8upBhWgcAX_7ks82&oh=a9cdb3ed313d5c4c9712b52b7d3ceb3f&oe=5EE2E5B8
+    [externalUrl] => http://coreresponse.org/covid19
+    [private] => 
+    [verified] => 1
+    [mediaCount] => 452
     [medias] => Array
         (
             [0] => Instagram\Hydrator\Component\Media Object
                 (
-                    [id] => 1766843207939161485
+                    [id] => 2306047234549362565
                     [typeName] => GraphImage
                     [height] => 1080
                     [width] => 1080
-                    [thumbnailSrc] => https://scontent-cdg2-1.cdninstagram.com/vp/94afe3a6f9cc26a03c2ce29321b57074/5B81AE5C/t51.2885-15/s640x640/sh0.08/e35/30601606_2078730052397861_6535696870134513664_n.jpg
-                    [link] => https://www.instagram.com/p/BiFFolXBn2N/
+                    [thumbnailSrc] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/96326668_170992687583571_3686185583583090082_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_cat=1&_nc_ohc=2qpfvDrHHtwAX9B8mkO&oh=bbd50d5437b7ca52f8e9ba241c358508&oe=5EE38623
+                    [link] => https://www.instagram.com/p/CAAub3qli-F/
                     [date] => DateTime Object
                         (
-                            [date] => 2018-04-27 17:49:05.000000
+                            [date] => 2020-05-10 16:51:14.000000
                             [timezone_type] => 3
                             [timezone] => Europe/Paris
                         )
 
-                    [displaySrc] => https://scontent-cdg2-1.cdninstagram.com/vp/fefa950b40d2d469a9db457df43a23f9/5B936A76/t51.2885-15/e35/30601606_2078730052397861_6535696870134513664_n.jpg
-                    [caption] => 🔮
-                    [comments] => 0
-                    [likes] => 25
+                    [displaySrc] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-15/e35/s1080x1080/96326668_170992687583571_3686185583583090082_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_cat=1&_nc_ohc=2qpfvDrHHtwAX9B8mkO&oh=5afbf701b8374062f15b309247367fc4&oe=5EE51716
+                    [caption] => This Mother’s Day, more than ever, let’s honor the women that raise the children that inherit the Earth #happymothersday
+                    [comments] => 7096
+                    [likes] => 3134975
                     [thumbnails] => Array
                         (
                             [0] => stdClass Object
                                 (
-                                    [src] => https://scontent-cdg2-1.cdninstagram.com/vp/aa2b29265c6b29465921df833b65010e/5B996421/t51.2885-15/s150x150/e35/30601606_2078730052397861_6535696870134513664_n.jpg
+                                    [src] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-15/e35/s150x150/96326668_170992687583571_3686185583583090082_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_cat=1&_nc_ohc=2qpfvDrHHtwAX9B8mkO&oh=d64a87ae9a06f1ae2ac08db593204042&oe=5EE33A86
                                     [config_width] => 150
                                     [config_height] => 150
                                 )
 
                             [1] => stdClass Object
                                 (
-                                    [src] => https://scontent-cdg2-1.cdninstagram.com/vp/84359fab575fcb75b672baa83dcf914d/5B9897B5/t51.2885-15/s240x240/e35/30601606_2078730052397861_6535696870134513664_n.jpg
+                                    [src] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-15/e35/s240x240/96326668_170992687583571_3686185583583090082_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_cat=1&_nc_ohc=2qpfvDrHHtwAX9B8mkO&oh=76c8f9337cecbe15615ac46a20973fed&oe=5EE41850
                                     [config_width] => 240
                                     [config_height] => 240
                                 )
 
                             [2] => stdClass Object
                                 (
-                                    [src] => https://scontent-cdg2-1.cdninstagram.com/vp/e900d5b8fdd60f9f1ff55d69d4a77f7f/5B977F11/t51.2885-15/s320x320/e35/30601606_2078730052397861_6535696870134513664_n.jpg
+                                    [src] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-15/e35/s320x320/96326668_170992687583571_3686185583583090082_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_cat=1&_nc_ohc=2qpfvDrHHtwAX9B8mkO&oh=050d57f21816dfc2f9eb50942eb237af&oe=5EE583F6
                                     [config_width] => 320
                                     [config_height] => 320
                                 )
 
                             [3] => stdClass Object
                                 (
-                                    [src] => https://scontent-cdg2-1.cdninstagram.com/vp/faec6a654dc3ca8c8752e784d808afe2/5B885F49/t51.2885-15/s480x480/e35/30601606_2078730052397861_6535696870134513664_n.jpg
+                                    [src] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-15/e35/s480x480/96326668_170992687583571_3686185583583090082_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_cat=1&_nc_ohc=2qpfvDrHHtwAX9B8mkO&oh=dd6e527f2eba91b1d7fc6e0798d49a85&oe=5EE3FE30
                                     [config_width] => 480
                                     [config_height] => 480
                                 )
 
                             [4] => stdClass Object
                                 (
-                                    [src] => https://scontent-cdg2-1.cdninstagram.com/vp/94afe3a6f9cc26a03c2ce29321b57074/5B81AE5C/t51.2885-15/s640x640/sh0.08/e35/30601606_2078730052397861_6535696870134513664_n.jpg
+                                    [src] => https://scontent-lhr8-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/96326668_170992687583571_3686185583583090082_n.jpg?_nc_ht=scontent-lhr8-1.cdninstagram.com&_nc_cat=1&_nc_ohc=2qpfvDrHHtwAX9B8mkO&oh=bbd50d5437b7ca52f8e9ba241c358508&oe=5EE38623
                                     [config_width] => 640
                                     [config_height] => 640
                                 )
 
                         )
 
+                    [location] => 
+                    [video] => 
+                    [videoViewCount] => 0
                 )
-
-        )
         
         ...
         
-    [endCursor] => AQBkklLNRIkvdOUFDHvLEZrssIcYn2TauR6cpvDgxiGJZq8mHb8ZFWNVwql1W78We0aOgfJZyQDF32yoP_h2zRKZ2iRY6zVJdDaLaGfUU23iXA
+    [endCursor] => QVFEMFd3cklmZ3NkZmNjZlA4aTc3LVVOZHpMN1AzZnNBTUF3U3Fjd01KcWVUc25qak40b0Z2UlUzRWVCTzktYU5yOTBLdkduZWR4SC1QTUFQcm93eUtxXw==
 )
 
 ```
@@ -163,7 +166,7 @@ If you want to use paginate, retrieve `endCursor` from previous call and add it 
 
 $cache = new Instagram\Storage\CacheManager('/path/to/your/cache/folder');
 $api   = new Instagram\Api($cache);
-$api->setUserName('pgrimaud');
+$api->setUserName('robertdowneyjr');
 
 // First call :
 

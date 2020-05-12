@@ -7,7 +7,7 @@ try {
 
     $api = new Instagram\Api($cache);
     $api->login('username', 'password');
-    $api->setUserName('pgrimaud');
+    $api->setUserName('robertdowneyjr');
 
     // only the first page
     /** @var \Instagram\Hydrator\Component\Feed $feed */

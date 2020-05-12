@@ -5,7 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $cache = new Instagram\Storage\CacheManager(__DIR__ . '/../cache/');
 
 $api = new Instagram\Api($cache);
-$api->setUserName('pgrimaud');
+$api->setUserName('robertdowneyjr');
 
 try {
     // First page
