@@ -90,7 +90,7 @@ class CacheManager
 
     /**
      * @param           $userName
-     * @param CookieJar $cookies
+     * @param CookieJar $cookieJar
      *
      * @throws InstagramCacheException
      */

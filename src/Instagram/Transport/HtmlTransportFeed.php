@@ -3,7 +3,6 @@
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
 use Instagram\Exception\InstagramAuthException;
 use Instagram\Exception\InstagramException;
 use Instagram\Storage\Cache;
@@ -73,9 +72,12 @@ class HtmlTransportFeed extends TransportFeed
             throw new InstagramAuthException('Instagram blocked your IP. Login is required.');
         }
 
-        if ($this->cacheManager && $this->cacheManager->sessionName) {
-            $this->cacheManager->setSession($this->cacheManager->sessionName, $cookieJar);
-        } elseif ($this->cacheManager instanceof CacheManager) {
+        if ($this->cacheManager instanceof CacheManager) {
+
+            if ($this->cacheManager->sessionName) {
+                $this->cacheManager->setSession($this->cacheManager->sessionName, $cookieJar);
+            }
+
             $newCache = new Cache();
             $newCache->setUserId($data->entry_data->ProfilePage[0]->graphql->user->id);
             $newCache->setCsrfToken($data->config->csrf_token);
