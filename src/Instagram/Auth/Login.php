@@ -55,8 +55,8 @@ class Login
 
         $query = $this->client->request('POST', TransportFeed::AUTH_URL, [
             'form_params' => [
-                'username' => $username,
-                'password' => $password,
+                'username'     => $username,
+                'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $password,
             ],
             'headers'     => [
                 'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
@@ -64,7 +64,7 @@ class Login
                 'x-csrftoken' => $data->config->csrf_token,
                 'user-agent'  => TransportFeed::USER_AGENT,
             ],
-            'cookies' => $cookieJar
+            'cookies'     => $cookieJar
         ]);
 
         if ($query->getStatusCode() !== 200) {
