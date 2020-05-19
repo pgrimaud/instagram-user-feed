@@ -34,10 +34,13 @@
   "require": {
     "php": "^7.2",
     "ext-curl": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "symfony/cache": "^5.0",
+    "guzzlehttp/guzzle": "^6.5"
   },
   "require-dev": {
     "php-coveralls/php-coveralls": "^2.0",
-    "phpunit/phpunit": "^8.5"
+    "phpunit/phpunit": "^8.5",
+    "symfony/var-dumper": "^5.0"
   }
 }
