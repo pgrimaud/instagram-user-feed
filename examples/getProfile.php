@@ -7,6 +7,12 @@ require realpath(dirname(__FILE__)) . '/../vendor/autoload.php';
 
 $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
-$api = new Api($cachePool);
-$api->login('user', 'password');
+try {
+    $api = new Api($cachePool);
+    $api->login('user', 'password');
+    $data = $api->getProfile('robertdowneyjr');
+} catch (\Instagram\Exception\InstagramException $e) {
+    print_r($e->getMessage());
+}
 
+dd($data);

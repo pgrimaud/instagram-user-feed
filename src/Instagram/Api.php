@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Instagram;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
-use Instagram\Auth\Login;
+use Instagram\Hydrator\ProfileHydrator;
+use Instagram\Transport\HtmlTransportFeed;
+use GuzzleHttp\Cookie\{SetCookie, CookieJar};
+use Instagram\Auth\{Login, Session};
 use Instagram\Exception\{InstagramAuthException, InstagramException};
-use Psr\Cache\CacheItemPoolInterface;
-use Psr\Cache\InvalidArgumentException;
+use Psr\Cache\{CacheItemPoolInterface, InvalidArgumentException};
 
 class Api
 {
@@ -24,6 +25,11 @@ class Api
     private $client;
 
     /**
+     * @var Session
+     */
+    private $session;
+
+    /**
      * @param CacheItemPoolInterface $cachePool
      * @param Client|null $client
      */
@@ -36,17 +42,25 @@ class Api
     /**
      * @param string $login
      * @param string $password
+     *
      * @throws InstagramException
      */
-    public function login(string $login, string $password)
+    public function login(string $login, string $password): void
     {
         $login = new Login($this->client, $login, $password);
 
         try {
             $sessionData = $this->cachePool->getItem('instagram.session');
-            $cookies     = $sessionData->get();
+            /** @var CookieJar $cookies */
+            $cookies = $sessionData->get();
         } catch (InvalidArgumentException $exception) {
             throw new InstagramException($exception->getMessage());
+        }
+
+        /** @var SetCookie */
+        $session = $cookies->getCookieByName('sessionId');
+        if ($session->getExpires() < time()) {
+            throw new InstagramException('Session expired. Please login again');
         }
 
         if (!$cookies instanceof CookieJar) {
@@ -59,5 +73,25 @@ class Api
             }
         }
 
+        $this->session = new Session($cookies);
+    }
+
+    /**
+     * @param string $string
+     *
+     * @throws InstagramException
+     */
+    public function getProfile(string $string)
+    {
+        $feed = new HtmlTransportFeed($this->session, $this->client);
+        try {
+            $data = $feed->fetchData($string, 'profile');
+        } catch (Exception\InstagramFetchException $exception) {
+            throw new InstagramException($exception->getMessage());
+        }
+
+        $hydrator = new ProfileHydrator($data);
+
+        return $hydrator->getProfile();
     }
 }
