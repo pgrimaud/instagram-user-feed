@@ -7,6 +7,7 @@ namespace Instagram\Auth;
 use GuzzleHttp\Client;
 
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramAuthException;
 use Instagram\Utils\InstagramHelper;
 use Instagram\Utils\UserAgentHelper;
@@ -65,29 +66,29 @@ class Login
 
         $cookieJar = new CookieJar();
 
-        $query = $this->client->request('POST', InstagramHelper::URL_AUTH, [
-            'form_params' => [
-                'username'     => $this->login,
-                'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $this->password,
-            ],
-            'headers'     => [
-                'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
-                'referer'     => InstagramHelper::URL_BASE,
-                'x-csrftoken' => $data->config->csrf_token,
-                'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
-            ],
-            'cookies'     => $cookieJar
-        ]);
+        try {
+            $query = $this->client->request('POST', InstagramHelper::URL_AUTH, [
+                'form_params' => [
+                    'username'     => $this->login,
+                    'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $this->password,
+                ],
+                'headers'     => [
+                    'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
+                    'referer'     => InstagramHelper::URL_BASE,
+                    'x-csrftoken' => $data->config->csrf_token,
+                    'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
+                ],
+                'cookies'     => $cookieJar
+            ]);
+        } catch (ClientException $exception) {
+            throw new InstagramAuthException('Unknown error (' . $exception->getMessage() . '). Please report it with a GitHub issue.');
+        }
 
-        if ($query->getStatusCode() !== 200) {
-            throw new InstagramAuthException('Unknown error. Please report it on GitHub repository.');
+        $response = json_decode((string)$query->getBody());
+        if ($response->authenticated == true) {
+            return $cookieJar;
         } else {
-            $response = json_decode((string)$query->getBody());
-            if ($response->authenticated == true) {
-                return $cookieJar;
-            } else {
-                throw new InstagramAuthException('Wrong login / password');
-            }
+            throw new InstagramAuthException('Wrong login / password');
         }
     }
 }
