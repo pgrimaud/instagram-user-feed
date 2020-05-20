@@ -6,8 +6,8 @@ namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
 use Instagram\Auth\Session;
-use Instagram\Exception\InstagramException;
-use Instagram\Model\InstagramFeed;
+use Instagram\Exception\InstagramFetchException;
+use Instagram\Model\InstagramProfile;
 use Instagram\Utils\{InstagramHelper, UserAgentHelper};
 
 class JsonTransportFeed
@@ -24,7 +24,7 @@ class JsonTransportFeed
 
     /**
      * @param Session $session
-     * @param Client $client
+     * @param Client  $client
      */
     public function __construct(Session $session, Client $client)
     {
@@ -33,18 +33,17 @@ class JsonTransportFeed
     }
 
     /**
-     * @param string $userName
-     * @param InstagramFeed $instagramFeed
+     * @param InstagramProfile $instagramProfile
      *
-     * @return mixed
-     * @throws InstagramException
+     * @return \StdClass
+     * @throws InstagramFetchException
      */
-    public function fetchData(string $userName, InstagramFeed $instagramFeed)
+    public function fetchData(InstagramProfile $instagramProfile): \StdClass
     {
         $variables = [
-            'id'    => $instagramFeed->getId(),
+            'id'    => $instagramProfile->getId(),
             'first' => InstagramHelper::PAGINATION_DEFAULT,
-            'after' => $instagramFeed->getEndCursor(),
+            'after' => $instagramProfile->getEndCursor(),
         ];
 
         $headers = [
@@ -54,7 +53,7 @@ class JsonTransportFeed
             ],
             'cookies' => $this->session->getCookies()
         ];
-        
+
         $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH . '&variables=' . json_encode($variables);
 
         $res = $this->client->request('GET', $endpoint, $headers);
@@ -63,7 +62,7 @@ class JsonTransportFeed
         $data = json_decode($data);
 
         if ($data === null) {
-            throw new InstagramException(json_last_error_msg());
+            throw new InstagramFetchException(json_last_error_msg());
         }
 
         return $data->data->user;

@@ -6,11 +6,11 @@ namespace Instagram;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
-use Instagram\{Hydrator\FeedHydrator, Model\InstagramFeed, Transport\JsonTransportFeed};
+use Instagram\{Hydrator\InstagramHydrator, Model\InstagramProfile, Transport\JsonTransportFeed};
 use Instagram\Transport\HtmlTransportFeed;
 use Instagram\Auth\{Login, Session};
-use Instagram\Exception\{InstagramAuthException, InstagramException};
-use Psr\Cache\{CacheItemPoolInterface, InvalidArgumentException};
+use Instagram\Exception\InstagramException;
+use Psr\Cache\CacheItemPoolInterface;
 
 class Api
 {
@@ -40,65 +40,72 @@ class Api
     }
 
     /**
-     * @param string $login
+     * @param string $username
      * @param string $password
      *
-     * @throws InstagramException
+     * @throws Exception\InstagramAuthException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function login(string $login, string $password): void
+    public function login(string $username, string $password): void
     {
-        $login = new Login($this->client, $login, $password);
+        $login = new Login($this->client, $username, $password);
 
-        try {
-            $sessionData = $this->cachePool->getItem('instagram.session');
-            /** @var CookieJar $cookies */
-            $cookies = $sessionData->get();
-        } catch (InvalidArgumentException $exception) {
-            throw new InstagramException($exception->getMessage());
-        }
+        // fetch previous session an re-use it
+        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY);
+        $cookies     = $sessionData->get();
 
         if ($cookies instanceof CookieJar) {
             /** @var SetCookie */
             $session = $cookies->getCookieByName('sessionId');
+
+            // Session expired (should never happened, Instagram TTL is ~ 1 year)
             if ($session->getExpires() < time()) {
-                throw new InstagramException('Session expired. Please login again');
+                $this->cachePool->deleteItem(Session::SESSION_KEY);
+                $this->login($username, $password);
             }
+
         } else {
-            try {
-                $cookies = $login->process();
-                $sessionData->set($cookies);
-                $this->cachePool->save($sessionData);
-            } catch (InstagramAuthException $exception) {
-                throw new InstagramException($exception->getMessage());
-            }
+            $cookies = $login->process();
+            $sessionData->set($cookies);
+            $this->cachePool->save($sessionData);
         }
 
         $this->session = new Session($cookies);
     }
 
     /**
-     * @param string             $user
-     * @param InstagramFeed|null $instagramFeed
+     * @param string $user
      *
-     * @return InstagramFeed
+     * @return InstagramProfile
      *
      * @throws InstagramException
      */
-    public function getFeed(string $user, InstagramFeed $instagramFeed = null): InstagramFeed
+    public function getFeed(string $user): InstagramProfile
     {
-        if (!$instagramFeed instanceof InstagramFeed) {
-            $feed = new HtmlTransportFeed($this->session, $this->client);
-        } else {
-            $feed = new JsonTransportFeed($this->session, $this->client);
-        }
+        $feed = new HtmlTransportFeed($this->session, $this->client);
+        $data = $feed->fetchData($user);
 
-        try {
-            $data = $feed->fetchData($user, $instagramFeed);
-        } catch (Exception\InstagramFetchException $exception) {
-            throw new InstagramException($exception->getMessage());
-        }
+        $hydrator = new InstagramHydrator();
+        $hydrator->hydrateProfile($data);
+        $hydrator->hydrateMedias($data);
 
-        $hydrator = new FeedHydrator($data, $instagramFeed);
+        return $hydrator->getProfile();
+    }
+
+    /**
+     * @param InstagramProfile $instagramProfile
+     *
+     * @return InstagramProfile
+     *
+     * @throws InstagramException
+     */
+    public function getMoreMedias(InstagramProfile $instagramProfile): InstagramProfile
+    {
+        $feed = new JsonTransportFeed($this->session, $this->client);
+        $data = $feed->fetchData($instagramProfile);
+
+        $hydrator = new InstagramHydrator($instagramProfile);
+        $hydrator->hydrateMedias($data);
 
         return $hydrator->getProfile();
     }

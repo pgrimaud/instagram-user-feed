@@ -194,7 +194,7 @@ class InstagramMedia
     /**
      * @return string
      */
-    public function getCaption(): string
+    public function getCaption(): ?string
     {
         return $this->caption;
     }
@@ -202,7 +202,7 @@ class InstagramMedia
     /**
      * @param string $caption
      */
-    public function setCaption(string $caption): void
+    public function setCaption(?string $caption): void
     {
         $this->caption = $caption;
     }

@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
 use Instagram\Auth\Session;
-use Instagram\Exception\InstagramAuthException;
-use Instagram\Exception\InstagramException;
 use Instagram\Exception\InstagramFetchException;
-use Instagram\Utils\InstagramHelper;
-use Instagram\Utils\UserAgentHelper;
+use Instagram\Utils\{InstagramHelper, UserAgentHelper};
 
 class HtmlTransportFeed
 {
@@ -24,7 +23,7 @@ class HtmlTransportFeed
 
     /**
      * @param Session $session
-     * @param Client $client
+     * @param Client  $client
      */
     public function __construct(Session $session, Client $client)
     {
@@ -35,11 +34,11 @@ class HtmlTransportFeed
     /**
      * @param string $userName
      *
-     * @return mixed
+     * @return \StdClass
      *
      * @throws InstagramFetchException
      */
-    public function fetchData(string $userName)
+    public function fetchData(string $userName): \StdClass
     {
         $endpoint = InstagramHelper::URL_BASE . $userName . '/';
 

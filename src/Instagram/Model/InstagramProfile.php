@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class InstagramFeed
+class InstagramProfile
 {
     /**
      * @var int

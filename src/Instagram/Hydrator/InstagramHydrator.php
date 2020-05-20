@@ -5,39 +5,48 @@ declare(strict_types=1);
 namespace Instagram\Hydrator;
 
 use Instagram\Utils\InstagramHelper;
-use Instagram\Model\{InstagramMedia, InstagramFeed};
+use Instagram\Model\{InstagramMedia, InstagramProfile};
 
-class FeedHydrator
+class InstagramHydrator
 {
     /**
-     * @var InstagramFeed
+     * @var InstagramProfile
      */
     private $profile;
 
     /**
-     * @param \StdClass          $data
-     * @param InstagramFeed|null $instagramFeed
+     * Hydration is made manually to avoid shitty Instagram variable names
+     *
+     * @param InstagramProfile|null $instagramProfile
      */
-    public function __construct(\StdClass $data, InstagramFeed $instagramFeed = null)
+    public function __construct(InstagramProfile $instagramProfile = null)
     {
-        if (!$instagramFeed instanceof InstagramFeed) {
-            $this->profile = new InstagramFeed();
+        $this->profile = $instagramProfile ?: new InstagramProfile();
+    }
 
-            $this->profile->setId((int)$data->id);
-            $this->profile->setUserName($data->username);
-            $this->profile->setFullName($data->full_name);
-            $this->profile->setBiography($data->biography);
-            $this->profile->setExternalUrl($data->external_url);
-            $this->profile->setFollowers($data->edge_followed_by->count);
-            $this->profile->setFollowing($data->edge_follow->count);
-            $this->profile->setProfilePicture($data->profile_pic_url_hd);
-            $this->profile->setPrivate($data->is_private);
-            $this->profile->setVerified($data->is_verified);
-            $this->profile->setMediaCount($data->edge_owner_to_timeline_media->count);
-        } else {
-            $this->profile = $instagramFeed;
-        }
+    /**
+     * @param \StdClass $data
+     */
+    public function hydrateProfile(\StdClass $data): void
+    {
+        $this->profile->setId((int)$data->id);
+        $this->profile->setUserName($data->username);
+        $this->profile->setFullName($data->full_name);
+        $this->profile->setBiography($data->biography);
+        $this->profile->setExternalUrl($data->external_url);
+        $this->profile->setFollowers($data->edge_followed_by->count);
+        $this->profile->setFollowing($data->edge_follow->count);
+        $this->profile->setProfilePicture($data->profile_pic_url_hd);
+        $this->profile->setPrivate($data->is_private);
+        $this->profile->setVerified($data->is_verified);
+        $this->profile->setMediaCount($data->edge_owner_to_timeline_media->count);
+    }
 
+    /**
+     * @param \StdClass $data
+     */
+    public function hydrateMedias(\StdClass $data): void
+    {
         // reset medias
         $this->profile->medias = [];
 
@@ -89,9 +98,9 @@ class FeedHydrator
     }
 
     /**
-     * @return InstagramFeed
+     * @return InstagramProfile
      */
-    public function getProfile(): InstagramFeed
+    public function getProfile(): InstagramProfile
     {
         return $this->profile;
     }

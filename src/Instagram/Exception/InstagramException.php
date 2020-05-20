@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Instagram\Exception;
 
-class InstagramException extends \Exception
+abstract class InstagramException extends \Exception
 {
 }
