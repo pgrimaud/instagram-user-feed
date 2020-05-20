@@ -2,7 +2,7 @@
 
 namespace Instagram\Model;
 
-class Media
+class InstagramMedia
 {
     /**
      * @var integer

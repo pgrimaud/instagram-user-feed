@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 
 use GuzzleHttp\Cookie\CookieJar;
 use Instagram\Exception\InstagramAuthException;
-use Instagram\Utils\EndpointHelper;
+use Instagram\Utils\InstagramHelper;
 use Instagram\Utils\UserAgentHelper;
 
 class Login
@@ -47,7 +47,7 @@ class Login
      */
     public function process(): CookieJar
     {
-        $baseRequest = $this->client->request('GET', EndpointHelper::URL_BASE, [
+        $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
             'headers' => [
                 'user-agent' => UserAgentHelper::AGENT_DEFAULT
             ]
@@ -65,14 +65,14 @@ class Login
 
         $cookieJar = new CookieJar();
 
-        $query = $this->client->request('POST', EndpointHelper::URL_AUTH, [
+        $query = $this->client->request('POST', InstagramHelper::URL_AUTH, [
             'form_params' => [
                 'username'     => $this->login,
                 'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $this->password,
             ],
             'headers'     => [
                 'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
-                'referer'     => EndpointHelper::URL_BASE,
+                'referer'     => InstagramHelper::URL_BASE,
                 'x-csrftoken' => $data->config->csrf_token,
                 'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
             ],

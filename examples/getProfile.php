@@ -10,9 +10,15 @@ $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 try {
     $api = new Api($cachePool);
     $api->login('user', 'password');
-    $data = $api->getProfile('robertdowneyjr');
+    $profile = $api->getFeed('robertdowneyjr');
+
+    while ($profile->hasMoreMedias()) {
+        foreach ($profile->getMedias() as $media) {
+            dump($media->getDate()->format('Y-m-d'));
+        }
+
+        $profile = $api->getFeed('robertdowneyjr', $profile);
+    }
 } catch (\Instagram\Exception\InstagramException $e) {
     print_r($e->getMessage());
 }
-
-dd($data);

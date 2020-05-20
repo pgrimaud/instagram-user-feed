@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Instagram;
 
 use GuzzleHttp\Client;
-use Instagram\Hydrator\ProfileHydrator;
+use Instagram\{Hydrator\FeedHydrator, Model\InstagramFeed, Transport\JsonTransportFeed};
 use Instagram\Transport\HtmlTransportFeed;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Login, Session};
@@ -77,20 +77,29 @@ class Api
     }
 
     /**
-     * @param string $string
+     * @param string $user
+     * @param InstagramFeed|null $instagramFeed
+     *
+     * @return InstagramFeed
      *
      * @throws InstagramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getProfile(string $string)
+    public function getFeed(string $user, InstagramFeed $instagramFeed = null): InstagramFeed
     {
-        $feed = new HtmlTransportFeed($this->session, $this->client);
+        if (!$instagramFeed instanceof InstagramFeed) {
+            $feed = new HtmlTransportFeed($this->session, $this->client);
+        } else {
+            $feed = new JsonTransportFeed($this->session, $this->client);
+        }
+
         try {
-            $data = $feed->fetchData($string, 'profile');
+            $data = $feed->fetchData($user, $instagramFeed);
         } catch (Exception\InstagramFetchException $exception) {
             throw new InstagramException($exception->getMessage());
         }
 
-        $hydrator = new ProfileHydrator($data);
+        $hydrator = new FeedHydrator($data, $instagramFeed);
 
         return $hydrator->getProfile();
     }

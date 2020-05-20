@@ -7,7 +7,7 @@ use Instagram\Auth\Session;
 use Instagram\Exception\InstagramAuthException;
 use Instagram\Exception\InstagramException;
 use Instagram\Exception\InstagramFetchException;
-use Instagram\Utils\EndpointHelper;
+use Instagram\Utils\InstagramHelper;
 use Instagram\Utils\UserAgentHelper;
 
 class HtmlTransportFeed
@@ -34,15 +34,14 @@ class HtmlTransportFeed
 
     /**
      * @param string $userName
-     * @param string $type
      *
      * @return mixed
      *
      * @throws InstagramFetchException
      */
-    public function fetchData(string $userName, string $type)
+    public function fetchData(string $userName)
     {
-        $endpoint = EndpointHelper::URL_BASE . $userName . '/';
+        $endpoint = InstagramHelper::URL_BASE . $userName . '/';
 
         $headers = [
             'headers' => [

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class Profile
+class InstagramFeed
 {
     /**
      * @var integer
@@ -62,9 +62,19 @@ class Profile
     public $mediaCount = 0;
 
     /**
-     * @var Media[]
+     * @var InstagramMedia[]
      */
     public $medias = [];
+
+    /**
+     * @var bool
+     */
+    private $hasMoreMedias = false;
+
+    /**
+     * @var string
+     */
+    private $endCursor = null;
 
     /**
      * @return string
@@ -243,7 +253,7 @@ class Profile
     }
 
     /**
-     * @return Media[]
+     * @return InstagramMedia[]
      */
     public function getMedias()
     {
@@ -251,10 +261,39 @@ class Profile
     }
 
     /**
-     * @param Media $media
+     * @param InstagramMedia $media
      */
-    public function addMedia(Media $media)
+    public function addMedia(InstagramMedia $media)
     {
         $this->medias[] = $media;
+    }
+
+    public function setHasMoreMedias(bool $hasMoreMedias)
+    {
+        $this->hasMoreMedias = $hasMoreMedias;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMoreMedias(): bool
+    {
+        return $this->hasMoreMedias;
+    }
+
+    /**
+     * @param $end_cursor
+     */
+    public function setEndCursor(string $end_cursor)
+    {
+        $this->endCursor = $end_cursor;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndCursor(): string
+    {
+        return $this->endCursor;
     }
 }
