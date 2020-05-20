@@ -31,6 +31,11 @@
       "Instagram\\": "src/Instagram/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Instagram\\Tests\\": "tests/"
+    }
+  },
   "require": {
     "php": "^7.2.5",
     "ext-curl": "*",

@@ -6,3 +6,5 @@ examples/credentials.php
 
 !cache/.gitkeep
 cache/
+
+.phpunit.result.cache
