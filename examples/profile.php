@@ -1,15 +1,17 @@
 <?php
 
 use Instagram\Api;
+use Instagram\Exception\InstagramException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 require realpath(dirname(__FILE__)) . '/../vendor/autoload.php';
+$credentials = include_once realpath(dirname(__FILE__)) . '/credentials.php';
 
 $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
 try {
     $api = new Api($cachePool);
-    $api->login('user', 'password');
+    $api->login($credentials->getLogin(), $credentials->getPassword());
     $profile = $api->getFeed('robertdowneyjr');
 
     while ($profile->hasMoreMedias()) {
@@ -19,6 +21,6 @@ try {
 
         $profile = $api->getFeed('robertdowneyjr', $profile);
     }
-} catch (\Instagram\Exception\InstagramException $e) {
+} catch (InstagramException $e) {
     print_r($e->getMessage());
 }

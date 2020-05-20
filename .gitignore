@@ -2,5 +2,7 @@ composer.lock
 vendor
 build
 
+examples/credentials.php
+
 !cache/.gitkeep
 cache/

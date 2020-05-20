@@ -31,7 +31,7 @@ class Api
 
     /**
      * @param CacheItemPoolInterface $cachePool
-     * @param Client|null $client
+     * @param Client|null            $client
      */
     public function __construct(CacheItemPoolInterface $cachePool, Client $client = null)
     {
@@ -57,12 +57,6 @@ class Api
             throw new InstagramException($exception->getMessage());
         }
 
-        /** @var SetCookie */
-        $session = $cookies->getCookieByName('sessionId');
-        if ($session->getExpires() < time()) {
-            throw new InstagramException('Session expired. Please login again');
-        }
-
         if (!$cookies instanceof CookieJar) {
             try {
                 $cookies = $login->process();
@@ -71,13 +65,19 @@ class Api
             } catch (InstagramAuthException $exception) {
                 throw new InstagramException($exception->getMessage());
             }
+        } else {
+            /** @var SetCookie */
+            $session = $cookies->getCookieByName('sessionId');
+            if ($session->getExpires() < time()) {
+                throw new InstagramException('Session expired. Please login again');
+            }
         }
 
         $this->session = new Session($cookies);
     }
 
     /**
-     * @param string $user
+     * @param string             $user
      * @param InstagramFeed|null $instagramFeed
      *
      * @return InstagramFeed

@@ -39,7 +39,7 @@
     "guzzlehttp/guzzle": "^6.5"
   },
   "require-dev": {
-    "php-coveralls/php-coveralls": "^2.0",
+    "php-coveralls/php-coveralls": "^2.2",
     "phpunit/phpunit": "^8.5",
     "symfony/var-dumper": "^5.0"
   }
