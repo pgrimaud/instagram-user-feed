@@ -60,7 +60,7 @@ class Api
 
             // Session expired (should never happened, Instagram TTL is ~ 1 year)
             if ($session->getExpires() < time()) {
-                $this->cachePool->deleteItem(Session::SESSION_KEY);
+                $this->logout();
                 $this->login($username, $password);
             }
 
@@ -71,6 +71,14 @@ class Api
         }
 
         $this->session = new Session($cookies);
+    }
+
+    /**
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function logout(): void
+    {
+        $this->cachePool->deleteItem(Session::SESSION_KEY);
     }
 
     /**
