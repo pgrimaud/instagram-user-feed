@@ -15,7 +15,7 @@ class FeedHydrator
     private $profile;
 
     /**
-     * @param \StdClass $data
+     * @param \StdClass          $data
      * @param InstagramFeed|null $instagramFeed
      */
     public function __construct(\StdClass $data, InstagramFeed $instagramFeed = null)
@@ -23,7 +23,7 @@ class FeedHydrator
         if (!$instagramFeed instanceof InstagramFeed) {
             $this->profile = new InstagramFeed();
 
-            $this->profile->setId($data->id);
+            $this->profile->setId((int)$data->id);
             $this->profile->setUserName($data->username);
             $this->profile->setFullName($data->full_name);
             $this->profile->setBiography($data->biography);
@@ -38,12 +38,15 @@ class FeedHydrator
             $this->profile = $instagramFeed;
         }
 
+        // reset medias
+        $this->profile->medias = [];
+
         foreach ($data->edge_owner_to_timeline_media->edges as $item) {
             $node = $item->node;
 
             $media = new InstagramMedia();
 
-            $media->setId($node->id);
+            $media->setId((int)$node->id);
             $media->setTypeName($node->__typename);
 
             if ($node->edge_media_to_caption->edges) {

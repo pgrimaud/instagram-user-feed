@@ -41,6 +41,7 @@
   "require-dev": {
     "php-coveralls/php-coveralls": "^2.2",
     "phpunit/phpunit": "^8.5",
-    "symfony/var-dumper": "^5.0"
+    "symfony/var-dumper": "^5.0",
+    "vimeo/psalm": "^3.11"
   }
 }

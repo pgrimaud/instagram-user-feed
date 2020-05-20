@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Instagram;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\{Hydrator\FeedHydrator, Model\InstagramFeed, Transport\JsonTransportFeed};
 use Instagram\Transport\HtmlTransportFeed;
-use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Login, Session};
 use Instagram\Exception\{InstagramAuthException, InstagramException};
 use Psr\Cache\{CacheItemPoolInterface, InvalidArgumentException};
@@ -27,7 +27,7 @@ class Api
     /**
      * @var Session
      */
-    private $session;
+    private $session = null;
 
     /**
      * @param CacheItemPoolInterface $cachePool
@@ -57,19 +57,19 @@ class Api
             throw new InstagramException($exception->getMessage());
         }
 
-        if (!$cookies instanceof CookieJar) {
+        if ($cookies instanceof CookieJar) {
+            /** @var SetCookie */
+            $session = $cookies->getCookieByName('sessionId');
+            if ($session->getExpires() < time()) {
+                throw new InstagramException('Session expired. Please login again');
+            }
+        } else {
             try {
                 $cookies = $login->process();
                 $sessionData->set($cookies);
                 $this->cachePool->save($sessionData);
             } catch (InstagramAuthException $exception) {
                 throw new InstagramException($exception->getMessage());
-            }
-        } else {
-            /** @var SetCookie */
-            $session = $cookies->getCookieByName('sessionId');
-            if ($session->getExpires() < time()) {
-                throw new InstagramException('Session expired. Please login again');
             }
         }
 
@@ -83,7 +83,6 @@ class Api
      * @return InstagramFeed
      *
      * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFeed(string $user, InstagramFeed $instagramFeed = null): InstagramFeed
     {

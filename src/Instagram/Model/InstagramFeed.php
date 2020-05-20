@@ -7,7 +7,7 @@ namespace Instagram\Model;
 class InstagramFeed
 {
     /**
-     * @var integer
+     * @var int
      */
     public $id;
 
@@ -27,12 +27,12 @@ class InstagramFeed
     public $biography;
 
     /**
-     * @var integer
+     * @var int
      */
     public $followers;
 
     /**
-     * @var integer
+     * @var int
      */
     public $following;
 
@@ -57,7 +57,7 @@ class InstagramFeed
     public $verified;
 
     /**
-     * @var integer
+     * @var int
      */
     public $mediaCount = 0;
 
@@ -79,7 +79,7 @@ class InstagramFeed
     /**
      * @return string
      */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }
@@ -87,7 +87,7 @@ class InstagramFeed
     /**
      * @param string $userName
      */
-    public function setUserName($userName)
+    public function setUserName(string $userName): void
     {
         $this->userName = $userName;
     }
@@ -95,7 +95,7 @@ class InstagramFeed
     /**
      * @return string
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->fullName;
     }
@@ -103,7 +103,7 @@ class InstagramFeed
     /**
      * @param string $fullName
      */
-    public function setFullName($fullName)
+    public function setFullName(string $fullName): void
     {
         $this->fullName = $fullName;
     }
@@ -111,7 +111,7 @@ class InstagramFeed
     /**
      * @return string
      */
-    public function getBiography()
+    public function getBiography(): string
     {
         return $this->biography;
     }
@@ -119,39 +119,40 @@ class InstagramFeed
     /**
      * @param string $biography
      */
-    public function setBiography($biography)
+    public function setBiography(string $biography): void
     {
         $this->biography = $biography;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getFollowers()
+    public function getFollowers(): int
+
     {
         return $this->followers;
     }
 
     /**
-     * @param string $followers
+     * @param int $followers
      */
-    public function setFollowers($followers)
+    public function setFollowers(int $followers): void
     {
         $this->followers = $followers;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getFollowing()
+    public function getFollowing(): int
     {
         return $this->following;
     }
 
     /**
-     * @param string $following
+     * @param int $following
      */
-    public function setFollowing($following)
+    public function setFollowing(int $following): void
     {
         $this->following = $following;
     }
@@ -159,7 +160,7 @@ class InstagramFeed
     /**
      * @return string
      */
-    public function getProfilePicture()
+    public function getProfilePicture(): string
     {
         return $this->profilePicture;
     }
@@ -167,7 +168,7 @@ class InstagramFeed
     /**
      * @param string $profilePicture
      */
-    public function setProfilePicture($profilePicture)
+    public function setProfilePicture(string $profilePicture): void
     {
         $this->profilePicture = $profilePicture;
     }
@@ -175,7 +176,7 @@ class InstagramFeed
     /**
      * @return string
      */
-    public function getExternalUrl()
+    public function getExternalUrl(): string
     {
         return $this->externalUrl;
     }
@@ -183,7 +184,7 @@ class InstagramFeed
     /**
      * @param string $externalUrl
      */
-    public function setExternalUrl($externalUrl)
+    public function setExternalUrl(string $externalUrl): void
     {
         $this->externalUrl = $externalUrl;
     }
@@ -191,7 +192,7 @@ class InstagramFeed
     /**
      * @return bool
      */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return $this->private;
     }
@@ -199,7 +200,7 @@ class InstagramFeed
     /**
      * @param bool $private
      */
-    public function setPrivate($private)
+    public function setPrivate(bool $private): void
     {
         $this->private = $private;
     }
@@ -207,7 +208,7 @@ class InstagramFeed
     /**
      * @return bool
      */
-    public function isVerified()
+    public function isVerified(): bool
     {
         return $this->verified;
     }
@@ -215,7 +216,7 @@ class InstagramFeed
     /**
      * @param bool $verified
      */
-    public function setVerified($verified)
+    public function setVerified(bool $verified): void
     {
         $this->verified = $verified;
     }
@@ -223,7 +224,7 @@ class InstagramFeed
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -231,7 +232,7 @@ class InstagramFeed
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -239,7 +240,7 @@ class InstagramFeed
     /**
      * @return int
      */
-    public function getMediaCount()
+    public function getMediaCount(): int
     {
         return $this->mediaCount;
     }
@@ -247,7 +248,7 @@ class InstagramFeed
     /**
      * @param int $mediaCount
      */
-    public function setMediaCount($mediaCount)
+    public function setMediaCount(int $mediaCount): void
     {
         $this->mediaCount = $mediaCount;
     }
@@ -255,7 +256,7 @@ class InstagramFeed
     /**
      * @return InstagramMedia[]
      */
-    public function getMedias()
+    public function getMedias(): array
     {
         return $this->medias;
     }
@@ -263,12 +264,12 @@ class InstagramFeed
     /**
      * @param InstagramMedia $media
      */
-    public function addMedia(InstagramMedia $media)
+    public function addMedia(InstagramMedia $media): void
     {
         $this->medias[] = $media;
     }
 
-    public function setHasMoreMedias(bool $hasMoreMedias)
+    public function setHasMoreMedias(bool $hasMoreMedias): void
     {
         $this->hasMoreMedias = $hasMoreMedias;
     }
@@ -282,17 +283,17 @@ class InstagramFeed
     }
 
     /**
-     * @param $end_cursor
+     * @param string|null $endCursor
      */
-    public function setEndCursor(string $end_cursor)
+    public function setEndCursor(?string $endCursor): void
     {
-        $this->endCursor = $end_cursor;
+        $this->endCursor = $endCursor;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEndCursor(): string
+    public function getEndCursor(): ?string
     {
         return $this->endCursor;
     }

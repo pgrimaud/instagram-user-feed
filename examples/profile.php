@@ -12,15 +12,17 @@ $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 try {
     $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
-    $profile = $api->getFeed('robertdowneyjr');
+
+    $profile = $api->getFeed('twhiddleston');
+
+    dump(count($profile->getMedias()));
 
     while ($profile->hasMoreMedias()) {
-        foreach ($profile->getMedias() as $media) {
-            dump($media->getDate()->format('Y-m-d'));
-        }
-
         $profile = $api->getFeed('robertdowneyjr', $profile);
+        sleep(1);
+        dump(count($profile->getMedias()));
     }
+
 } catch (InstagramException $e) {
     print_r($e->getMessage());
 }
