@@ -65,6 +65,7 @@ class ApiTest extends TestCase
         $this->assertInstanceOf(\StdClass::class, $media->getLocation());
         $this->assertSame(true, $media->isVideo());
         $this->assertSame(2726827, $media->getVideoViewCount());
+        $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->getThumbnailSrc());
 
         $api->logout();
     }
@@ -93,6 +94,58 @@ class ApiTest extends TestCase
         $api->login('username', 'password');
         $profile = $api->getProfile('robertdowneyjr');
         $api->getMoreMedias($profile);
+
+        $api->logout();
+    }
+
+    public function testProfileFetchWithNoContentInside()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
+            new Response(200, [], ''),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout();
+
+        $api->login('username', 'password');
+        $api->getProfile('robertdowneyjr');
+
+        $api->logout();
+    }
+
+    public function testProfileFetchWithNoValidJsonInside()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
+            new Response(200, [], '<script type="text/javascript">window._sharedData = {invalid};</script>'),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout();
+
+        $api->login('username', 'password');
+        $api->getProfile('robertdowneyjr');
 
         $api->logout();
     }
