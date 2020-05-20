@@ -17,7 +17,7 @@ try {
     $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    $profile = $api->getFeed('twhiddleston');
+    $profile = $api->getProfile('twhiddleston');
 
     printMedias($profile->getMedias());
 

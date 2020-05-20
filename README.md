@@ -48,7 +48,7 @@ $api = new Instagram\Api();
 $api->login('username', 'password'); // optional, may be required on shared hosting
 $api->setUserName('robertdowneyjr');
 
-$feed = $api->getFeed();
+$feed = $api->getProfile();
 
 echo $feed->getUserName();
 // robertdowneyjr
@@ -66,7 +66,7 @@ $cache = new Instagram\Storage\CacheManager('/path/to/your/cache/folder');
 $api   = new Instagram\Api($cache);
 $api->setUserName('robertdowneyjr');
 
-$feed = $api->getFeed();
+$feed = $api->getProfile();
 
 print_r($feed);
 
@@ -170,13 +170,13 @@ $api->setUserName('robertdowneyjr');
 
 // First call :
 
-$feed = $api->getFeed();
+$feed = $api->getProfile();
 
 // Second call : 
 
 $endCursor = $feed->getEndCursor();
 $api->setEndCursor($endCursor);
-$feed = $api->getFeed();
+$feed = $api->getProfile();
 
 // And etc...
 ```

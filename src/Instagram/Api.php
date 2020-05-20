@@ -88,7 +88,7 @@ class Api
      *
      * @throws InstagramException
      */
-    public function getFeed(string $user): InstagramProfile
+    public function getProfile(string $user): InstagramProfile
     {
         $feed = new HtmlTransportFeed($this->session, $this->client);
         $data = $feed->fetchData($user);
