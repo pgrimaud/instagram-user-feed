@@ -10,7 +10,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class ApiTest extends TestCase
 {
-    public function testLogin()
+    public function testApi()
     {
         $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
 
