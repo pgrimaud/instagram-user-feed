@@ -137,8 +137,6 @@ class LoginTest extends TestCase
         $cachePool->save($cacheItem);
 
         $mock = new MockHandler([
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-home.html')),
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-login-success.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-profile.html')),
         ]);
 
