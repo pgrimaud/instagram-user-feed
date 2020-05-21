@@ -20,18 +20,13 @@ try {
     // we need instagram user id
     $profile = $api->getProfile('starwars');
     sleep(1);
-    $feedStories = $api->getStories($profile->getId());
 
-    if (count($feedStories->getStories())) {
-        /** @var \Instagram\Model\InstagramStory $story */
-        foreach ($feedStories->getStories() as $story) {
-            echo 'ID        : ' . $story->getId() . "\n";
-            echo 'Type      : ' . $story->getTypeName() . "\n";
-            echo 'Picture   : ' . $story->getDisplayUrl() . "\n";
-            echo 'Date      : ' . $story->getTakenAtDate()->format('Y-m-d h:i:s') . "\n\n";
-        }
-    } else {
-        echo 'No stories' . "\n";
+    $storyHighlights = $api->getStoryHighlightsFolder($profile->getId());
+    sleep(1);
+
+    foreach ($storyHighlights->getFolders() as $folder) {
+        $folder = $api->getStoriesOfHighlightsFolder($folder);
+        dd($folder->getStories());
     }
 
 } catch (InstagramException $e) {

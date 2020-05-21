@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class InstagramStories
+class ProfileStory
 {
     /**
      * @var bool
@@ -96,15 +96,15 @@ class InstagramStories
     }
 
     /**
-     * @param InstagramStory $story
+     * @param StoryMedia $story
      */
-    public function addStory(InstagramStory $story): void
+    public function addStory(StoryMedia $story): void
     {
         $this->stories[] = $story;
     }
 
     /**
-     * @return InstagramStory[]
+     * @return StoryMedia[]
      */
     public function getStories(): array
     {
