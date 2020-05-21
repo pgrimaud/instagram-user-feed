@@ -4,33 +4,11 @@ declare(strict_types=1);
 
 namespace Instagram\Transport;
 
-use GuzzleHttp\Client;
-use Instagram\Auth\Session;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\{InstagramHelper, UserAgentHelper};
 
-class HtmlTransportFeed
+class HtmlProfileDataFeed extends AbstractDataFeed
 {
-    /**
-     * @var Session
-     */
-    private $session;
-
-    /**
-     * @var Client
-     */
-    private $client;
-
-    /**
-     * @param Session $session
-     * @param Client  $client
-     */
-    public function __construct(Session $session, Client $client)
-    {
-        $this->session = $session;
-        $this->client  = $client;
-    }
-
     /**
      * @param string $userName
      *

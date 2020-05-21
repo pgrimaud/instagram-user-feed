@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Instagram;
 
 use GuzzleHttp\Client;
+use Instagram\Hydrator\InstagramStoriesHydrator;
+use Instagram\Model\InstagramStories;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
-use Instagram\{Hydrator\InstagramHydrator, Model\InstagramProfile, Transport\JsonTransportFeed};
-use Instagram\Transport\HtmlTransportFeed;
 use Instagram\Auth\{Login, Session};
 use Instagram\Exception\InstagramException;
+use Instagram\Hydrator\InstagramProfileHydrator;
+use Instagram\Model\InstagramProfile;
+use Instagram\Transport\{HtmlProfileDataFeed, JsonMediasDataFeed, JsonStoriesDataFeed};
 use Psr\Cache\CacheItemPoolInterface;
 
 class Api
@@ -90,10 +93,10 @@ class Api
      */
     public function getProfile(string $user): InstagramProfile
     {
-        $feed = new HtmlTransportFeed($this->session, $this->client);
+        $feed = new HtmlProfileDataFeed($this->client, $this->session);
         $data = $feed->fetchData($user);
 
-        $hydrator = new InstagramHydrator();
+        $hydrator = new InstagramProfileHydrator();
         $hydrator->hydrateProfile($data);
         $hydrator->hydrateMedias($data);
 
@@ -109,12 +112,30 @@ class Api
      */
     public function getMoreMedias(InstagramProfile $instagramProfile): InstagramProfile
     {
-        $feed = new JsonTransportFeed($this->session, $this->client);
+        $feed = new JsonMediasDataFeed($this->client, $this->session);
         $data = $feed->fetchData($instagramProfile);
 
-        $hydrator = new InstagramHydrator($instagramProfile);
+        $hydrator = new InstagramProfileHydrator($instagramProfile);
         $hydrator->hydrateMedias($data);
 
         return $hydrator->getProfile();
+    }
+
+    /**
+     * @param int $userId
+     *
+     * @return InstagramStories
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getStories(int $userId): InstagramStories
+    {
+        $feed = new JsonStoriesDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($userId);
+
+        $hydrator = new InstagramStoriesHydrator();
+        $hydrator->hydrateStories($data);
+
+        return $hydrator->getStories();
     }
 }

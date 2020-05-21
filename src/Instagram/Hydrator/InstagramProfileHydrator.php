@@ -7,7 +7,7 @@ namespace Instagram\Hydrator;
 use Instagram\Utils\InstagramHelper;
 use Instagram\Model\{InstagramMedia, InstagramProfile};
 
-class InstagramHydrator
+class InstagramProfileHydrator
 {
     /**
      * @var InstagramProfile

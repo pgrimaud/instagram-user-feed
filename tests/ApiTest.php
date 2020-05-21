@@ -149,4 +149,49 @@ class ApiTest extends TestCase
 
         $api->logout();
     }
+
+    public function testValidStoriesFetch()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-stories.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout();
+
+        $api->login('username', 'password');
+
+        $instagramStories = $api->getStories(123456788);
+
+        $this->assertInstanceOf(\DateTime::class, $instagramStories->getExpiringDate());
+        $this->assertInstanceOf(\StdClass::class, $instagramStories->getOwner());
+        $this->assertSame(false, $instagramStories->isAllowedToReply());
+        $this->assertSame(true, $instagramStories->isReshareable());
+
+        foreach ($instagramStories->getStories() as $story) {
+            $this->assertSame(2313478624923545316, $story->getId());
+            $this->assertSame('GraphStoryVideo', $story->getTypeName());
+            $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.12442-15/e15/100088826_248178139603068_2736940532157996068_n.jpg?_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_cat=1&_nc_ohc=ZFwA_I6gw40AX_dnybW&oh=700dca3b88fa748a1bd6e7bb570b23c4&oe=5EC918AF', $story->getDisplayUrl());
+            $this->assertSame(750, $story->getWidth());
+            $this->assertSame(1333, $story->getHeight());
+            $this->assertSame('https://www.youtube.com/watch?v=-bhq2bxwAzg', $story->getCtaUrl());
+            $this->assertInstanceOf(\DateTime::class, $story->getTakenAtDate());
+            $this->assertInstanceOf(\DateTime::class, $story->getExpiringAtDate());
+            $this->assertSame(14.5, $story->getVideoDuration());
+            $this->assertSame(2, count($story->getVideoResources()));
+            $this->assertSame(3, count($story->getDisplayResources()));
+            $this->assertSame(true, $story->isAudio());
+        }
+
+        $api->logout();
+    }
 }
