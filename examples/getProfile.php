@@ -11,7 +11,7 @@ try {
     $feed = $api->getFeed();
 
     echo '============================' . "\n";
-    echo 'User Informations : ' . "\n";
+    echo 'User Information : ' . "\n";
     echo '============================' . "\n\n";
 
     echo 'ID               : ' . $feed->getId() . "\n";
