@@ -30,9 +30,9 @@ try {
     } while ($profile->hasMoreMedias());
 
 } catch (InstagramException $e) {
-    dd($e->getMessage());
+    print_r($e->getMessage());
 } catch (CacheException $e) {
-    dd($e->getMessage());
+    print_r($e->getMessage());
 }
 
 function printMedias(array $medias)

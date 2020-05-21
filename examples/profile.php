@@ -38,5 +38,5 @@ try {
 } catch (InstagramException $e) {
     print_r($e->getMessage());
 } catch (CacheException $e) {
-    dd($e->getMessage());
+    print_r($e->getMessage());
 }
