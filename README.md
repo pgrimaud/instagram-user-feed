@@ -11,6 +11,13 @@
 ## Information
 Easily fetch your or any Instagram feed without OAuth for PHP
 
+## Features
+
+- Fetch profile data of user
+- Fetch medias of user
+- Fetch stories of user
+- Fetch highlights stories of user (WIP)
+
 **⚠️ Version ^5.0 is no more maintained.**
 
 ## Version ^6.0
@@ -18,7 +25,8 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Paginate](#paginate)
+- [Medias paginate](#paginate)
+- [Stories](#stories)
 - [Examples](https://github.com/pgrimaud/instagram-user-feed/tree/master/examples)
 
 ## Changelog
@@ -44,7 +52,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
 $api = new Api($cachePool);
-$api->login('username', 'password'); // Mandatory
+$api->login('username', 'password'); // mandatory
 $profile = $api->getProfile('robertdowneyjr');
 
 echo $profile->getUserName(); // robertdowneyjr
@@ -169,6 +177,28 @@ do {
     // avoid 429 Rate limit from Instagram
     sleep(1);
 } while ($profile->hasMoreMedias());
+```
+
+## Stories
+
+```php
+<?php
+
+use Instagram\Api;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+
+$cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
+
+$api = new Api($cachePool);
+$api->login('username', 'password'); // mandatory
+
+$profile = $api->getProfile('starwars'); // we need instagram user id
+sleep(1);
+$feedStories = $api->getStories($profile->getId());
+
+$stories = $feedStories->getStories();
+
+print_r($stories);
 ```
 
 # Feedback

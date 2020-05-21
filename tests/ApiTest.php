@@ -188,6 +188,8 @@ class ApiTest extends TestCase
             $this->assertInstanceOf(\DateTime::class, $story->getExpiringAtDate());
             $this->assertSame(14.5, $story->getVideoDuration());
             $this->assertSame(2, count($story->getVideoResources()));
+            $this->assertSame(3, count($story->getDisplayResources()));
+            $this->assertSame(true, $story->isAudio());
         }
 
         $api->logout();
