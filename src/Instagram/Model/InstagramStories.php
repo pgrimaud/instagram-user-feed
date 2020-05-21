@@ -104,7 +104,7 @@ class InstagramStories
     }
 
     /**
-     * @return array
+     * @return InstagramStory[]
      */
     public function getStories(): array
     {
