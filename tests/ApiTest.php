@@ -45,7 +45,7 @@ class ApiTest extends TestCase
         $this->assertSame(true, $profile->isVerified());
         $this->assertSame(453, $profile->getMediaCount());
         $this->assertSame(true, $profile->hasMoreMedias());
-        $this->assertSame(12, count($profile->getMedias()));
+        $this->assertCount(12, $profile->getMedias());
 
         $profile = $api->getMoreMedias($profile);
         $media   = $profile->getMedias()[0];
@@ -61,7 +61,7 @@ class ApiTest extends TestCase
         $this->assertSame('#happybirthday little brother @harrycollettactor , quite the night out in #berlin #germany with #stubbins and #ladyrose @carmellaniadoofficial @dolittlemovie #press tour #trudges on... (🎥 @jimmy_rich ) #sweet #16', $media->getCaption());
         $this->assertSame(1939, $media->getComments());
         $this->assertSame(695047, $media->getLikes());
-        $this->assertSame(5, count($media->getThumbnails()));
+        $this->assertCount(5, $media->getThumbnails());
         $this->assertInstanceOf(\StdClass::class, $media->getLocation());
         $this->assertSame(true, $media->isVideo());
         $this->assertSame(2726827, $media->getVideoViewCount());
@@ -187,10 +187,48 @@ class ApiTest extends TestCase
             $this->assertInstanceOf(\DateTime::class, $story->getTakenAtDate());
             $this->assertInstanceOf(\DateTime::class, $story->getExpiringAtDate());
             $this->assertSame(14.5, $story->getVideoDuration());
-            $this->assertSame(2, count($story->getVideoResources()));
-            $this->assertSame(3, count($story->getDisplayResources()));
+            $this->assertCount(2, $story->getVideoResources());
+            $this->assertCount(3, $story->getDisplayResources());
             $this->assertSame(true, $story->isAudio());
         }
+
+        $api->logout();
+    }
+
+    public function testHighlightsStoriesFetch()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-highlights-folders.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-highlights-stories.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout();
+
+        $api->login('username', 'password');
+
+        $profile = $api->getProfile('statement.paris');
+
+        $storyHighlights = $api->getStoryHighlightsFolder($profile->getId());
+
+        $this->assertCount(8, $storyHighlights->getFolders());
+
+        $folder = $api->getStoriesOfHighlightsFolder($storyHighlights->getFolders()[0]);
+
+        $this->assertSame(18137590444014024, $folder->getId());
+        $this->assertSame('STORY', $folder->getName());
+        $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-15/s150x150/94263786_546583649377430_3277795491247917640_n.jpg?_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_ohc=D6Img4muLocAX_bsIlI&oh=eeeec52698961ee00a070d3e210f532d&oe=5EF1ACCB', $folder->getCover());
+        $this->assertCount(33, $folder->getStories());
 
         $api->logout();
     }
