@@ -2,7 +2,14 @@
   "name": "pgrimaud/instagram-user-feed",
   "type": "library",
   "description": "Easily fetch any user's Instagram feed without OAuth for PHP",
-  "keywords": ["instagram", "api", "php", "feed", "social", "sdk"],
+  "keywords": [
+    "instagram",
+    "api",
+    "php",
+    "feed",
+    "social",
+    "sdk"
+  ],
   "homepage": "https://github.com/pgrimaud/instagram-user-feed",
   "license": "MIT",
   "authors": [
@@ -24,14 +31,21 @@
       "Instagram\\": "src/Instagram/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Instagram\\Tests\\": "tests/"
+    }
+  },
   "require": {
+    "php": "^7.2.5",
     "ext-curl": "*",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^6.3"
+    "symfony/cache": "^5.0",
+    "guzzlehttp/guzzle": "^6.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.7",
-    "friendsofphp/php-cs-fixer": "^2.4",
-    "php-coveralls/php-coveralls": "^2.0"
+    "php-coveralls/php-coveralls": "^2.2",
+    "phpunit/phpunit": "^8.5",
+    "symfony/var-dumper": "^5.0"
   }
 }

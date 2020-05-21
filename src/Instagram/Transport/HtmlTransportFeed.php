@@ -1,56 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
-use Instagram\Exception\InstagramAuthException;
-use Instagram\Exception\InstagramException;
-use Instagram\Storage\Cache;
-use Instagram\Storage\CacheManager;
+use Instagram\Auth\Session;
+use Instagram\Exception\InstagramFetchException;
+use Instagram\Utils\{InstagramHelper, UserAgentHelper};
 
-class HtmlTransportFeed extends TransportFeed
+class HtmlTransportFeed
 {
     /**
-     * HtmlTransportFeed constructor.
-     *
-     * @param Client            $client
-     * @param CacheManager|null $cacheManager
+     * @var Session
      */
-    public function __construct(Client $client, CacheManager $cacheManager = null)
+    private $session;
+
+    /**
+     * @var Client
+     */
+    private $client;
+
+    /**
+     * @param Session $session
+     * @param Client  $client
+     */
+    public function __construct(Session $session, Client $client)
     {
-        parent::__construct($client, $cacheManager);
+        $this->session = $session;
+        $this->client  = $client;
     }
 
     /**
-     * @param $userName
+     * @param string $userName
      *
-     * @return mixed
+     * @return \StdClass
      *
-     * @throws InstagramAuthException
-     * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Instagram\Exception\InstagramCacheException
+     * @throws InstagramFetchException
      */
-    public function fetchData($userName)
+    public function fetchData(string $userName): \StdClass
     {
-        $endpoint = self::BASE_URL . $userName . '/';
+        $endpoint = InstagramHelper::URL_BASE . $userName . '/';
 
-        if ($this->cacheManager instanceof CacheManager && $this->cacheManager->sessionName) {
-            $cookieJar = $this->cacheManager->getSession();
-
-            $headers = [
-                'headers' => [
-                    'user-agent' => self::USER_AGENT,
-                ],
-                'cookies' => $cookieJar
-            ];
-        } else {
-            $headers = [
-                'headers' => [
-                    'user-agent' => self::USER_AGENT,
-                ]
-            ];
-        }
+        $headers = [
+            'headers' => [
+                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+            ],
+            'cookies' => $this->session->getCookies()
+        ];
 
         $res = $this->client->request('GET', $endpoint, $headers);
 
@@ -59,34 +56,13 @@ class HtmlTransportFeed extends TransportFeed
         preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
 
         if (!isset($matches[1])) {
-            throw new InstagramException('Unable to extract JSON data');
+            throw new InstagramFetchException('Unable to extract JSON data');
         }
 
         $data = json_decode($matches[1]);
 
         if ($data === null) {
-            throw new InstagramException(json_last_error_msg());
-        }
-
-        if (isset($data->entry_data->LoginAndSignupPage)) {
-            throw new InstagramAuthException('Instagram blocked your IP. Login is required.');
-        }
-
-        if ($this->cacheManager instanceof CacheManager) {
-
-            if ($this->cacheManager->sessionName) {
-                $this->cacheManager->setSession($this->cacheManager->sessionName, $cookieJar);
-            }
-
-            $newCache = new Cache();
-            $newCache->setUserId($data->entry_data->ProfilePage[0]->graphql->user->id);
-            $newCache->setCsrfToken($data->config->csrf_token);
-
-            if ($res->hasHeader('Set-Cookie')) {
-                $newCache->setCookie($res->getHeaders()['Set-Cookie']);
-            }
-
-            $this->cacheManager->set($newCache, $userName);
+            throw new InstagramFetchException(json_last_error_msg());
         }
 
         return $data->entry_data->ProfilePage[0]->graphql->user;

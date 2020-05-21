@@ -1,125 +1,120 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Instagram;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
-use Instagram\Auth\Login;
-use Instagram\Exception\InstagramCacheException;
-use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\HtmlHydrator;
-use Instagram\Hydrator\JsonHydrator;
-use Instagram\Storage\CacheManager;
+use GuzzleHttp\Cookie\{SetCookie, CookieJar};
+use Instagram\{Hydrator\InstagramHydrator, Model\InstagramProfile, Transport\JsonTransportFeed};
 use Instagram\Transport\HtmlTransportFeed;
-use Instagram\Transport\JsonTransportFeed;
+use Instagram\Auth\{Login, Session};
+use Instagram\Exception\InstagramException;
+use Psr\Cache\CacheItemPoolInterface;
 
 class Api
 {
     /**
-     * @var CacheManager
+     * @var CacheItemPoolInterface
      */
-    private $cacheManager;
+    private $cachePool;
 
     /**
      * @var Client
      */
-    private $client = null;
+    private $client;
 
     /**
-     * @var string
+     * @var Session
      */
-    private $userName;
+    private $session = null;
 
     /**
-     * @var string
+     * @param CacheItemPoolInterface $cachePool
+     * @param Client|null            $client
      */
-    private $endCursor = null;
-
-    /**
-     * Api constructor.
-     *
-     * @param Client|null       $client
-     * @param CacheManager|null $cacheManager
-     */
-    public function __construct(CacheManager $cacheManager = null, Client $client = null)
+    public function __construct(CacheItemPoolInterface $cachePool, Client $client = null)
     {
-        $this->cacheManager = $cacheManager;
-        $this->client       = $client ?: new Client();
+        $this->cachePool = $cachePool;
+        $this->client    = $client ?: new Client();
     }
 
     /**
-     * @param integer $limit
-     *
-     * @return Hydrator\Component\Feed
-     *
-     * @throws InstagramCacheException
-     * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
-     */
-    public function getFeed($limit = 12)
-    {
-        if (empty($this->userName)) {
-            throw new InstagramException('Username cannot be empty');
-        }
-
-        if ($this->endCursor) {
-            if (!$this->cacheManager instanceof CacheManager) {
-                throw new InstagramCacheException('CacheManager object must be specified to use pagination');
-            }
-
-            $feed     = new JsonTransportFeed($this->client, $this->endCursor, $this->cacheManager);
-            $hydrator = new JsonHydrator();
-        } else {
-            $feed     = new HtmlTransportFeed($this->client, $this->cacheManager);
-            $hydrator = new HtmlHydrator();
-        }
-
-        $dataFetched = $feed->fetchData($this->userName, $limit);
-
-        $hydrator->setData($dataFetched);
-
-        return $hydrator->getHydratedData();
-    }
-
-    /**
-     * @param string $userName
-     */
-    public function setUserName($userName)
-    {
-        $this->userName = $userName;
-    }
-
-    /**
-     * @param string $endCursor
-     */
-    public function setEndCursor($endCursor)
-    {
-        $this->endCursor = $endCursor;
-    }
-
-    /**
-     * @param             $username
-     * @param             $password
-     * @param Client|null $client
+     * @param string $username
+     * @param string $password
      *
      * @throws Exception\InstagramAuthException
-     * @throws InstagramCacheException
-     * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function login($username, $password, Client $client = null)
+    public function login(string $username, string $password): void
     {
-        if (!$this->cacheManager instanceof CacheManager) {
-            throw new InstagramCacheException('CacheManager is required with login');
-        }
+        $login = new Login($this->client, $username, $password);
 
-        $login   = new Login($client);
-        $cookies = $login->execute($username, $password);
+        // fetch previous session an re-use it
+        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY);
+        $cookies     = $sessionData->get();
 
         if ($cookies instanceof CookieJar) {
-            $this->cacheManager->sessionName = $username;
-            $this->cacheManager->setSession($username, $cookies);
+            /** @var SetCookie */
+            $session = $cookies->getCookieByName('sessionId');
+
+            // Session expired (should never happened, Instagram TTL is ~ 1 year)
+            if ($session->getExpires() < time()) {
+                $this->logout();
+                $this->login($username, $password);
+            }
+
+        } else {
+            $cookies = $login->process();
+            $sessionData->set($cookies);
+            $this->cachePool->save($sessionData);
         }
+
+        $this->session = new Session($cookies);
+    }
+
+    /**
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function logout(): void
+    {
+        $this->cachePool->deleteItem(Session::SESSION_KEY);
+    }
+
+    /**
+     * @param string $user
+     *
+     * @return InstagramProfile
+     *
+     * @throws InstagramException
+     */
+    public function getProfile(string $user): InstagramProfile
+    {
+        $feed = new HtmlTransportFeed($this->session, $this->client);
+        $data = $feed->fetchData($user);
+
+        $hydrator = new InstagramHydrator();
+        $hydrator->hydrateProfile($data);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getProfile();
+    }
+
+    /**
+     * @param InstagramProfile $instagramProfile
+     *
+     * @return InstagramProfile
+     *
+     * @throws InstagramException
+     */
+    public function getMoreMedias(InstagramProfile $instagramProfile): InstagramProfile
+    {
+        $feed = new JsonTransportFeed($this->session, $this->client);
+        $data = $feed->fetchData($instagramProfile);
+
+        $hydrator = new InstagramHydrator($instagramProfile);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getProfile();
     }
 }

@@ -2,14 +2,9 @@ composer.lock
 vendor
 build
 
-.php_cs.cache
+examples/credentials.php
 
-/cache
-!/cache/.gitkeep
+!cache/.gitkeep
+cache/
 
-/tests/cache/
-!/tests/cache/empty/.gitkeep
-!/tests/cache/invalid/.gitkeep
-!/tests/cache/invalid/demo.cache
-!/tests/cache/valid/.gitkeep
-!/tests/cache/valid/pgrimaud.cache
+.phpunit.result.cache

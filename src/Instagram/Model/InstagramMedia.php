@@ -1,11 +1,11 @@
 <?php
 
-namespace Instagram\Hydrator\Component;
+namespace Instagram\Model;
 
-class Media
+class InstagramMedia
 {
     /**
-     * @var integer
+     * @var int
      */
     public $id;
 
@@ -15,12 +15,12 @@ class Media
     public $typeName;
 
     /**
-     * @var string
+     * @var int
      */
     public $height;
 
     /**
-     * @var string
+     * @var int
      */
     public $width;
 
@@ -50,12 +50,12 @@ class Media
     public $caption;
 
     /**
-     * @var integer
+     * @var int
      */
     public $comments;
 
     /**
-     * @var integer
+     * @var int
      */
     public $likes;
 
@@ -82,7 +82,7 @@ class Media
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -90,7 +90,7 @@ class Media
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -98,7 +98,7 @@ class Media
     /**
      * @return string
      */
-    public function getTypeName()
+    public function getTypeName(): string
     {
         return $this->typeName;
     }
@@ -106,39 +106,39 @@ class Media
     /**
      * @param string $typeName
      */
-    public function setTypeName($typeName)
+    public function setTypeName(string $typeName): void
     {
         $this->typeName = $typeName;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
 
     /**
-     * @param string $height
+     * @param int $height
      */
-    public function setHeight($height)
+    public function setHeight(int $height): void
     {
         $this->height = $height;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getWidth()
+    public function getWidth(): int
     {
         return $this->width;
     }
 
     /**
-     * @param string $width
+     * @param int $width
      */
-    public function setWidth($width)
+    public function setWidth(int $width): void
     {
         $this->width = $width;
     }
@@ -146,7 +146,7 @@ class Media
     /**
      * @return string
      */
-    public function getThumbnailSrc()
+    public function getThumbnailSrc(): string
     {
         return $this->thumbnailSrc;
     }
@@ -154,7 +154,7 @@ class Media
     /**
      * @param string $thumbnailSrc
      */
-    public function setThumbnailSrc($thumbnailSrc)
+    public function setThumbnailSrc(string $thumbnailSrc): void
     {
         $this->thumbnailSrc = $thumbnailSrc;
     }
@@ -162,7 +162,7 @@ class Media
     /**
      * @return \DateTime
      */
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
@@ -170,7 +170,7 @@ class Media
     /**
      * @param \DateTime $date
      */
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
@@ -178,7 +178,7 @@ class Media
     /**
      * @return string
      */
-    public function getDisplaySrc()
+    public function getDisplaySrc(): string
     {
         return $this->displaySrc;
     }
@@ -186,7 +186,7 @@ class Media
     /**
      * @param string $displaySrc
      */
-    public function setDisplaySrc($displaySrc)
+    public function setDisplaySrc(string $displaySrc): void
     {
         $this->displaySrc = $displaySrc;
     }
@@ -194,7 +194,7 @@ class Media
     /**
      * @return string
      */
-    public function getCaption()
+    public function getCaption(): ?string
     {
         return $this->caption;
     }
@@ -202,7 +202,7 @@ class Media
     /**
      * @param string $caption
      */
-    public function setCaption($caption)
+    public function setCaption(?string $caption): void
     {
         $this->caption = $caption;
     }
@@ -210,7 +210,7 @@ class Media
     /**
      * @return int
      */
-    public function getComments()
+    public function getComments(): int
     {
         return $this->comments;
     }
@@ -218,7 +218,7 @@ class Media
     /**
      * @param int $comments
      */
-    public function setComments($comments)
+    public function setComments(int $comments): void
     {
         $this->comments = $comments;
     }
@@ -226,7 +226,7 @@ class Media
     /**
      * @return int
      */
-    public function getLikes()
+    public function getLikes(): int
     {
         return $this->likes;
     }
@@ -234,7 +234,7 @@ class Media
     /**
      * @param int $likes
      */
-    public function setLikes($likes)
+    public function setLikes(int $likes): void
     {
         $this->likes = $likes;
     }
@@ -242,7 +242,7 @@ class Media
     /**
      * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->link;
     }
@@ -250,7 +250,7 @@ class Media
     /**
      * @param string $link
      */
-    public function setLink($link)
+    public function setLink(string $link): void
     {
         $this->link = $link;
     }
@@ -258,7 +258,7 @@ class Media
     /**
      * @return array
      */
-    public function getThumbnails()
+    public function getThumbnails(): array
     {
         return $this->thumbnails;
     }
@@ -266,7 +266,7 @@ class Media
     /**
      * @param array $thumbnails
      */
-    public function setThumbnails($thumbnails)
+    public function setThumbnails(array $thumbnails): void
     {
         $this->thumbnails = $thumbnails;
     }
@@ -280,9 +280,9 @@ class Media
     }
 
     /**
-     * @param mixed $location
+     * @param \StdClass $location
      */
-    public function setLocation($location)
+    public function setLocation(\StdClass $location): void
     {
         $this->location = $location;
     }
@@ -290,7 +290,7 @@ class Media
     /**
      * @return bool
      */
-    public function isVideo()
+    public function isVideo(): bool
     {
         return $this->video;
     }
@@ -298,7 +298,7 @@ class Media
     /**
      * @param bool $video
      */
-    public function setVideo($video)
+    public function setVideo(bool $video): void
     {
         $this->video = $video;
     }
@@ -306,7 +306,7 @@ class Media
     /**
      * @return int
      */
-    public function getVideoViewCount()
+    public function getVideoViewCount(): int
     {
         return $this->videoViewCount;
     }
@@ -314,7 +314,7 @@ class Media
     /**
      * @param int $videoViewCount
      */
-    public function setVideoViewCount($videoViewCount)
+    public function setVideoViewCount(int $videoViewCount): void
     {
         $this->videoViewCount = $videoViewCount;
     }

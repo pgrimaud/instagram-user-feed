@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Instagram\Auth;
 
 use GuzzleHttp\Client;
+
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramAuthException;
-use Instagram\Exception\InstagramException;
-use Instagram\Transport\TransportFeed;
+use Instagram\Utils\InstagramHelper;
+use Instagram\Utils\UserAgentHelper;
 
 class Login
 {
@@ -16,66 +20,75 @@ class Login
     private $client;
 
     /**
-     * @param Client|null $client
+     * @var string
      */
-    public function __construct(Client $client = null)
+    private $login;
+
+    /**
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @param Client $client
+     * @param string $login
+     * @param string $password
+     */
+    public function __construct(Client $client, string $login, string $password)
     {
-        $this->client = $client ?: new Client();
+        $this->client   = $client;
+        $this->login    = $login;
+        $this->password = $password;
     }
 
     /**
-     * @param $username
-     * @param $password
-     *
      * @return CookieJar
      *
      * @throws InstagramAuthException
-     * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function execute($username, $password)
+    public function process(): CookieJar
     {
-        $query = $this->client->request('GET', TransportFeed::BASE_URL, [
+        $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
             'headers' => [
-                'user-agent' => TransportFeed::USER_AGENT
+                'user-agent' => UserAgentHelper::AGENT_DEFAULT
             ]
         ]);
 
-        $html = (string)$query->getBody();
+        $html = (string)$baseRequest->getBody();
 
         preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
 
         if (!isset($matches[1])) {
-            throw new InstagramException('Unable to extract JSON data');
+            throw new InstagramAuthException('Unable to extract JSON data');
         }
 
         $data = json_decode($matches[1]);
 
         $cookieJar = new CookieJar();
 
-        $query = $this->client->request('POST', TransportFeed::AUTH_URL, [
-            'form_params' => [
-                'username'     => $username,
-                'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $password,
-            ],
-            'headers'     => [
-                'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
-                'referer'     => TransportFeed::BASE_URL,
-                'x-csrftoken' => $data->config->csrf_token,
-                'user-agent'  => TransportFeed::USER_AGENT,
-            ],
-            'cookies'     => $cookieJar
-        ]);
+        try {
+            $query = $this->client->request('POST', InstagramHelper::URL_AUTH, [
+                'form_params' => [
+                    'username'     => $this->login,
+                    'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $this->password,
+                ],
+                'headers'     => [
+                    'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
+                    'referer'     => InstagramHelper::URL_BASE,
+                    'x-csrftoken' => $data->config->csrf_token,
+                    'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
+                ],
+                'cookies'     => $cookieJar
+            ]);
+        } catch (ClientException $exception) {
+            throw new InstagramAuthException('Unknown error (' . $exception->getMessage() . '). Please report it with a GitHub issue.');
+        }
 
-        if ($query->getStatusCode() !== 200) {
-            throw new InstagramAuthException('Unknown error');
+        $response = json_decode((string)$query->getBody());
+        if ($response->authenticated == true) {
+            return $cookieJar;
         } else {
-            $response = json_decode((string)$query->getBody());
-            if ($response->authenticated == true) {
-                return $cookieJar;
-            } else {
-                throw new InstagramAuthException('Wrong login / password');
-            }
+            throw new InstagramAuthException('Wrong login / password');
         }
     }
 }

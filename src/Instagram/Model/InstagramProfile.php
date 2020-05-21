@@ -1,11 +1,13 @@
 <?php
 
-namespace Instagram\Hydrator\Component;
+declare(strict_types=1);
 
-class Feed
+namespace Instagram\Model;
+
+class InstagramProfile
 {
     /**
-     * @var integer
+     * @var int
      */
     public $id;
 
@@ -25,12 +27,12 @@ class Feed
     public $biography;
 
     /**
-     * @var integer
+     * @var int
      */
     public $followers;
 
     /**
-     * @var integer
+     * @var int
      */
     public $following;
 
@@ -55,24 +57,29 @@ class Feed
     public $verified;
 
     /**
-     * @var integer
+     * @var int
      */
     public $mediaCount = 0;
 
     /**
-     * @var Media[]
+     * @var InstagramMedia[]
      */
     public $medias = [];
 
     /**
+     * @var bool
+     */
+    private $hasMoreMedias = false;
+
+    /**
      * @var string
      */
-    public $endCursor = null;
+    private $endCursor = null;
 
     /**
      * @return string
      */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }
@@ -80,7 +87,7 @@ class Feed
     /**
      * @param string $userName
      */
-    public function setUserName($userName)
+    public function setUserName(string $userName): void
     {
         $this->userName = $userName;
     }
@@ -88,7 +95,7 @@ class Feed
     /**
      * @return string
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->fullName;
     }
@@ -96,7 +103,7 @@ class Feed
     /**
      * @param string $fullName
      */
-    public function setFullName($fullName)
+    public function setFullName(string $fullName): void
     {
         $this->fullName = $fullName;
     }
@@ -104,7 +111,7 @@ class Feed
     /**
      * @return string
      */
-    public function getBiography()
+    public function getBiography(): string
     {
         return $this->biography;
     }
@@ -112,39 +119,40 @@ class Feed
     /**
      * @param string $biography
      */
-    public function setBiography($biography)
+    public function setBiography(string $biography): void
     {
         $this->biography = $biography;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getFollowers()
+    public function getFollowers(): int
+
     {
         return $this->followers;
     }
 
     /**
-     * @param string $followers
+     * @param int $followers
      */
-    public function setFollowers($followers)
+    public function setFollowers(int $followers): void
     {
         $this->followers = $followers;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getFollowing()
+    public function getFollowing(): int
     {
         return $this->following;
     }
 
     /**
-     * @param string $following
+     * @param int $following
      */
-    public function setFollowing($following)
+    public function setFollowing(int $following): void
     {
         $this->following = $following;
     }
@@ -152,7 +160,7 @@ class Feed
     /**
      * @return string
      */
-    public function getProfilePicture()
+    public function getProfilePicture(): string
     {
         return $this->profilePicture;
     }
@@ -160,7 +168,7 @@ class Feed
     /**
      * @param string $profilePicture
      */
-    public function setProfilePicture($profilePicture)
+    public function setProfilePicture(string $profilePicture): void
     {
         $this->profilePicture = $profilePicture;
     }
@@ -168,7 +176,7 @@ class Feed
     /**
      * @return string
      */
-    public function getExternalUrl()
+    public function getExternalUrl(): string
     {
         return $this->externalUrl;
     }
@@ -176,7 +184,7 @@ class Feed
     /**
      * @param string $externalUrl
      */
-    public function setExternalUrl($externalUrl)
+    public function setExternalUrl(string $externalUrl): void
     {
         $this->externalUrl = $externalUrl;
     }
@@ -184,7 +192,7 @@ class Feed
     /**
      * @return bool
      */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return $this->private;
     }
@@ -192,7 +200,7 @@ class Feed
     /**
      * @param bool $private
      */
-    public function setPrivate($private)
+    public function setPrivate(bool $private): void
     {
         $this->private = $private;
     }
@@ -200,7 +208,7 @@ class Feed
     /**
      * @return bool
      */
-    public function isVerified()
+    public function isVerified(): bool
     {
         return $this->verified;
     }
@@ -208,7 +216,7 @@ class Feed
     /**
      * @param bool $verified
      */
-    public function setVerified($verified)
+    public function setVerified(bool $verified): void
     {
         $this->verified = $verified;
     }
@@ -216,7 +224,7 @@ class Feed
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -224,7 +232,7 @@ class Feed
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -232,7 +240,7 @@ class Feed
     /**
      * @return int
      */
-    public function getMediaCount()
+    public function getMediaCount(): int
     {
         return $this->mediaCount;
     }
@@ -240,40 +248,53 @@ class Feed
     /**
      * @param int $mediaCount
      */
-    public function setMediaCount($mediaCount)
+    public function setMediaCount(int $mediaCount): void
     {
         $this->mediaCount = $mediaCount;
     }
 
     /**
-     * @return Media[]
+     * @return InstagramMedia[]
      */
-    public function getMedias()
+    public function getMedias(): array
     {
         return $this->medias;
     }
 
     /**
-     * @param Media $media
+     * @param InstagramMedia $media
      */
-    public function addMedia(Media $media)
+    public function addMedia(InstagramMedia $media): void
     {
         $this->medias[] = $media;
     }
 
-    /**
-     * @return string
-     */
-    public function getEndCursor()
+    public function setHasMoreMedias(bool $hasMoreMedias): void
     {
-        return $this->endCursor;
+        $this->hasMoreMedias = $hasMoreMedias;
     }
 
     /**
-     * @param string $endCursor
+     * @return bool
      */
-    public function setEndCursor($endCursor)
+    public function hasMoreMedias(): bool
+    {
+        return $this->hasMoreMedias;
+    }
+
+    /**
+     * @param string|null $endCursor
+     */
+    public function setEndCursor(?string $endCursor): void
     {
         $this->endCursor = $endCursor;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEndCursor(): ?string
+    {
+        return $this->endCursor;
     }
 }

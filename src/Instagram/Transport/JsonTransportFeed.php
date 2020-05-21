@@ -1,80 +1,60 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\SetCookie;
-use Instagram\Exception\InstagramException;
-use Instagram\Storage\Cache;
-use Instagram\Storage\CacheManager;
+use Instagram\Auth\Session;
+use Instagram\Exception\InstagramFetchException;
+use Instagram\Model\InstagramProfile;
+use Instagram\Utils\{InstagramHelper, UserAgentHelper};
 
-class JsonTransportFeed extends TransportFeed
+class JsonTransportFeed
 {
     /**
-     * @var string
+     * @var Session
      */
-    private $endCursor;
-
-    const REQUIRES_COOKIES_KEYS = ['rur', 'mid', 'mcd', 'urlgen', 'csrftoken'];
+    private $session;
 
     /**
-     * JsonTransportFeed constructor.
-     *
-     * @param Client            $client
-     * @param                   $endCursor
-     * @param CacheManager|null $cacheManager
+     * @var Client
      */
-    public function __construct(Client $client, $endCursor, CacheManager $cacheManager = null)
+    private $client;
+
+    /**
+     * @param Session $session
+     * @param Client  $client
+     */
+    public function __construct(Session $session, Client $client)
     {
-        $this->endCursor = $endCursor;
-        parent::__construct($client, $cacheManager);
+        $this->session = $session;
+        $this->client  = $client;
     }
 
     /**
-     * @param $variables
+     * @param InstagramProfile $instagramProfile
      *
-     * @return string
+     * @return \StdClass
+     * @throws InstagramFetchException
      */
-    private function generateGis($variables)
+    public function fetchData(InstagramProfile $instagramProfile): \StdClass
     {
-        return md5(json_encode($variables));
-    }
-
-    /**
-     * @param string $userName
-     * @param int    $limit
-     *
-     * @return mixed
-     *
-     * @throws InstagramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Instagram\Exception\InstagramCacheException
-     */
-    public function fetchData($userName, $limit)
-    {
-        /** @var Cache $cache */
-        $cache = $this->cacheManager->getCache($userName);
-
         $variables = [
-            'id'    => $cache->getUserId(),
-            'first' => $limit,
-            'after' => $this->endCursor,
+            'id'    => $instagramProfile->getId(),
+            'first' => InstagramHelper::PAGINATION_DEFAULT,
+            'after' => $instagramProfile->getEndCursor(),
         ];
-
-        $cookieJar = CookieJar::fromArray($cache->getCookie(), 'www.instagram.com');
 
         $headers = [
             'headers' => [
-                'user-agent'       => self::USER_AGENT,
+                'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
                 'x-requested-with' => 'XMLHttpRequest',
-                'x-instagram-gis'  => $this->generateGis($variables),
-                'x-csrftoken'      => $cache->getCsrfToken(),
             ],
-            'cookies' => $cookieJar
+            'cookies' => $this->session->getCookies()
         ];
 
-        $endpoint = self::BASE_URL . 'graphql/query/?query_hash=' . self::QUERY_HASH . '&variables=' . json_encode($variables);
+        $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH . '&variables=' . json_encode($variables);
 
         $res = $this->client->request('GET', $endpoint, $headers);
 
@@ -82,24 +62,8 @@ class JsonTransportFeed extends TransportFeed
         $data = json_decode($data);
 
         if ($data === null) {
-            throw new InstagramException(json_last_error_msg());
+            throw new InstagramFetchException(json_last_error_msg());
         }
-
-        // save to cache for next request
-        $newCache = new Cache();
-        $newCache->setUserId($cache->getUserId());
-        if ($res->hasHeader('Set-Cookie')) {
-            $saveCookies = [];
-            foreach ($res->getHeaders()['Set-Cookie'] as $cookie) {
-                $setCookie = SetCookie::fromString($cookie);
-                if (in_array($setCookie->getName(), self::REQUIRES_COOKIES_KEYS, true)) {
-                    $saveCookies[] = $cookie;
-                }
-            }
-            $newCache->setCookie($saveCookies);
-        }
-
-        $this->cacheManager->set($newCache, $userName);
 
         return $data->data->user;
     }
