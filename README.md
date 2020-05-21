@@ -31,7 +31,8 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
 ## Changelog
 
-**2020-05-21 : Version 6.1 is released. New feature: fetch stories and highlights stories.** 
+**2020-05-21 : Version 6.1 is released. New feature: fetch stories and highlights stories.**
+
 **2020-05-21 : Version 6.0 is released. Please upgrade from ^5.0 for cookies session stability.** 
 
 # Installation
