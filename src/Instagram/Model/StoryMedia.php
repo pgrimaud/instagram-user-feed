@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class InstagramStory
+class StoryMedia
 {
     /**
      * @var int
@@ -253,7 +253,7 @@ class InstagramStory
     /**
      * @param string $ctaUrl
      */
-    public function setCtaUrl(string $ctaUrl): void
+    public function setCtaUrl(?string $ctaUrl): void
     {
         $this->ctaUrl = $ctaUrl;
     }

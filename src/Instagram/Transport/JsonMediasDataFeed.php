@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Instagram\Transport;
 
 use Instagram\Exception\InstagramFetchException;
-use Instagram\{Model\InstagramProfile, Utils\InstagramHelper};
+use Instagram\{Model\Profile, Utils\InstagramHelper};
 
 class JsonMediasDataFeed extends AbstractDataFeed
 {
     /**
-     * @param InstagramProfile $instagramProfile
+     * @param Profile $instagramProfile
      *
      * @return \StdClass
      *
      * @throws InstagramFetchException
      */
-    public function fetchData(InstagramProfile $instagramProfile): \StdClass
+    public function fetchData(Profile $instagramProfile): \StdClass
     {
         $variables = [
             'id'    => $instagramProfile->getId(),
@@ -26,7 +26,7 @@ class JsonMediasDataFeed extends AbstractDataFeed
 
         $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH_MEDIAS . '&variables=' . json_encode($variables);
 
-        $data = $this->fetchJsonFeed($endpoint);
+        $data = $this->fetchJsonDataFeed($endpoint);
 
         return $data->data->user;
     }

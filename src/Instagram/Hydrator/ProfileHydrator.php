@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Instagram\Hydrator;
 
 use Instagram\Utils\InstagramHelper;
-use Instagram\Model\{InstagramMedia, InstagramProfile};
+use Instagram\Model\{Media, Profile};
 
-class InstagramProfileHydrator
+class ProfileHydrator
 {
     /**
-     * @var InstagramProfile
+     * @var Profile
      */
     private $profile;
 
     /**
      * Hydration is made manually to avoid shitty Instagram variable names
      *
-     * @param InstagramProfile|null $instagramProfile
+     * @param Profile|null $instagramProfile
      */
-    public function __construct(InstagramProfile $instagramProfile = null)
+    public function __construct(Profile $instagramProfile = null)
     {
-        $this->profile = $instagramProfile ?: new InstagramProfile();
+        $this->profile = $instagramProfile ?: new Profile();
     }
 
     /**
@@ -48,12 +48,12 @@ class InstagramProfileHydrator
     public function hydrateMedias(\StdClass $data): void
     {
         // reset medias
-        $this->profile->medias = [];
+        $this->profile->setMedias([]);
 
         foreach ($data->edge_owner_to_timeline_media->edges as $item) {
             $node = $item->node;
 
-            $media = new InstagramMedia();
+            $media = new Media();
 
             $media->setId((int)$node->id);
             $media->setTypeName($node->__typename);
@@ -98,9 +98,9 @@ class InstagramProfileHydrator
     }
 
     /**
-     * @return InstagramProfile
+     * @return Profile
      */
-    public function getProfile(): InstagramProfile
+    public function getProfile(): Profile
     {
         return $this->profile;
     }

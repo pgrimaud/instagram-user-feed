@@ -42,7 +42,7 @@ abstract class AbstractDataFeed
      *
      * @throws InstagramFetchException
      */
-    protected function fetchJsonFeed(string $endpoint): \StdClass
+    protected function fetchJsonDataFeed(string $endpoint): \StdClass
     {
         $headers = [
             'headers' => [

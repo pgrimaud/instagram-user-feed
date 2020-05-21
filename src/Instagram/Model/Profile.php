@@ -4,67 +4,67 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class InstagramProfile
+class Profile
 {
     /**
      * @var int
      */
-    public $id;
+    private $id;
 
     /**
      * @var string
      */
-    public $userName;
+    private $userName;
 
     /**
      * @var string
      */
-    public $fullName;
+    private $fullName;
 
     /**
      * @var string
      */
-    public $biography;
+    private $biography;
 
     /**
      * @var int
      */
-    public $followers;
+    private $followers;
 
     /**
      * @var int
      */
-    public $following;
+    private $following;
 
     /**
      * @var string
      */
-    public $profilePicture;
+    private $profilePicture;
 
     /**
      * @var string
      */
-    public $externalUrl;
+    private $externalUrl;
 
     /**
      * @var bool
      */
-    public $private;
+    private $private;
 
     /**
      * @var bool
      */
-    public $verified;
+    private $verified;
 
     /**
      * @var int
      */
-    public $mediaCount = 0;
+    private $mediaCount = 0;
 
     /**
-     * @var InstagramMedia[]
+     * @var Media[]
      */
-    public $medias = [];
+    private $medias = [];
 
     /**
      * @var bool
@@ -254,7 +254,7 @@ class InstagramProfile
     }
 
     /**
-     * @return InstagramMedia[]
+     * @return Media[]
      */
     public function getMedias(): array
     {
@@ -262,9 +262,9 @@ class InstagramProfile
     }
 
     /**
-     * @param InstagramMedia $media
+     * @param Media $media
      */
-    public function addMedia(InstagramMedia $media): void
+    public function addMedia(Media $media): void
     {
         $this->medias[] = $media;
     }
@@ -296,5 +296,13 @@ class InstagramProfile
     public function getEndCursor(): ?string
     {
         return $this->endCursor;
+    }
+
+    /**
+     * @param Media[] $medias
+     */
+    public function setMedias(array $medias): void
+    {
+        $this->medias = $medias;
     }
 }

@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Instagram;
 
 use GuzzleHttp\Client;
-use Instagram\Hydrator\InstagramStoriesHydrator;
-use Instagram\Model\InstagramStories;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Login, Session};
 use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\InstagramProfileHydrator;
-use Instagram\Model\InstagramProfile;
-use Instagram\Transport\{HtmlProfileDataFeed, JsonMediasDataFeed, JsonStoriesDataFeed};
+use Instagram\Hydrator\{StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator};
+use Instagram\Model\{Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder};
+use Instagram\Transport\{HtmlProfileDataFeed,
+    JsonMediasDataFeed,
+    JsonStoriesDataFeed,
+    JsonStoryHighlightsFoldersDataFeed,
+    JsonStoryHighlightsStoriesDataFeed
+};
 use Psr\Cache\CacheItemPoolInterface;
 
 class Api
@@ -87,16 +90,16 @@ class Api
     /**
      * @param string $user
      *
-     * @return InstagramProfile
+     * @return Profile
      *
      * @throws InstagramException
      */
-    public function getProfile(string $user): InstagramProfile
+    public function getProfile(string $user): Profile
     {
         $feed = new HtmlProfileDataFeed($this->client, $this->session);
         $data = $feed->fetchData($user);
 
-        $hydrator = new InstagramProfileHydrator();
+        $hydrator = new ProfileHydrator();
         $hydrator->hydrateProfile($data);
         $hydrator->hydrateMedias($data);
 
@@ -104,18 +107,18 @@ class Api
     }
 
     /**
-     * @param InstagramProfile $instagramProfile
+     * @param Profile $instagramProfile
      *
-     * @return InstagramProfile
+     * @return Profile
      *
      * @throws InstagramException
      */
-    public function getMoreMedias(InstagramProfile $instagramProfile): InstagramProfile
+    public function getMoreMedias(Profile $instagramProfile): Profile
     {
         $feed = new JsonMediasDataFeed($this->client, $this->session);
         $data = $feed->fetchData($instagramProfile);
 
-        $hydrator = new InstagramProfileHydrator($instagramProfile);
+        $hydrator = new ProfileHydrator($instagramProfile);
         $hydrator->hydrateMedias($data);
 
         return $hydrator->getProfile();
@@ -124,18 +127,57 @@ class Api
     /**
      * @param int $userId
      *
-     * @return InstagramStories
+     * @return ProfileStory
+     *
      * @throws Exception\InstagramAuthException
      * @throws Exception\InstagramFetchException
      */
-    public function getStories(int $userId): InstagramStories
+    public function getStories(int $userId): ProfileStory
     {
         $feed = new JsonStoriesDataFeed($this->client, $this->session);
         $data = $feed->fetchData($userId);
 
-        $hydrator = new InstagramStoriesHydrator();
+        $hydrator = new StoriesHydrator();
         $hydrator->hydrateStories($data);
 
         return $hydrator->getStories();
+    }
+
+    /**
+     * @param int $userId
+     *
+     * @return StoryHighlights
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getStoryHighlightsFolder(int $userId): StoryHighlights
+    {
+        $feed = new JsonStoryHighlightsFoldersDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($userId);
+
+        $hydrator = new StoryHighlightsHydrator();
+        $hydrator->hydrateFolders($data);
+
+        return $hydrator->getHighlights();
+    }
+
+    /**
+     * @param StoryHighlightsFolder $folder
+     *
+     * @return StoryHighlightsFolder
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getStoriesOfHighlightsFolder(StoryHighlightsFolder $folder): StoryHighlightsFolder
+    {
+        $feed = new JsonStoryHighlightsStoriesDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($folder);
+
+        $hydrator = new StoryHighlightsHydrator();
+        $hydrator->hydrateHighLights($folder, $data);
+
+        return $hydrator->getFolder();
     }
 }

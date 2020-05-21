@@ -2,82 +2,82 @@
 
 namespace Instagram\Model;
 
-class InstagramMedia
+class Media
 {
     /**
      * @var int
      */
-    public $id;
+    private $id;
 
     /**
      * @var string
      */
-    public $typeName;
+    private $typeName;
 
     /**
      * @var int
      */
-    public $height;
+    private $height;
 
     /**
      * @var int
      */
-    public $width;
+    private $width;
 
     /**
      * @var string
      */
-    public $thumbnailSrc;
+    private $thumbnailSrc;
 
     /**
      * @var string
      */
-    public $link;
+    private $link;
 
     /**
      * @var \DateTime
      */
-    public $date;
+    private $date;
 
     /**
      * @var string
      */
-    public $displaySrc;
+    private $displaySrc;
 
     /**
      * @var string
      */
-    public $caption;
+    private $caption;
 
     /**
      * @var int
      */
-    public $comments;
+    private $comments;
 
     /**
      * @var int
      */
-    public $likes;
+    private $likes;
 
     /**
      * @var array
      */
-    public $thumbnails = [];
+    private $thumbnails = [];
 
     /**
      * @var mixed
      */
-    public $location;
+    private $location;
 
     /**
      * @var bool
      */
-    public $video = false;
+    private $video = false;
 
     /**
      * @var int
      */
-    public $videoViewCount = 0;
+    private $videoViewCount = 0;
 
     /**
      * @return int
