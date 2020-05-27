@@ -176,7 +176,7 @@ class Profile
     /**
      * @return string
      */
-    public function getExternalUrl(): string
+    public function getExternalUrl(): ?string
     {
         return $this->externalUrl;
     }
@@ -184,7 +184,7 @@ class Profile
     /**
      * @param string $externalUrl
      */
-    public function setExternalUrl(string $externalUrl): void
+    public function setExternalUrl(?string $externalUrl): void
     {
         $this->externalUrl = $externalUrl;
     }

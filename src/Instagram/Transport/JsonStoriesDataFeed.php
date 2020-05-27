@@ -34,6 +34,6 @@ class JsonStoriesDataFeed extends AbstractDataFeed
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return $data->data->reels_media[0];
+        return $data->data;
     }
 }

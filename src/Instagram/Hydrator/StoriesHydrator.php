@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Instagram\Hydrator;
 
 use Instagram\Model\ProfileStory;
-use Instagram\Model\StoryMedia;
 
 class StoriesHydrator extends AbstractStoryHydrator
 {
@@ -27,17 +26,21 @@ class StoriesHydrator extends AbstractStoryHydrator
      */
     public function hydrateStories(\StdClass $data): void
     {
-        $this->stories->setOwner($data->owner);
-        $this->stories->setAllowedToReply($data->can_reply);
-        $this->stories->setReshareable($data->can_reshare);
+        if (count($data->reels_media)) {
+            $medias = current($data->reels_media);
 
-        $expiringDate = new \DateTime();
-        $expiringDate->setTimestamp($data->expiring_at);
-        $this->stories->setExpiringDate($expiringDate);
+            $this->stories->setOwner($medias->owner);
+            $this->stories->setAllowedToReply($medias->can_reply);
+            $this->stories->setReshareable($medias->can_reshare);
 
-        foreach ($data->items as $item) {
-            $story = $this->hydrateStory($item);
-            $this->stories->addStory($story);
+            $expiringDate = new \DateTime();
+            $expiringDate->setTimestamp($medias->expiring_at);
+            $this->stories->setExpiringDate($expiringDate);
+
+            foreach ($medias->items as $item) {
+                $story = $this->hydrateStory($item);
+                $this->stories->addStory($story);
+            }
         }
     }
 
