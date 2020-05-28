@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Instagram;
 
 use GuzzleHttp\Client;
+use PhpImap\Mailbox;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Login, Session};
 use Instagram\Exception\InstagramException;
@@ -46,15 +47,16 @@ class Api
     }
 
     /**
-     * @param string $username
-     * @param string $password
+     * @param string  $username
+     * @param string  $password
+     * @param Mailbox $mailbox
      *
      * @throws Exception\InstagramAuthException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function login(string $username, string $password): void
+    public function login(string $username, string $password, Mailbox $mailbox): void
     {
-        $login = new Login($this->client, $username, $password);
+        $login = new Login($this->client, $username, $password, $mailbox);
 
         // fetch previous session an re-use it
         $sessionData = $this->cachePool->getItem(Session::SESSION_KEY);
@@ -67,7 +69,7 @@ class Api
             // Session expired (should never happened, Instagram TTL is ~ 1 year)
             if ($session->getExpires() < time()) {
                 $this->logout();
-                $this->login($username, $password);
+                $this->login($username, $password, $mailbox);
             }
 
         } else {

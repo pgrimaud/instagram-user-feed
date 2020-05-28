@@ -41,7 +41,8 @@
     "ext-curl": "*",
     "ext-json": "*",
     "symfony/cache": "^5.0",
-    "guzzlehttp/guzzle": "^6.5"
+    "guzzlehttp/guzzle": "^6.5",
+    "php-imap/php-imap": "^4.0"
   },
   "require-dev": {
     "php-coveralls/php-coveralls": "^2.2",

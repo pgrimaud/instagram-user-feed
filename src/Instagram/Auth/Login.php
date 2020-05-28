@@ -11,6 +11,7 @@ use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramAuthException;
 use Instagram\Utils\InstagramHelper;
 use Instagram\Utils\UserAgentHelper;
+use PhpImap\Mailbox;
 
 class Login
 {
@@ -30,15 +31,22 @@ class Login
     private $password;
 
     /**
-     * @param Client $client
-     * @param string $login
-     * @param string $password
+     * @var Mailbox
      */
-    public function __construct(Client $client, string $login, string $password)
+    private $mailbox;
+
+    /**
+     * @param Client  $client
+     * @param string  $login
+     * @param string  $password
+     * @param Mailbox $mailbox
+     */
+    public function __construct(Client $client, string $login, string $password, Mailbox $mailbox)
     {
         $this->client   = $client;
         $this->login    = $login;
         $this->password = $password;
+        $this->mailbox  = $mailbox;
     }
 
     /**
@@ -99,6 +107,7 @@ class Login
                 'cookies' => $cookieJar
             ];
 
+            // fetch old cookie "mid"
             $mid = $cookieJar->getCookieByName('mid')->getValue();
 
             $res  = $this->client->request('GET', $url, $headers);
@@ -139,16 +148,78 @@ class Login
                     'referer'          => $url,
                     'cookie'           => $cookie,
                 ]
-                /** @todo may be useful later!? */
-                //'cookies'     => $cookieJar
             ];
 
             $res2 = $this->client->request('POST', $url, $postHeaders);
             $body = (string)$res2->getBody();
             // email is sent - need to verify
+            dump($body);
 
-            dd($body);
-            exit;
+            sleep(3);
+            // force resend code
+            // here we directly replay email sent (not sure about it)
+            // https://www.instagram.com/challenge/6242737647/JLcKrPEBdX/ will be
+            // https://www.instagram.com/challenge/replay/6242737647/JLcKrPEBdX/
+            $urlForceReply = str_replace('challenge/', 'challenge/replay/', $url);
+            $this->client->request('POST', $urlForceReply, $postHeaders);
+
+            $mailsIds = $this->mailbox->searchMailbox();
+
+            $foundCode = false;
+            $code      = null;
+
+            // check into the last 3 mails
+            for ($i = 0; $i < 3; $i++) {
+                $mail = end($mailsIds);
+                if ($mail) {
+                    $mail = $this->mailbox->getMail($mail);
+                    preg_match('/<font size="6">([0-9]{6})<\/font>/s', $mail->textHtml, $match);
+                    if ($mail->fromAddress === 'security@mail.instagram.com' && isset($match[1])) {
+                        $foundCode = true;
+                        $code      = $match[1];
+                        break;
+                    }
+
+                    array_pop($mailsIds);
+                }
+            }
+
+            dump('Wait for email... 10 seconds');
+            sleep(10);
+
+            dump('Code is : ' . $code);
+            sleep(2);
+
+            $cookieJarClean = new CookieJar();
+
+            $cookie      = 'ig_cb=1; ig_did=' . $data->device_id . '; csrftoken=' . $data->config->csrf_token . '; mid=' . $mid;
+            $postHeaders = [
+                'form_params' => [
+                    'security_code' => (int)$code,
+                ],
+                'headers'     => [
+                    'x-instagram-ajax' => $data->rollout_hash,
+                    'content-type'     => 'application/x-www-form-urlencoded',
+                    'accept'           => '*/*',
+                    'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
+                    'x-requested-with' => 'XMLHttpRequest',
+                    'x-csrftoken'      => $data->config->csrf_token,
+                    'x-ig-app-id'      => 123456889,
+                    'referer'          => $url,
+                    'cookie'           => $cookie,
+                ],
+                'cookies'     => $cookieJarClean
+            ];
+
+            $res3 = $this->client->request('POST', $url, $postHeaders);
+
+            $codeSubmissionData = json_decode((string)$res3->getBody());
+
+            if ($codeSubmissionData->status === 'ok') {
+                return $cookieJarClean;
+            } else {
+                dd('Error during connection');
+            }
         }
 
         $response = json_decode((string)$query->getBody());
