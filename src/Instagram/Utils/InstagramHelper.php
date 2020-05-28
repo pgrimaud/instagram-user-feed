@@ -6,6 +6,7 @@ namespace Instagram\Utils;
 
 class InstagramHelper
 {
+    const URL_IG = 'https://www.instagram.com'; /** @todo IMPROVE ME LATER HEEHH */
     const URL_BASE = 'https://www.instagram.com/';
     const URL_AUTH = 'https://www.instagram.com/accounts/login/ajax/';
 
