@@ -107,7 +107,7 @@ class Login
                 'cookies' => $cookieJar
             ];
 
-            // fetch old cookie "mid"
+            // fetch old cookie "mid" to next requests
             $mid = $cookieJar->getCookieByName('mid')->getValue();
 
             $res  = $this->client->request('GET', $url, $headers);
@@ -131,7 +131,7 @@ class Login
 
             $verificationMethod = $method;
 
-            // "Send Security Code"
+            // Simulate click on "Send Security Code"
             $cookie      = 'ig_cb=1; ig_did=' . $data->device_id . '; csrftoken=' . $data->config->csrf_token . '; mid=' . $mid;
             $postHeaders = [
                 'form_params' => [
@@ -152,16 +152,19 @@ class Login
 
             $res2 = $this->client->request('POST', $url, $postHeaders);
             $body = (string)$res2->getBody();
-            // email is sent - need to verify
-            dump($body);
 
             sleep(3);
             // force resend code
-            // here we directly replay email sent (not sure about it)
+            // here we directly replay email sent (not sure about it, need to investigate)
             // https://www.instagram.com/challenge/6242737647/JLcKrPEBdX/ will be
             // https://www.instagram.com/challenge/replay/6242737647/JLcKrPEBdX/
             $urlForceReply = str_replace('challenge/', 'challenge/replay/', $url);
             $this->client->request('POST', $urlForceReply, $postHeaders);
+
+
+            // Fetch code in emails (imap connection)
+            dump('Wait for email... 10 seconds');
+            sleep(10);
 
             $mailsIds = $this->mailbox->searchMailbox();
 
@@ -184,12 +187,14 @@ class Login
                 }
             }
 
-            dump('Wait for email... 10 seconds');
-            sleep(10);
+            if (!$foundCode) {
+                /** @todo maybe sleep(10) + retry imap check */
+            }
 
             dump('Code is : ' . $code);
             sleep(2);
 
+            // here we create a new CookieJar to retrieve real session cookies
             $cookieJarClean = new CookieJar();
 
             $cookie      = 'ig_cb=1; ig_did=' . $data->device_id . '; csrftoken=' . $data->config->csrf_token . '; mid=' . $mid;
