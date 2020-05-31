@@ -305,4 +305,37 @@ class Profile
     {
         $this->medias = $medias;
     }
+    
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'userName' => $this->userName,
+            'fullName' => $this->fullName,
+            'biography' => $this->biography,
+            'followers' => $this->followers,
+            'following' => $this->following,
+            'profilePicture' => $this->profilePicture,
+            'externalUrl' => $this->externalUrl,
+            'private' => $this->private,
+            'verified' => $this->verified,
+            'mediaCount' => $this->mediaCount,
+            'medias' => array_map(function ($media) {
+                return $media->toArray();
+            }, $this->medias),
+            'hasMoreMedias' => $this->hasMoreMedias,
+            'endCursor' => $this->endCursor,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return $this->toArray();
+    }
 }
