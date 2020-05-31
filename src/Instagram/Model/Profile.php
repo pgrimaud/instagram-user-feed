@@ -305,29 +305,29 @@ class Profile
     {
         $this->medias = $medias;
     }
-    
+
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'userName' => $this->userName,
-            'fullName' => $this->fullName,
-            'biography' => $this->biography,
-            'followers' => $this->followers,
-            'following' => $this->following,
+            'id'             => $this->id,
+            'userName'       => $this->userName,
+            'fullName'       => $this->fullName,
+            'biography'      => $this->biography,
+            'followers'      => $this->followers,
+            'following'      => $this->following,
             'profilePicture' => $this->profilePicture,
-            'externalUrl' => $this->externalUrl,
-            'private' => $this->private,
-            'verified' => $this->verified,
-            'mediaCount' => $this->mediaCount,
-            'medias' => array_map(function ($media) {
+            'externalUrl'    => $this->externalUrl,
+            'private'        => $this->private,
+            'verified'       => $this->verified,
+            'mediaCount'     => $this->mediaCount,
+            'medias'         => array_map(function ($media) {
                 return $media->toArray();
             }, $this->medias),
-            'hasMoreMedias' => $this->hasMoreMedias,
-            'endCursor' => $this->endCursor,
+            'hasMoreMedias'  => $this->hasMoreMedias,
+            'endCursor'      => $this->endCursor,
         ];
     }
 

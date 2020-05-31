@@ -47,6 +47,20 @@ class ApiTest extends TestCase
         $this->assertSame(true, $profile->hasMoreMedias());
         $this->assertCount(12, $profile->getMedias());
 
+        $this->assertSame(1518284433, $profile->__serialize()['id']);
+        $this->assertSame('robertdowneyjr', $profile->__serialize()['userName']);
+        $this->assertSame('Robert Downey Jr. Official', $profile->__serialize()['fullName']);
+        $this->assertSame('@officialfootprintcoalition @coreresponse', $profile->__serialize()['biography']);
+        $this->assertSame(46383825, $profile->__serialize()['followers']);
+        $this->assertSame(50, $profile->__serialize()['following']);
+        $this->assertSame('https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/s320x320/72702032_542075739927421_3928117925747097600_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=h2zGWoshNjUAX90AcTx&oh=ec27e20298c8765eccdfeb9c1b655f76&oe=5EEEC338', $profile->__serialize()['profilePicture']);
+        $this->assertSame('http://coreresponse.org/covid19', $profile->__serialize()['externalUrl']);
+        $this->assertSame(false, $profile->__serialize()['private']);
+        $this->assertSame(true, $profile->__serialize()['verified']);
+        $this->assertSame(453, $profile->__serialize()['mediaCount']);
+        $this->assertSame(true, $profile->__serialize()['hasMoreMedias']);
+        $this->assertCount(12, $profile->__serialize()['medias']);
+
         $profile = $api->getMoreMedias($profile);
         $media   = $profile->getMedias()[0];
 
@@ -56,7 +70,6 @@ class ApiTest extends TestCase
         $this->assertSame(750, $media->getWidth());
         $this->assertSame('https://www.instagram.com/p/B7eUksNFA-K/', $media->getLink());
         $this->assertInstanceOf(\DateTime::class, $media->getDate());
-
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=725b6b887273f8402ea4d448abd456f9&oe=5EC809A6', $media->getDisplaySrc());
         $this->assertSame('#happybirthday little brother @harrycollettactor , quite the night out in #berlin #germany with #stubbins and #ladyrose @carmellaniadoofficial @dolittlemovie #press tour #trudges on... (🎥 @jimmy_rich ) #sweet #16', $media->getCaption());
         $this->assertSame(1939, $media->getComments());
@@ -66,6 +79,22 @@ class ApiTest extends TestCase
         $this->assertSame(true, $media->isVideo());
         $this->assertSame(2726827, $media->getVideoViewCount());
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->getThumbnailSrc());
+
+        $this->assertSame(2224305748263047050, $media->__serialize()['id']);
+        $this->assertSame('GraphVideo', $media->__serialize()['typeName']);
+        $this->assertSame(421, $media->__serialize()['height']);
+        $this->assertSame(750, $media->__serialize()['width']);
+        $this->assertSame('https://www.instagram.com/p/B7eUksNFA-K/', $media->__serialize()['link']);
+        $this->assertInstanceOf(\DateTime::class, $media->__serialize()['date']);
+        $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=725b6b887273f8402ea4d448abd456f9&oe=5EC809A6', $media->__serialize()['displaySrc']);
+        $this->assertSame('#happybirthday little brother @harrycollettactor , quite the night out in #berlin #germany with #stubbins and #ladyrose @carmellaniadoofficial @dolittlemovie #press tour #trudges on... (🎥 @jimmy_rich ) #sweet #16', $media->__serialize()['caption']);
+        $this->assertSame(1939, $media->__serialize()['comments']);
+        $this->assertSame(695047, $media->__serialize()['likes']);
+        $this->assertCount(5, $media->__serialize()['thumbnails']);
+        $this->assertInstanceOf(\StdClass::class, $media->__serialize()['location']);
+        $this->assertSame(true, $media->__serialize()['video']);
+        $this->assertSame(2726827, $media->__serialize()['videoViewCount']);
+        $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->__serialize()['thumbnailSrc']);
 
         $api->logout();
     }
