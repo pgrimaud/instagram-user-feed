@@ -307,6 +307,7 @@ class ApiTest extends TestCase
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-media.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-media-2.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -328,6 +329,16 @@ class ApiTest extends TestCase
         $this->assertSame(null, $mediaDetailed->getVideoUrl());
         $this->assertCount(0, $mediaDetailed->getTaggedUsers());
         $this->assertCount(3, $mediaDetailed->getSideCarItems());
+        $this->assertCount(3, $mediaDetailed->getDisplayResources());
+
+        $media->setLink('https://www.instagram.com/p/CAnqPB-Jzcj/');
+
+        $mediaDetailed = $api->getMediaDetailed($media);
+
+        $this->assertSame(true, $mediaDetailed->hasAudio());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/v/t50.2886-16/97784581_115199903279540_8370161409519117911_n.mp4?_nc_ht=scontent-cdg2-1.cdninstagram.com&_nc_cat=108&_nc_ohc=gOgqaQBnBEEAX9xddWo&oe=5ED69D0B&oh=edbbe40e7747f95edda907926a9e6af6', $mediaDetailed->getVideoUrl());
+        $this->assertCount(2, $mediaDetailed->getTaggedUsers());
+        $this->assertCount(0, $mediaDetailed->getSideCarItems());
         $this->assertCount(3, $mediaDetailed->getDisplayResources());
 
         $api->logout();
