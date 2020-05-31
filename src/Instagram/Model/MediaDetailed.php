@@ -32,7 +32,7 @@ class MediaDetailed extends Media
     /**
      * @return string
      */
-    public function getVideoUrl(): string
+    public function getVideoUrl(): ?string
     {
         return $this->videoUrl;
     }

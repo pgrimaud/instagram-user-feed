@@ -7,6 +7,7 @@ use Instagram\Api;
 
 use Instagram\Auth\Session;
 use Instagram\Exception\InstagramFetchException;
+use Instagram\Model\Media;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -263,7 +264,7 @@ class ApiTest extends TestCase
         $api->logout();
     }
 
-    public function testgetMoreProfileWithEndCursor()
+    public function testGetMoreMediasWithEndCursor()
     {
         $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
 
@@ -294,6 +295,40 @@ class ApiTest extends TestCase
 
         $medias = $profile->getMedias();
         $this->assertCount(12, $medias);
+
+        $api->logout();
+    }
+
+    public function testGetMediaDetailed()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-media.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout();
+
+        $api->login('username', 'password');
+
+        $media = new Media();
+        $media->setLink('https://www.instagram.com/p/CAnqPB-Jzcj/');
+
+        $mediaDetailed = $api->getMediaDetailed($media);
+
+        $this->assertSame(false, $mediaDetailed->hasAudio());
+        $this->assertSame(null, $mediaDetailed->getVideoUrl());
+        $this->assertCount(0, $mediaDetailed->getTaggedUsers());
+        $this->assertCount(3, $mediaDetailed->getSideCarItems());
+        $this->assertCount(3, $mediaDetailed->getDisplayResources());
 
         $api->logout();
     }
