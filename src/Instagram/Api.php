@@ -125,6 +125,30 @@ class Api
     }
 
     /**
+     * @param int    $userId
+     * @param string $endCursor
+     *
+     * @return Profile
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMoreMediasWithCursor(int $userId, string $endCursor): Profile
+    {
+        $instagramProfile = new Profile();
+        $instagramProfile->setId($userId);
+        $instagramProfile->setEndCursor($endCursor);
+
+        $feed = new JsonMediasDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($instagramProfile);
+
+        $hydrator = new ProfileHydrator($instagramProfile);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getProfile();
+    }
+
+    /**
      * @param int $userId
      *
      * @return ProfileStory

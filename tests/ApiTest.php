@@ -2,9 +2,10 @@
 
 namespace Instagram\Tests;
 
-use GuzzleHttp\{Client, Handler\MockHandler, HandlerStack, Psr7\Response};
+use GuzzleHttp\{Client, Cookie\CookieJar, Cookie\SetCookie, Handler\MockHandler, HandlerStack, Psr7\Response};
 use Instagram\Api;
 
+use Instagram\Auth\Session;
 use Instagram\Exception\InstagramFetchException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -258,6 +259,41 @@ class ApiTest extends TestCase
         $this->assertSame('STORY', $folder->getName());
         $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-15/s150x150/94263786_546583649377430_3277795491247917640_n.jpg?_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_ohc=D6Img4muLocAX_bsIlI&oh=eeeec52698961ee00a070d3e210f532d&oe=5EF1ACCB', $folder->getCover());
         $this->assertCount(33, $folder->getStories());
+
+        $api->logout();
+    }
+
+    public function testgetMoreProfileWithEndCursor()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        // dummy cookie
+        $cookie = new SetCookie();
+        $cookie->setName('sessionId');
+        $cookie->setValue('123456789');
+        $cookie->setExpires(1621543830);
+        $cookie->setDomain('.instagram.com');
+
+        $cookiesJar = new CookieJar();
+        $cookiesJar->setCookie($cookie);
+
+        $cacheItem = $cachePool->getItem(Session::SESSION_KEY);
+        $cacheItem->set($cookiesJar);
+        $cachePool->save($cacheItem);
+
+        $mock = new MockHandler([
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-medias.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+        $api->login('username', 'password');
+        $profile = $api->getMoreMediasWithCursor(12345567, 'endCursorVeryLongString');
+
+        $medias = $profile->getMedias();
+        $this->assertCount(12, $medias);
 
         $api->logout();
     }
