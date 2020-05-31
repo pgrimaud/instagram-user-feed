@@ -318,4 +318,36 @@ class Media
     {
         $this->videoViewCount = $videoViewCount;
     }
+    
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'typeName' => $this->typeName,
+            'height' => $this->height,
+            'width' => $this->width,
+            'thumbnailSrc' => $this->thumbnailSrc,
+            'link' => $this->link,
+            'date' => $this->date,
+            'displaySrc' => $this->displaySrc,
+            'caption' => $this->caption,
+            'comments' => $this->comments,
+            'likes' => $this->likes,
+            'thumbnails' => $this->thumbnails,
+            'location' => $this->location,
+            'video' => $this->video,
+            'videoViewCount' => $this->videoViewCount,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return $this->toArray();
+    }
 }
