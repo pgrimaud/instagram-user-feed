@@ -8,9 +8,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Login, Session};
 use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\{StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator};
-use Instagram\Model\{Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder};
+use Instagram\Hydrator\{MediaHydrator, StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator};
+use Instagram\Model\{Media, MediaDetailed, Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder};
 use Instagram\Transport\{HtmlProfileDataFeed,
+    JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
@@ -196,5 +197,24 @@ class Api
         $hydrator->hydrateHighLights($folder, $data);
 
         return $hydrator->getFolder();
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return MediaDetailed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMediaDetailed(Media $media): MediaDetailed
+    {
+        $feed = new JsonMediaDetailedDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($media);
+
+        $hydrator = new MediaHydrator();
+        $media    = $hydrator->hydrateMediaDetailed($data->shortcode_media);
+
+        return $media;
     }
 }

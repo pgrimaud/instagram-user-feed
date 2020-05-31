@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Hydrator;
 
-use Instagram\Utils\InstagramHelper;
-use Instagram\Model\{Media, Profile};
+use Instagram\Model\Profile;
 
 class ProfileHydrator
 {
@@ -15,13 +14,19 @@ class ProfileHydrator
     private $profile;
 
     /**
+     * @var MediaHydrator
+     */
+    private $mediaHydrator;
+
+    /**
      * Hydration is made manually to avoid shitty Instagram variable names
      *
      * @param Profile|null $instagramProfile
      */
     public function __construct(Profile $instagramProfile = null)
     {
-        $this->profile = $instagramProfile ?: new Profile();
+        $this->profile       = $instagramProfile ?: new Profile();
+        $this->mediaHydrator = new MediaHydrator();
     }
 
     /**
@@ -51,45 +56,7 @@ class ProfileHydrator
         $this->profile->setMedias([]);
 
         foreach ($data->edge_owner_to_timeline_media->edges as $item) {
-            $node = $item->node;
-
-            $media = new Media();
-
-            $media->setId((int)$node->id);
-            $media->setTypeName($node->__typename);
-
-            if ($node->edge_media_to_caption->edges) {
-                $media->setCaption($node->edge_media_to_caption->edges[0]->node->text);
-            }
-
-            $media->setHeight($node->dimensions->height);
-            $media->setWidth($node->dimensions->width);
-
-            $media->setThumbnailSrc($node->thumbnail_src);
-            $media->setDisplaySrc($node->display_url);
-
-            $date = new \DateTime();
-            $date->setTimestamp($node->taken_at_timestamp);
-
-            $media->setDate($date);
-
-            $media->setComments($node->edge_media_to_comment->count);
-            $media->setLikes($node->edge_media_preview_like->count);
-
-            $media->setLink(InstagramHelper::URL_BASE . "p/{$node->shortcode}/");
-
-            $media->setThumbnails($node->thumbnail_resources);
-
-            if (isset($node->location)) {
-                $media->setLocation($node->location);
-            }
-
-            $media->setVideo((bool)$node->is_video);
-
-            if (property_exists($node, 'video_view_count')) {
-                $media->setVideoViewCount((int)$node->video_view_count);
-            }
-
+            $media = $this->mediaHydrator->hydrateMediaFromProfile($item->node);
             $this->profile->addMedia($media);
         }
 
