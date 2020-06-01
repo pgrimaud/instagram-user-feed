@@ -308,6 +308,7 @@ class ApiTest extends TestCase
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-media.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-media-2.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-media-3.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -340,6 +341,16 @@ class ApiTest extends TestCase
         $this->assertCount(2, $mediaDetailed->getTaggedUsers());
         $this->assertCount(0, $mediaDetailed->getSideCarItems());
         $this->assertCount(3, $mediaDetailed->getDisplayResources());
+
+        $media->setLink('https://www.instagram.com/p/B-NYjoGpQqC/');
+
+        $mediaDetailed = $api->getMediaDetailed($media);
+
+        $this->assertSame(false, $mediaDetailed->hasAudio());
+        $this->assertCount(0, $mediaDetailed->getTaggedUsers());
+        $this->assertCount(4, $mediaDetailed->getSideCarItems());
+        $this->assertCount(3, $mediaDetailed->getDisplayResources());
+
 
         $api->logout();
     }
