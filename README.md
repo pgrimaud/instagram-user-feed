@@ -10,7 +10,9 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 ## Information
-Easily fetch any Instagram feed and more without OAuth for PHP
+Easily fetch any Instagram feed and more without OAuth for PHP.
+
+If you like or use this package, please share your love by starring this repository, follow @pgrimaud or [become a sponsor](https://github.com/sponsors/pgrimaud). 🙏
 
 ## Features
 
