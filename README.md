@@ -12,7 +12,7 @@
 ## Information
 Easily fetch any Instagram feed and more without OAuth for PHP.
 
-If you like or use this package, please share your love by starring this repository, follow @pgrimaud or [become a sponsor](https://github.com/sponsors/pgrimaud). 🙏
+If you like or use this package, please share your love by starring this repository, follow [@pgrimaud](https://github.com/pgrimaud) or [become a sponsor](https://github.com/sponsors/pgrimaud). 🙏
 
 ## Features
 
