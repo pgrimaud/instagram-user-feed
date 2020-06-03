@@ -172,11 +172,11 @@ $api->login($credentials->getLogin(), $credentials->getPassword());
 
 $profile = $api->getProfile('twhiddleston');
 
-print_r($profile->getMedias); // 12 first medias
+print_r($profile->getMedias()); // 12 first medias
 
 do {
     $profile = $api->getMoreMedias($profile);
-    print_r($profile->getMedias); // 12 more medias
+    print_r($profile->getMedias()); // 12 more medias
 
     // avoid 429 Rate limit from Instagram
     sleep(1);
