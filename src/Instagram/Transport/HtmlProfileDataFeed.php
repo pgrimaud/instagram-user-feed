@@ -37,12 +37,24 @@ class HtmlProfileDataFeed extends AbstractDataFeed
             throw new InstagramFetchException('Unable to extract JSON data');
         }
 
-        $data = json_decode($matches[1]);
+        $data = json_decode($matches[1], false);
 
         if ($data === null) {
             throw new InstagramFetchException(json_last_error_msg());
         }
 
-        return $data->entry_data->ProfilePage[0]->graphql->user;
+        if (!empty($data->entry_data->ProfilePage[0]->graphql)) {
+            return $data->entry_data->ProfilePage[0]->graphql->user;
+        }
+
+        preg_match('/<script type="text\/javascript">window\.__additionalDataLoaded\([^,]*,(.+)\);<\/script>/', $html, $matches);
+
+        if (!isset($matches[1])) {
+            throw new InstagramFetchException('Unable to extract JSON data');
+        }
+
+        $data = json_decode($matches[1], false);
+
+        return $data->graphql->user;
     }
 }
