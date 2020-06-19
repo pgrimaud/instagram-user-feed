@@ -40,8 +40,8 @@
     "php": "^7.2.5",
     "ext-curl": "*",
     "ext-json": "*",
-    "symfony/cache": "^3.4|^4.4|^5.0",
-    "guzzlehttp/guzzle": "^6.5"
+    "symfony/cache": "^3.4|^4.3|^5.0",
+    "guzzlehttp/guzzle": "^6.0"
   },
   "require-dev": {
     "php-coveralls/php-coveralls": "^2.2",
