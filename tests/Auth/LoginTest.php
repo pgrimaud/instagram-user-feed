@@ -132,7 +132,7 @@ class LoginTest extends TestCase
         $cookiesJar = new CookieJar();
         $cookiesJar->setCookie($cookie);
 
-        $cacheItem = $cachePool->getItem(Session::SESSION_KEY);
+        $cacheItem = $cachePool->getItem(Session::SESSION_KEY . '.username');
         $cacheItem->set($cookiesJar);
         $cachePool->save($cacheItem);
 
@@ -157,7 +157,7 @@ class LoginTest extends TestCase
     public function testFetchingDataWithoutLogin()
     {
         $this->expectException(InstagramAuthException::class);
-        
+
         $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
         $mock = new MockHandler([

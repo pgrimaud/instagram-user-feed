@@ -38,7 +38,7 @@ class Api
 
     /**
      * @param CacheItemPoolInterface $cachePool
-     * @param Client|null            $client
+     * @param Client|null $client
      */
     public function __construct(CacheItemPoolInterface $cachePool, Client $client = null)
     {
@@ -58,7 +58,7 @@ class Api
         $login = new Login($this->client, $username, $password);
 
         // fetch previous session an re-use it
-        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY);
+        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . $username);
         $cookies     = $sessionData->get();
 
         if ($cookies instanceof CookieJar) {
@@ -81,11 +81,13 @@ class Api
     }
 
     /**
+     * @param string|null $username
+     *
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function logout(): void
+    public function logout(?string $username = ''): void
     {
-        $this->cachePool->deleteItem(Session::SESSION_KEY);
+        $this->cachePool->deleteItem(Session::SESSION_KEY . ($username !== '' ? '.' . $username : ''));
     }
 
     /**
@@ -126,7 +128,7 @@ class Api
     }
 
     /**
-     * @param int    $userId
+     * @param int $userId
      * @param string $endCursor
      *
      * @return Profile

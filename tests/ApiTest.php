@@ -30,7 +30,7 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
         $profile = $api->getProfile('robertdowneyjr');
@@ -98,7 +98,7 @@ class ApiTest extends TestCase
         $this->assertSame(2726827, $media->__serialize()['videoViewCount']);
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->__serialize()['thumbnailSrc']);
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testJsonMediasWithError()
@@ -120,13 +120,13 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
         $profile = $api->getProfile('robertdowneyjr');
         $api->getMoreMedias($profile);
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testProfileFetchWithNoContentInside()
@@ -147,12 +147,12 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
         $api->getProfile('robertdowneyjr');
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testProfileFetchWithNoValidJsonInside()
@@ -173,12 +173,12 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
         $api->getProfile('robertdowneyjr');
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testValidStoriesFetch()
@@ -197,7 +197,7 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
 
@@ -223,7 +223,7 @@ class ApiTest extends TestCase
             $this->assertSame(true, $story->isAudio());
         }
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testHighlightsStoriesFetch()
@@ -244,7 +244,7 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
 
@@ -261,7 +261,7 @@ class ApiTest extends TestCase
         $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-15/s150x150/94263786_546583649377430_3277795491247917640_n.jpg?_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_ohc=D6Img4muLocAX_bsIlI&oh=eeeec52698961ee00a070d3e210f532d&oe=5EF1ACCB', $folder->getCover());
         $this->assertCount(33, $folder->getStories());
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testGetMoreMediasWithEndCursor()
@@ -278,7 +278,7 @@ class ApiTest extends TestCase
         $cookiesJar = new CookieJar();
         $cookiesJar->setCookie($cookie);
 
-        $cacheItem = $cachePool->getItem(Session::SESSION_KEY);
+        $cacheItem = $cachePool->getItem(Session::SESSION_KEY . '.username');
         $cacheItem->set($cookiesJar);
         $cachePool->save($cacheItem);
 
@@ -296,7 +296,7 @@ class ApiTest extends TestCase
         $medias = $profile->getMedias();
         $this->assertCount(12, $medias);
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testGetMediaDetailed()
@@ -317,7 +317,7 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
 
@@ -352,7 +352,7 @@ class ApiTest extends TestCase
         $this->assertCount(3, $mediaDetailed->getDisplayResources());
 
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testProfileFetchWithContentInAdditionalData()
@@ -371,13 +371,13 @@ class ApiTest extends TestCase
         $api = new Api($cachePool, $client);
 
         // clear cache
-        $api->logout();
+        $api->logout('username');
 
         $api->login('username', 'password');
         $profile = $api->getProfile('robertdowneyjr');
 
         $this->assertSame('robertdowneyjr', $profile->getUserName());
 
-        $api->logout();
+        $api->logout('username');
     }
 }
