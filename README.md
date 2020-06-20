@@ -198,7 +198,7 @@ $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 $api = new Api($cachePool);
 $api->login('username', 'password'); // mandatory
 
-$profile = $api->getProfile('starwars'); // we need instagram user id
+$profile = $api->getProfile('starwars'); // we need instagram username
 sleep(1);
 $feedStories = $api->getStories($profile->getId());
 
