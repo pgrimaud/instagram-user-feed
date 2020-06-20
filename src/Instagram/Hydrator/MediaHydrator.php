@@ -34,7 +34,7 @@ class MediaHydrator
     }
 
     /**
-     * @param Media     $media
+     * @param Media $media
      * @param \StdClass $node
      *
      * @return Media|MediaDetailed
@@ -89,12 +89,16 @@ class MediaHydrator
             $media->setVideoViewCount((int)$node->video_view_count);
         }
 
+        if (property_exists($node, 'accessibility_caption')) {
+            $media->setAccessibilityCaption($node->accessibility_caption);
+        }
+
         return $media;
     }
 
     /**
      * @param MediaDetailed $media
-     * @param \StdClass     $node
+     * @param \StdClass $node
      *
      * @return MediaDetailed
      */
@@ -133,6 +137,8 @@ class MediaHydrator
                     $scItem->setVideoUrl($item->node->video_url);
                     $scItem->setHasAudio($item->node->has_audio);
                 }
+
+                $scItem->setAccessibilityCaption($item->node->accessibility_caption);
 
                 $scItems[] = $scItem;
             }

@@ -67,7 +67,7 @@ class Api
 
             // Session expired (should never happened, Instagram TTL is ~ 1 year)
             if ($session->getExpires() < time()) {
-                $this->logout();
+                $this->logout($username);
                 $this->login($username, $password);
             }
 

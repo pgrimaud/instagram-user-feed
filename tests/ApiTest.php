@@ -48,6 +48,7 @@ class ApiTest extends TestCase
         $this->assertSame(453, $profile->getMediaCount());
         $this->assertSame(true, $profile->hasMoreMedias());
         $this->assertCount(12, $profile->getMedias());
+        $this->assertSame('Photo shared by Robert Downey Jr. Official on May 12, 2020 tagging @netflix, @jefflemire, and @nxonnetflix. Image may contain: text', $profile->getMedias()[0]->getAccessibilityCaption());
 
         $this->assertSame(1518284433, $profile->__serialize()['id']);
         $this->assertSame('robertdowneyjr', $profile->__serialize()['userName']);

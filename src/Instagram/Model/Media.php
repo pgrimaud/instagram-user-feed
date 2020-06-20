@@ -80,6 +80,11 @@ class Media
     private $videoViewCount = 0;
 
     /**
+     * @var string
+     */
+    private $accessibilityCaption;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -349,5 +354,22 @@ class Media
     public function __serialize(): array
     {
         return $this->toArray();
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getAccessibilityCaption(): ?string
+    {
+        return $this->accessibilityCaption;
+    }
+
+    /**
+     * @param string|null $accessibilityCaption
+     */
+    public function setAccessibilityCaption(?string $accessibilityCaption): void
+    {
+        $this->accessibilityCaption = $accessibilityCaption;
     }
 }
