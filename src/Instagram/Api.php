@@ -13,6 +13,7 @@ use Instagram\Model\{Media, MediaDetailed, Profile, ProfileStory, StoryHighlight
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
+    JsonProfileDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
     JsonStoryHighlightsStoriesDataFeed
@@ -218,5 +219,20 @@ class Api
         $media    = $hydrator->hydrateMediaDetailed($data->shortcode_media);
 
         return $media;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Profile
+     *
+     * @throws InstagramException
+     */
+    public function getProfileById(int $id): Profile
+    {
+        $feed     = new JsonProfileDataFeed($this->client, $this->session);
+        $userName = $feed->fetchData($id);
+
+        return $this->getProfile($userName);
     }
 }
