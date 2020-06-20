@@ -381,4 +381,32 @@ class ApiTest extends TestCase
 
         $api->logout('username');
     }
+
+    public function testProfileFetchWithNoContentInAdditionalData()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-profile-additional-data-invalid.html')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+        $profile = $api->getProfile('robertdowneyjr');
+
+        $this->assertSame('robertdowneyjr', $profile->getUserName());
+
+        $api->logout('username');
+    }
 }
