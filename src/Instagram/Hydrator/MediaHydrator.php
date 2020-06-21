@@ -42,6 +42,7 @@ class MediaHydrator
     private function mediaBaseHydrator(Media $media, \StdClass $node): Media
     {
         $media->setId((int)$node->id);
+        $media->setShortCode($node->shortcode);
         $media->setTypeName($node->__typename);
 
         if ($node->edge_media_to_caption->edges) {
@@ -123,6 +124,7 @@ class MediaHydrator
             foreach ($node->edge_sidecar_to_children->edges as $item) {
                 $scItem = new MediaDetailed();
                 $scItem->setId((int)$item->node->id);
+                $scItem->setShortCode($item->node->shortcode);
                 $scItem->setHeight($item->node->dimensions->height);
                 $scItem->setWidth($item->node->dimensions->height);
                 $scItem->setTypeName($item->node->__typename);

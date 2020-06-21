@@ -12,6 +12,11 @@ class Media
     /**
      * @var string
      */
+    private $shortCode;
+
+    /**
+     * @var string
+     */
     private $typeName;
 
     /**
@@ -98,6 +103,22 @@ class Media
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortCode(): string
+    {
+        return $this->shortCode;
+    }
+
+    /**
+     * @param string $shortCode
+     */
+    public function setShortCode(string $shortCode): void
+    {
+        $this->shortCode = $shortCode;
     }
 
     /**
@@ -331,6 +352,7 @@ class Media
     {
         return [
             'id'             => $this->id,
+            'shortcode'      => $this->shortCode,
             'typeName'       => $this->typeName,
             'height'         => $this->height,
             'width'          => $this->width,
