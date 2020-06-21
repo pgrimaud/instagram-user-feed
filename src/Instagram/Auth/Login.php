@@ -83,13 +83,12 @@ class Login
                 'cookies'     => $cookieJar
             ]);
         } catch (ClientException $exception) {
-            throw new InstagramAuthException('Unknown error, please report it with a GitHub issue. ' . $exception->getMessage());
-
-            /** @todo IMPROVE ME !! */
             $data = json_decode((string)$exception->getResponse()->getBody());
 
-            if ($data->message !== 'checkpoint_required') {
-                dd($data);
+            if ($data && $data->message === 'checkpoint_required') {
+                //$checkpoint = new Checkpoint();
+            }else{
+                throw new InstagramAuthException('Unknown error, please report it with a GitHub issue. ' . $exception->getMessage());
             }
 
             // trigger email verification
