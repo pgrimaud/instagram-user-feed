@@ -94,7 +94,7 @@ class LoginTest extends TestCase
         $cookiesJar = new CookieJar();
         $cookiesJar->setCookie($cookie);
 
-        $cacheItem = $cachePool->getItem(Session::SESSION_KEY);
+        $cacheItem = $cachePool->getItem(Session::SESSION_KEY . '.username');
         $cacheItem->set($cookiesJar);
         $cachePool->save($cacheItem);
 
@@ -115,7 +115,7 @@ class LoginTest extends TestCase
 
         $this->assertSame(1518284433, $profile->getId());
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testReuseSessionWhenLogin()
@@ -132,7 +132,7 @@ class LoginTest extends TestCase
         $cookiesJar = new CookieJar();
         $cookiesJar->setCookie($cookie);
 
-        $cacheItem = $cachePool->getItem(Session::SESSION_KEY);
+        $cacheItem = $cachePool->getItem(Session::SESSION_KEY . '.username');
         $cacheItem->set($cookiesJar);
         $cachePool->save($cacheItem);
 
@@ -151,13 +151,13 @@ class LoginTest extends TestCase
 
         $this->assertSame(1518284433, $profile->getId());
 
-        $api->logout();
+        $api->logout('username');
     }
 
     public function testFetchingDataWithoutLogin()
     {
         $this->expectException(InstagramAuthException::class);
-        
+
         $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
         $mock = new MockHandler([
@@ -168,7 +168,7 @@ class LoginTest extends TestCase
         $client       = new Client(['handler' => $handlerStack]);
 
         $api = new Api($cachePool, $client);
-        $api->logout();
+        $api->logout('username');
         $api->getProfile('robertdowneyjr');
     }
 }

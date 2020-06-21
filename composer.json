@@ -1,7 +1,7 @@
 {
   "name": "pgrimaud/instagram-user-feed",
   "type": "library",
-  "description": "Easily fetch any user's Instagram feed without OAuth for PHP",
+  "description": "Easily fetch any Instagram feed and more without OAuth for PHP",
   "keywords": [
     "instagram",
     "api",
@@ -40,8 +40,8 @@
     "php": "^7.2.5",
     "ext-curl": "*",
     "ext-json": "*",
-    "symfony/cache": "^5.0",
-    "guzzlehttp/guzzle": "^6.5",
+    "symfony/cache": "^3.4|^4.3|^5.0",
+    "guzzlehttp/guzzle": "^6.0",
     "php-imap/php-imap": "^4.0"
   },
   "require-dev": {

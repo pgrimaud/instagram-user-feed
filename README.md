@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pgrimaud/instagram-user-feed.svg?branch=master)](https://travis-ci.org/pgrimaud/instagram-user-feed)
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
-[![Coverage Status](https://coveralls.io/repos/github/pgrimaud/instagram-user-feed/badge.svg)](https://coveralls.io/github/pgrimaud/instagram-user-feed)
+[![Coverage Status](https://coveralls.io/repos/github/pgrimaud/instagram-user-feed/badge.svg?branch=master)](https://coveralls.io/github/pgrimaud/instagram-user-feed?branch=master)
 
 [![Minimum PHP Version](https://img.shields.io/packagist/php-v/pgrimaud/instagram-user-feed.svg?maxAge=3600)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Last version](https://img.shields.io/packagist/v/pgrimaud/instagram-user-feed?maxAge=3600)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
@@ -10,7 +10,9 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 ## Information
-Easily fetch your or any Instagram feed without OAuth for PHP
+Easily fetch any Instagram feed and more without OAuth for PHP.
+
+If you like or use this package, please share your love by starring this repository, follow [@pgrimaud](https://github.com/pgrimaud) or [become a sponsor](https://github.com/sponsors/pgrimaud). 🙏
 
 ## Features
 
@@ -18,8 +20,9 @@ Easily fetch your or any Instagram feed without OAuth for PHP
 - Fetch medias of user
 - Fetch stories of user
 - Fetch highlights stories of user
+- Fetch detailed post of user
 
-**⚠️ Version ^5.0 is no more maintained.**
+**⚠️ Version ^5.0 is no more maintained. ⚠️**
 
 ## Version ^6.0
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
@@ -171,11 +174,11 @@ $api->login($credentials->getLogin(), $credentials->getPassword());
 
 $profile = $api->getProfile('twhiddleston');
 
-print_r($profile->getMedias); // 12 first medias
+print_r($profile->getMedias()); // 12 first medias
 
 do {
     $profile = $api->getMoreMedias($profile);
-    print_r($profile->getMedias); // 12 more medias
+    print_r($profile->getMedias()); // 12 more medias
 
     // avoid 429 Rate limit from Instagram
     sleep(1);
@@ -195,7 +198,7 @@ $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 $api = new Api($cachePool);
 $api->login('username', 'password'); // mandatory
 
-$profile = $api->getProfile('starwars'); // we need instagram user id
+$profile = $api->getProfile('starwars'); // we need instagram username
 sleep(1);
 $feedStories = $api->getStories($profile->getId());
 

@@ -9,10 +9,12 @@ use PhpImap\Mailbox;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Login, Session};
 use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\{StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator};
-use Instagram\Model\{Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder};
+use Instagram\Hydrator\{MediaHydrator, StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator};
+use Instagram\Model\{Media, MediaDetailed, Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder};
 use Instagram\Transport\{HtmlProfileDataFeed,
+    JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
+    JsonProfileDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
     JsonStoryHighlightsStoriesDataFeed
@@ -38,7 +40,7 @@ class Api
 
     /**
      * @param CacheItemPoolInterface $cachePool
-     * @param Client|null            $client
+     * @param Client|null $client
      */
     public function __construct(CacheItemPoolInterface $cachePool, Client $client = null)
     {
@@ -59,7 +61,7 @@ class Api
         $login = new Login($this->client, $username, $password, $mailbox);
 
         // fetch previous session an re-use it
-        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY);
+        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . $username);
         $cookies     = $sessionData->get();
 
         if ($cookies instanceof CookieJar) {
@@ -68,7 +70,7 @@ class Api
 
             // Session expired (should never happened, Instagram TTL is ~ 1 year)
             if ($session->getExpires() < time()) {
-                $this->logout();
+                $this->logout($username);
                 $this->login($username, $password, $mailbox);
             }
 
@@ -82,11 +84,13 @@ class Api
     }
 
     /**
+     * @param string|null $username
+     *
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function logout(): void
+    public function logout(?string $username = ''): void
     {
-        $this->cachePool->deleteItem(Session::SESSION_KEY);
+        $this->cachePool->deleteItem(Session::SESSION_KEY . ($username !== '' ? '.' . $username : ''));
     }
 
     /**
@@ -124,6 +128,23 @@ class Api
         $hydrator->hydrateMedias($data);
 
         return $hydrator->getProfile();
+    }
+
+    /**
+     * @param int $userId
+     * @param string $endCursor
+     *
+     * @return Profile
+     *
+     * @throws InstagramException
+     */
+    public function getMoreMediasWithCursor(int $userId, string $endCursor): Profile
+    {
+        $instagramProfile = new Profile();
+        $instagramProfile->setId($userId);
+        $instagramProfile->setEndCursor($endCursor);
+
+        return $this->getMoreMedias($instagramProfile);
     }
 
     /**
@@ -181,5 +202,39 @@ class Api
         $hydrator->hydrateHighLights($folder, $data);
 
         return $hydrator->getFolder();
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return MediaDetailed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMediaDetailed(Media $media): MediaDetailed
+    {
+        $feed = new JsonMediaDetailedDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($media);
+
+        $hydrator = new MediaHydrator();
+        $media    = $hydrator->hydrateMediaDetailed($data->shortcode_media);
+
+        return $media;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Profile
+     *
+     * @throws InstagramException
+     */
+    public function getProfileById(int $id): Profile
+    {
+        $feed     = new JsonProfileDataFeed($this->client, $this->session);
+        $userName = $feed->fetchData($id);
+
+        return $this->getProfile($userName);
     }
 }
