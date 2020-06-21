@@ -8,10 +8,10 @@ use GuzzleHttp\Client;
 
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ClientException;
+use Instagram\Auth\Checkpoint\ImapCredentials;
 use Instagram\Exception\InstagramAuthException;
 use Instagram\Utils\InstagramHelper;
 use Instagram\Utils\UserAgentHelper;
-use PhpImap\Mailbox;
 
 class Login
 {
@@ -31,22 +31,16 @@ class Login
     private $password;
 
     /**
-     * @var Mailbox
+     * @param Client $client
+     * @param string $login
+     * @param string $password
+     * @param ImapCredentials|null $imapCredentials
      */
-    private $mailbox;
-
-    /**
-     * @param Client  $client
-     * @param string  $login
-     * @param string  $password
-     * @param Mailbox $mailbox
-     */
-    public function __construct(Client $client, string $login, string $password, Mailbox $mailbox)
+    public function __construct(Client $client, string $login, string $password, ?ImapCredentials $imapCredentials = null)
     {
         $this->client   = $client;
         $this->login    = $login;
         $this->password = $password;
-        $this->mailbox  = $mailbox;
     }
 
     /**
@@ -89,8 +83,9 @@ class Login
                 'cookies'     => $cookieJar
             ]);
         } catch (ClientException $exception) {
-            /** @todo IMPROVE ME */
-            //throw new InstagramAuthException('Unknown error, please report it with a GitHub issue. ' . $exception->getMessage());
+            throw new InstagramAuthException('Unknown error, please report it with a GitHub issue. ' . $exception->getMessage());
+
+            /** @todo IMPROVE ME !! */
             $data = json_decode((string)$exception->getResponse()->getBody());
 
             if ($data->message !== 'checkpoint_required') {
