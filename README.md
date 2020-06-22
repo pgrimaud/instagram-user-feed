@@ -9,7 +9,7 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
@@ -235,6 +235,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/renedekat"><img src="https://avatars0.githubusercontent.com/u/8975204?v=4" width="100px;" alt=""/><br /><sub><b>René</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Arenedekat" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://t.me/ikiselev1989"><img src="https://avatars1.githubusercontent.com/u/22061871?v=4" width="100px;" alt=""/><br /><sub><b>ikiselev1989</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Aikiselev1989" title="Bug reports">🐛</a></td>
     <td align="center"><a href="http://pezhvak.imvx.org/"><img src="https://avatars1.githubusercontent.com/u/3134479?v=4" width="100px;" alt=""/><br /><sub><b>Pezhvak</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=Pezhvak" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://1up.io"><img src="https://avatars3.githubusercontent.com/u/754921?v=4" width="100px;" alt=""/><br /><sub><b>David Greminger</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=bytehead" title="Code">💻</a></td>
   </tr>
 </table>
 
