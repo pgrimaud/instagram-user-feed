@@ -68,6 +68,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "bytehead",
+      "name": "David Greminger",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/754921?v=4",
+      "profile": "https://1up.io",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
