@@ -41,6 +41,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "renedekat",
+      "name": "René",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8975204?v=4",
+      "profile": "https://github.com/renedekat",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
