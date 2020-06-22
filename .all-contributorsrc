@@ -32,6 +32,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Dlinny",
+      "name": "Dlinny",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1443580?v=4",
+      "profile": "https://github.com/Dlinny",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
