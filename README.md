@@ -9,7 +9,7 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
@@ -239,6 +239,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://1up.io"><img src="https://avatars3.githubusercontent.com/u/754921?v=4" width="100px;" alt=""/><br /><sub><b>David Greminger</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=bytehead" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/kumamidori"><img src="https://avatars0.githubusercontent.com/u/384567?v=4" width="100px;" alt=""/><br /><sub><b>Nana YAMANE</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=kumamidori" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/David-Kurniawan"><img src="https://avatars1.githubusercontent.com/u/7419157?v=4" width="100px;" alt=""/><br /><sub><b>David Kurniawan</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=David-Kurniawan" title="Code">💻</a></td>
   </tr>
 </table>
 
