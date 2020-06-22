@@ -219,15 +219,7 @@ $stories = $feedStories->getStories();
 print_r($stories);
 ```
 
-# Feedback
-
-You found a bug? You need a new feature? You can [create an issue](https://github.com/pgrimaud/horaires-ratp-api/issues) if needed or contact me on [Twitter](https://twitter.com/pgrimaud_).
-
-# License
-
-Licensed under the terms of the MIT License.
-
-## Contributors ✨
+# Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -245,3 +237,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+# Feedback
+
+You found a bug? You need a new feature? You can [create an issue](https://github.com/pgrimaud/horaires-ratp-api/issues) if needed or contact me on [Twitter](https://twitter.com/pgrimaud_).
+
+# License
+
+Licensed under the terms of the MIT License.
