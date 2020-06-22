@@ -1,8 +1,4 @@
 # Instagram user feed PHP
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-
 [![Build Status](https://travis-ci.org/pgrimaud/instagram-user-feed.svg?branch=master)](https://travis-ci.org/pgrimaud/instagram-user-feed)
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Coverage Status](https://coveralls.io/repos/github/pgrimaud/instagram-user-feed/badge.svg?branch=master)](https://coveralls.io/github/pgrimaud/instagram-user-feed?branch=master)
@@ -11,6 +7,10 @@
 [![Last version](https://img.shields.io/packagist/v/pgrimaud/instagram-user-feed?maxAge=3600)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Total Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/downloads)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
 Easily fetch any Instagram feed and more without OAuth for PHP.
