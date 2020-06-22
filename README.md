@@ -24,6 +24,15 @@ If you like or use this package, please share your love by starring this reposit
 
 **⚠️ Version ^5.0 is no more maintained. ⚠️**
 
+## About login
+In version ^6.0, login is now **mandatory**, it will save cookies (session) to simulate "real" requests to Instagram.
+
+They improve their bot detection and without real session data in the headers requests, your IP could be easily soft-ban by Instagram.
+
+Then, you can't fetch a lot of data without login.
+
+**Tips** : you just have to create or use a dummy account to use easily this package.
+
 ## Version ^6.0
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
