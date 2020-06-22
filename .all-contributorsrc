@@ -59,6 +59,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "Pezhvak",
+      "name": "Pezhvak",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/3134479?v=4",
+      "profile": "http://pezhvak.imvx.org/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
