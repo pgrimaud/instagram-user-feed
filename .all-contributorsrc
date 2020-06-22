@@ -14,6 +14,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jannejava",
+      "name": "Jan Östlund",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/543616?v=4",
+      "profile": "https://janostlund.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
