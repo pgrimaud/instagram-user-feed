@@ -1,0 +1,106 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg)](#contributors)",
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "pgrimaud",
+      "name": "Pierre Grimaud",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1866496?v=4",
+      "profile": "https://github.com/pgrimaud",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jannejava",
+      "name": "Jan Östlund",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/543616?v=4",
+      "profile": "https://janostlund.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "cookieguru",
+      "name": "Tim Bond",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1888809?v=4",
+      "profile": "https://github.com/cookieguru",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Dlinny",
+      "name": "Dlinny",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1443580?v=4",
+      "profile": "https://github.com/Dlinny",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "renedekat",
+      "name": "René",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8975204?v=4",
+      "profile": "https://github.com/renedekat",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "ikiselev1989",
+      "name": "ikiselev1989",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/22061871?v=4",
+      "profile": "https://t.me/ikiselev1989",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "Pezhvak",
+      "name": "Pezhvak",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/3134479?v=4",
+      "profile": "http://pezhvak.imvx.org/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bytehead",
+      "name": "David Greminger",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/754921?v=4",
+      "profile": "https://1up.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kumamidori",
+      "name": "Nana YAMANE",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/384567?v=4",
+      "profile": "https://github.com/kumamidori",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "David-Kurniawan",
+      "name": "David Kurniawan",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7419157?v=4",
+      "profile": "https://github.com/David-Kurniawan",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "instagram-user-feed",
+  "projectOwner": "pgrimaud",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

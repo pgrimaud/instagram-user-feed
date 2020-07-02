@@ -17,7 +17,8 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonProfileDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
-    JsonStoryHighlightsStoriesDataFeed
+    JsonStoryHighlightsStoriesDataFeed,
+    JsonMediaDetailedByShortCodeDataFeed
 };
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -215,6 +216,25 @@ class Api
     public function getMediaDetailed(Media $media): MediaDetailed
     {
         $feed = new JsonMediaDetailedDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($media);
+
+        $hydrator = new MediaHydrator();
+        $media    = $hydrator->hydrateMediaDetailed($data->shortcode_media);
+
+        return $media;
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return MediaDetailed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMediaDetailedByShortCode(Media $media): MediaDetailed
+    {
+        $feed = new JsonMediaDetailedByShortCodeDataFeed($this->client, $this->session);
         $data = $feed->fetchData($media);
 
         $hydrator = new MediaHydrator();

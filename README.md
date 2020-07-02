@@ -1,5 +1,4 @@
 # Instagram user feed PHP
-
 [![Build Status](https://travis-ci.org/pgrimaud/instagram-user-feed.svg?branch=master)](https://travis-ci.org/pgrimaud/instagram-user-feed)
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Coverage Status](https://coveralls.io/repos/github/pgrimaud/instagram-user-feed/badge.svg?branch=master)](https://coveralls.io/github/pgrimaud/instagram-user-feed?branch=master)
@@ -8,6 +7,10 @@
 [![Last version](https://img.shields.io/packagist/v/pgrimaud/instagram-user-feed?maxAge=3600)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Total Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/downloads)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
 Easily fetch any Instagram feed and more without OAuth for PHP.
@@ -23,6 +26,15 @@ If you like or use this package, please share your love by starring this reposit
 - Fetch detailed post of user
 
 **⚠️ Version ^5.0 is no more maintained. ⚠️**
+
+## About login
+In version ^6.0, login is now **mandatory**, it will save cookies (session) to simulate "real" requests to Instagram.
+
+They improve their bot detection and without real session data in the headers requests, your IP could be easily soft-ban by Instagram.
+
+Then, you can't fetch a lot of data without login.
+
+**Tips** : you just have to create or use a dummy account to use easily this package.
 
 ## Version ^6.0
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
@@ -206,6 +218,36 @@ $stories = $feedStories->getStories();
 
 print_r($stories);
 ```
+
+# Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/pgrimaud"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4" width="100px;" alt=""/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=pgrimaud" title="Code">💻</a></td>
+    <td align="center"><a href="https://janostlund.com"><img src="https://avatars3.githubusercontent.com/u/543616?v=4" width="100px;" alt=""/><br /><sub><b>Jan Östlund</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=jannejava" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/cookieguru"><img src="https://avatars0.githubusercontent.com/u/1888809?v=4" width="100px;" alt=""/><br /><sub><b>Tim Bond</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=cookieguru" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Dlinny"><img src="https://avatars0.githubusercontent.com/u/1443580?v=4" width="100px;" alt=""/><br /><sub><b>Dlinny</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3ADlinny" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/renedekat"><img src="https://avatars0.githubusercontent.com/u/8975204?v=4" width="100px;" alt=""/><br /><sub><b>René</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Arenedekat" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://t.me/ikiselev1989"><img src="https://avatars1.githubusercontent.com/u/22061871?v=4" width="100px;" alt=""/><br /><sub><b>ikiselev1989</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Aikiselev1989" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://pezhvak.imvx.org/"><img src="https://avatars1.githubusercontent.com/u/3134479?v=4" width="100px;" alt=""/><br /><sub><b>Pezhvak</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=Pezhvak" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://1up.io"><img src="https://avatars3.githubusercontent.com/u/754921?v=4" width="100px;" alt=""/><br /><sub><b>David Greminger</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=bytehead" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kumamidori"><img src="https://avatars0.githubusercontent.com/u/384567?v=4" width="100px;" alt=""/><br /><sub><b>Nana YAMANE</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=kumamidori" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/David-Kurniawan"><img src="https://avatars1.githubusercontent.com/u/7419157?v=4" width="100px;" alt=""/><br /><sub><b>David Kurniawan</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=David-Kurniawan" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 # Feedback
 

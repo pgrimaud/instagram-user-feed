@@ -9,6 +9,7 @@ class InstagramHelper
     const URL_IG = 'https://www.instagram.com'; /** @todo IMPROVE ME LATER HEEHH */
     const URL_BASE = 'https://www.instagram.com/';
     const URL_AUTH = 'https://www.instagram.com/accounts/login/ajax/';
+    const URL_MEDIA_DETAILED = 'https://www.instagram.com/p/';
 
     const QUERY_HASH_PROFILE = 'c9100bf9110dd6361671f113dd02e7d6';
     const QUERY_HASH_MEDIAS = '42323d64886122307be10013ad2dcc44';

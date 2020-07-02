@@ -12,6 +12,11 @@ class Media
     /**
      * @var string
      */
+    private $shortCode;
+
+    /**
+     * @var string
+     */
     private $typeName;
 
     /**
@@ -98,6 +103,22 @@ class Media
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortCode(): string
+    {
+        return $this->shortCode;
+    }
+
+    /**
+     * @param string $shortCode
+     */
+    public function setShortCode(string $shortCode): void
+    {
+        $this->shortCode = $shortCode;
     }
 
     /**
@@ -330,21 +351,23 @@ class Media
     public function toArray(): array
     {
         return [
-            'id'             => $this->id,
-            'typeName'       => $this->typeName,
-            'height'         => $this->height,
-            'width'          => $this->width,
-            'thumbnailSrc'   => $this->thumbnailSrc,
-            'link'           => $this->link,
-            'date'           => $this->date,
-            'displaySrc'     => $this->displaySrc,
-            'caption'        => $this->caption,
-            'comments'       => $this->comments,
-            'likes'          => $this->likes,
-            'thumbnails'     => $this->thumbnails,
-            'location'       => $this->location,
-            'video'          => $this->video,
-            'videoViewCount' => $this->videoViewCount,
+            'id'                   => $this->id,
+            'shortcode'            => $this->shortCode,
+            'typeName'             => $this->typeName,
+            'height'               => $this->height,
+            'width'                => $this->width,
+            'thumbnailSrc'         => $this->thumbnailSrc,
+            'link'                 => $this->link,
+            'date'                 => $this->date,
+            'displaySrc'           => $this->displaySrc,
+            'caption'              => $this->caption,
+            'comments'             => $this->comments,
+            'likes'                => $this->likes,
+            'thumbnails'           => $this->thumbnails,
+            'location'             => $this->location,
+            'video'                => $this->video,
+            'videoViewCount'       => $this->videoViewCount,
+            'accessibilityCaption' => $this->accessibilityCaption
         ];
     }
 

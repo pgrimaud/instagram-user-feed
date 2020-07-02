@@ -68,6 +68,7 @@ class ApiTest extends TestCase
         $media   = $profile->getMedias()[0];
 
         $this->assertSame(2224305748263047050, $media->getId());
+        $this->assertSame('B7eUksNFA-K', $media->getShortCode());
         $this->assertSame('GraphVideo', $media->getTypeName());
         $this->assertSame(421, $media->getHeight());
         $this->assertSame(750, $media->getWidth());
@@ -460,6 +461,35 @@ class ApiTest extends TestCase
 
         $api->login('username', 'password');
         $api->getProfileById(12345);
+
+        $api->logout('username');
+    }
+
+    public function testGetMediaDetailedByShortCode()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/instagram-home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/instagram-media.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+
+        $media = new Media();
+        $media->setShortCode('CAnqPB-Jzcj');
+
+        $mediaDetailed = $api->getMediaDetailedByShortCode($media);
+        $this->assertSame(2317006284167526179, $mediaDetailed->getId());
 
         $api->logout('username');
     }
