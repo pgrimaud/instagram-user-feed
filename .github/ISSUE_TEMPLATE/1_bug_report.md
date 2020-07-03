@@ -1,6 +1,6 @@
 ---
-name: Issue template
-about: Describe this issue template's purpose here.
+name: Bug report
+about: Describe your bug or issue here
 title: ''
 labels: need-investigations
 assignees: pgrimaud
