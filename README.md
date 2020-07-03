@@ -25,18 +25,6 @@ If you like or use this package, please share your love by starring this reposit
 - Fetch highlights stories of user
 - Fetch detailed post of user
 
-**⚠️ Version ^5.0 is no more maintained. ⚠️**
-
-## About login
-In version ^6.0, login is now **mandatory**, it will save cookies (session) to simulate "real" requests to Instagram.
-
-They improve their bot detection and without real session data in the headers requests, your IP could be easily soft-ban by Instagram.
-
-Then, you can't fetch a lot of data without login.
-
-**Tips** : you just have to create or use a dummy account to use easily this package.
-
-## Version ^6.0
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
 - [Installation](#installation)
@@ -45,13 +33,31 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 - [Stories](#stories)
 - [Examples](https://github.com/pgrimaud/instagram-user-feed/tree/master/examples)
 
-## New in ^6.3 : checkpoint challenge bypass
+**⚠️ Version ^5.0 is no more maintained. ⚠️**
+
+# Installation
+
+```
+composer require pgrimaud/instagram-user-feed
+```
+
+## Changelog
+
+**2020-07-03 : [6.3](#version-63-checkpoint-challenge-bypass) is released. New feature: checkpoint challenge bypass using IMAP configuration.**
+
+**2020-06-01 : 6.2 is released. Improve medias crawling && cache constraints.**
+
+**2020-05-21 : 6.1 is released. New feature: fetch stories and highlights stories.**
+
+**2020-05-21 : [6.0](#version-60-login) is released. Please upgrade from ^5.0 for cookies session stability.** 
+
+## Version ^6.3: Checkpoint challenge bypass
 
 Some people may have trouble to login with this library. It happens for "old" Instagram accounts or if you're using it on some shared hosting (not all, I don't know why...).
 
 You can now automatically bypass the checkpoint challenge. (email verification with code). You can find an example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/checkpoint-challenge.php).
 
-**Advise: you should create a dummy instagram account using a dummy e-mailbox to use this feature.**
+**Tips: you should create a dummy instagram account using a dummy e-mailbox to use this feature.**
 
 ### How it works?
 
@@ -66,23 +72,17 @@ You can now automatically bypass the checkpoint challenge. (email verification w
 
 *Saving session with cache driver is very important here. The Instagram session is valid for... **1 YEAR**. So in theory, using a cache driver and one account will trigger only one real login to Instagram then reusing session for a long time.
 
-Thanks to @ibnux and @eldark for help 🎉
+Thanks to [@ibnux](https://github.com/ibnux) and [@eldark](https://github.com/eldark) for help 🎉
 
-## Changelog
+## Version ^6.0: Login
 
-**2020-07-03 : Version 6.3 is released. New feature: checkpoint challenge bypass using IMAP configuration.**
+In version ^6.0, login is now **mandatory**, it will save cookies (session) to simulate "real" requests to Instagram.
 
-**2020-06-01 : Version 6.2 is released. Improve medias crawling && cache constraints.**
+They improve their bot detection and without real session data in the headers requests, your IP could be easily soft-ban by Instagram.
 
-**2020-05-21 : Version 6.1 is released. New feature: fetch stories and highlights stories.**
+Then, you can't fetch a lot of data without login.
 
-**2020-05-21 : Version 6.0 is released. Please upgrade from ^5.0 for cookies session stability.** 
-
-# Installation
-
-```
-composer require pgrimaud/instagram-user-feed
-```
+**Tips: you just have to create or use a dummy account to use easily this package.**
 
 ## Usage
 
