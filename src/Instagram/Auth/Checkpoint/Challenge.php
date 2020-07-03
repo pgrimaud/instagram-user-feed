@@ -7,8 +7,7 @@ namespace Instagram\Auth\Checkpoint;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Cookie\CookieJar;
 use Instagram\Exception\InstagramAuthException;
-use Instagram\Utils\InstagramHelper;
-use Instagram\Utils\UserAgentHelper;
+use Instagram\Utils\{InstagramHelper, UserAgentHelper};
 
 class Challenge
 {

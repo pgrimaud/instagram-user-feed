@@ -68,7 +68,7 @@ class ImapClient
      *
      * @codeCoverageIgnore
      */
-    private function available()
+    private function available(): void
     {
         // ext-imap is enabled?
         if (!extension_loaded('imap')) {
