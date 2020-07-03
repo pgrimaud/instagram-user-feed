@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Instagram;
 
-use GuzzleHttp\Client;
-use PhpImap\Mailbox;
+use GuzzleHttp\{Client, ClientInterface};
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
-use Instagram\Auth\{Checkpoint\ImapCredentials, Login, Session};
+use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\{MediaHydrator, StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator};
 use Instagram\Model\{Media, MediaDetailed, Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder};
@@ -30,7 +29,7 @@ class Api
     private $cachePool;
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $client;
 
@@ -41,9 +40,9 @@ class Api
 
     /**
      * @param CacheItemPoolInterface $cachePool
-     * @param Client|null $client
+     * @param ClientInterface|null $client
      */
-    public function __construct(CacheItemPoolInterface $cachePool, Client $client = null)
+    public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null)
     {
         $this->cachePool = $cachePool;
         $this->client    = $client ?: new Client();
@@ -52,14 +51,14 @@ class Api
     /**
      * @param string $username
      * @param string $password
-     * @param ImapCredentials|null $imapCredentials
+     * @param ImapClient|null $imapClient
      *
      * @throws Exception\InstagramAuthException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function login(string $username, string $password, ?ImapCredentials $imapCredentials = null): void
+    public function login(string $username, string $password, ?ImapClient $imapClient = null): void
     {
-        $login = new Login($this->client, $username, $password, $imapCredentials);
+        $login = new Login($this->client, $username, $password, $imapClient);
 
         // fetch previous session an re-use it
         $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . $username);
@@ -72,7 +71,7 @@ class Api
             // Session expired (should never happened, Instagram TTL is ~ 1 year)
             if ($session->getExpires() < time()) {
                 $this->logout($username);
-                $this->login($username, $password, $imapCredentials);
+                $this->login($username, $password, $imapClient);
             }
 
         } else {

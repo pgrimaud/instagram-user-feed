@@ -45,7 +45,34 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 - [Stories](#stories)
 - [Examples](https://github.com/pgrimaud/instagram-user-feed/tree/master/examples)
 
+## New in ^6.3 : checkpoint challenge bypass
+
+Some people may have trouble to login with this library. It happens for "old" Instagram accounts or if you're using it on some shared hosting (not all, I don't know why...).
+
+You can now automatically bypass the checkpoint challenge. (email verification with code). You can find an example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/checkpoint-challenge.php).
+
+**Advise: you should create a dummy instagram account using a dummy e-mailbox to use this feature.**
+
+### How it works?
+
+1. The lib will try to login
+2. Got 400 error "checkpoint_required"
+3. Trigger email verification
+4. Connect to your email inbox using IMAP credentials
+5. Wait for Instagram verification email
+6. Parse verification code from email
+7. Make a request to instagram with this code to complete verification
+8. Verification is done, then **save session automatically***
+
+*Saving session with cache driver is very important here. The Instagram session is valid for... **1 YEAR**. So in theory, using a cache driver and one account will trigger only one real login to Instagram then reusing session for a long time.
+
+Thanks to @ibnux and @eldark for help 🎉
+
 ## Changelog
+
+**2020-07-03 : Version 6.3 is released. New feature: checkpoint challenge bypass using IMAP configuration.**
+
+**2020-06-01 : Version 6.2 is released. Improve medias crawling && cache constraints.**
 
 **2020-05-21 : Version 6.1 is released. New feature: fetch stories and highlights stories.**
 

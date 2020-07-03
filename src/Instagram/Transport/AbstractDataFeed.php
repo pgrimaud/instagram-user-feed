@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Instagram\Transport;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Instagram\Auth\Session;
 use Instagram\Exception\{InstagramAuthException, InstagramFetchException};
 use Instagram\Utils\UserAgentHelper;
@@ -17,17 +18,17 @@ abstract class AbstractDataFeed
     protected $session;
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
     /**
-     * @param Client       $client
+     * @param ClientInterface $client
      * @param Session|null $session
      *
      * @throws InstagramAuthException
      */
-    public function __construct(Client $client, ?Session $session)
+    public function __construct(ClientInterface $client, ?Session $session)
     {
         if (!$session) {
             throw new InstagramAuthException('Please login before fetching data.');

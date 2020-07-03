@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Instagram\Api;
-use Instagram\Auth\Checkpoint\ImapCredentials;
+use Instagram\Auth\Checkpoint\ImapClient;
 use Instagram\Exception\InstagramException;
 
 use Psr\Cache\CacheException;
@@ -16,8 +16,8 @@ $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
 try {
     $api             = new Api($cachePool);
-    $imapCredentials = new ImapCredentials($credentials->getImapServer(), $credentials->getImapLogin(), $credentials->getImapPassword());
-    $api->login($credentials->getLogin(), $credentials->getPassword(), $imapCredentials);
+    $imapClient = new ImapClient($credentials->getImapServer(), $credentials->getImapLogin(), $credentials->getImapPassword());
+    $api->login($credentials->getLogin(), $credentials->getPassword(), $imapClient);
 
     $profile = $api->getProfile('robertdowneyjr');
 

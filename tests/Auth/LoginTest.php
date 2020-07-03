@@ -33,8 +33,8 @@ class LoginTest extends TestCase
         $this->expectException(InstagramAuthException::class);
 
         $mock = new MockHandler([
-            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/../fixtures/instagram-home.html')),
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-login-error.json')),
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/../fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/login-error.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -51,7 +51,7 @@ class LoginTest extends TestCase
         $this->expectException(InstagramAuthException::class);
 
         $mock = new MockHandler([
-            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/../fixtures/instagram-home.html')),
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/../fixtures/home.html')),
             new Response(400),
         ]);
 
@@ -67,8 +67,8 @@ class LoginTest extends TestCase
     public function testSucceededLogin()
     {
         $mock = new MockHandler([
-            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/../fixtures/instagram-home.html')),
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-login-success.json')),
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/../fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/login-success.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -99,9 +99,9 @@ class LoginTest extends TestCase
         $cachePool->save($cacheItem);
 
         $mock = new MockHandler([
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-home.html')),
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-login-success.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.html')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -137,7 +137,7 @@ class LoginTest extends TestCase
         $cachePool->save($cacheItem);
 
         $mock = new MockHandler([
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.html')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -161,7 +161,7 @@ class LoginTest extends TestCase
         $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
         $mock = new MockHandler([
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/instagram-profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.html')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
