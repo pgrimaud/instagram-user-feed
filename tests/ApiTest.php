@@ -36,6 +36,7 @@ class ApiTest extends TestCase
         $profile = $api->getProfile('robertdowneyjr');
 
         $this->assertSame(1518284433, $profile->getId());
+        $this->assertSame('1518284433', $profile->getId32Bit());
         $this->assertSame('robertdowneyjr', $profile->getUserName());
         $this->assertSame('Robert Downey Jr. Official', $profile->getFullName());
         $this->assertSame('@officialfootprintcoalition @coreresponse', $profile->getBiography());
