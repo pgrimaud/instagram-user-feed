@@ -19,7 +19,7 @@ class JsonMediasDataFeed extends AbstractDataFeed
     public function fetchData(Profile $instagramProfile): \StdClass
     {
         $variables = [
-            'id'    => $instagramProfile->getId(),
+            'id'    => PHP_INT_SIZE === 4 ? $instagramProfile->getId32Bit() : $instagramProfile->getId(),
             'first' => InstagramHelper::PAGINATION_DEFAULT,
             'after' => $instagramProfile->getEndCursor(),
         ];

@@ -14,6 +14,11 @@ class Profile
     /**
      * @var string
      */
+    private $id32Bit;
+
+    /**
+     * @var string
+     */
     private $userName;
 
     /**
@@ -337,5 +342,21 @@ class Profile
     public function __serialize(): array
     {
         return $this->toArray();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId32Bit(): string
+    {
+        return $this->id32Bit;
+    }
+
+    /**
+     * @param string $id32Bit
+     */
+    public function setId32Bit(string $id32Bit): void
+    {
+        $this->id32Bit = $id32Bit;
     }
 }

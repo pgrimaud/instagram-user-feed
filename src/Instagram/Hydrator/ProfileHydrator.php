@@ -35,6 +35,7 @@ class ProfileHydrator
     public function hydrateProfile(\StdClass $data): void
     {
         $this->profile->setId((int)$data->id);
+        $this->profile->setId32Bit($data->id);
         $this->profile->setUserName($data->username);
         $this->profile->setFullName($data->full_name);
         $this->profile->setBiography($data->biography);
