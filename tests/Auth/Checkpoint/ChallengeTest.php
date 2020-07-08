@@ -41,7 +41,7 @@ class ChallengeTest extends TestCase
         $challenge->sendSecurityCode($challengeContent);
         $challenge->reSendSecurityCode($challengeContent);
 
-        $challenge->submitSecurityCode($challengeContent, 123456);
+        $challenge->submitSecurityCode($challengeContent, '123456');
 
         $this->assertSame(true, true);
     }
@@ -75,7 +75,7 @@ class ChallengeTest extends TestCase
         $challenge->sendSecurityCode($challengeContent);
         $challenge->reSendSecurityCode($challengeContent);
 
-        $challenge->submitSecurityCode($challengeContent, 123456);
+        $challenge->submitSecurityCode($challengeContent, '123456');
 
         $this->assertSame(true, true);
     }

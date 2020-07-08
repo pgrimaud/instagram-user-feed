@@ -12,7 +12,7 @@ class JsonProfileDataFeed extends AbstractDataFeed
     /**
      * @param int $id
      *
-     * @return \StdClass
+     * @return string
      *
      * @throws InstagramFetchException
      */

@@ -54,6 +54,7 @@ class Api
      * @param ImapClient|null $imapClient
      *
      * @throws Exception\InstagramAuthException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function login(string $username, string $password, ?ImapClient $imapClient = null): void

@@ -77,7 +77,6 @@ class Challenge
 
     /**
      * @param \StdClass $challengeContent
-     * @param int $delay
      * @param string $url
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
