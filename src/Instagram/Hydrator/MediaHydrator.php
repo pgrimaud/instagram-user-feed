@@ -94,6 +94,10 @@ class MediaHydrator
             $media->setAccessibilityCaption($node->accessibility_caption);
         }
 
+        if (property_exists($node, 'product_type')) {
+            $media->setIgtv(true);
+        }
+
         return $media;
     }
 

@@ -82,6 +82,7 @@ class ApiTest extends TestCase
         $this->assertCount(5, $media->getThumbnails());
         $this->assertInstanceOf(\StdClass::class, $media->getLocation());
         $this->assertSame(true, $media->isVideo());
+        $this->assertSame(false, $media->isIgtv());
         $this->assertSame(2726827, $media->getVideoViewCount());
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->getThumbnailSrc());
 
@@ -98,6 +99,7 @@ class ApiTest extends TestCase
         $this->assertCount(5, $media->__serialize()['thumbnails']);
         $this->assertInstanceOf(\StdClass::class, $media->__serialize()['location']);
         $this->assertSame(true, $media->__serialize()['video']);
+        $this->assertSame(false, $media->__serialize()['igtv']);
         $this->assertSame(2726827, $media->__serialize()['videoViewCount']);
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->__serialize()['thumbnailSrc']);
 

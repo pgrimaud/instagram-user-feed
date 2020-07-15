@@ -90,6 +90,11 @@ class Media
     private $accessibilityCaption;
 
     /**
+     * @var bool
+     */
+    private $igtv = false;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -366,6 +371,7 @@ class Media
             'thumbnails'           => $this->thumbnails,
             'location'             => $this->location,
             'video'                => $this->video,
+            'igtv'                 => $this->igtv,
             'videoViewCount'       => $this->videoViewCount,
             'accessibilityCaption' => $this->accessibilityCaption
         ];
@@ -394,5 +400,21 @@ class Media
     public function setAccessibilityCaption(?string $accessibilityCaption): void
     {
         $this->accessibilityCaption = $accessibilityCaption;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIgtv(): bool
+    {
+        return $this->igtv;
+    }
+
+    /**
+     * @param bool $igtv
+     */
+    public function setIgtv(bool $igtv): void
+    {
+        $this->igtv = $igtv;
     }
 }
