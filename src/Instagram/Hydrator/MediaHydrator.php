@@ -95,7 +95,7 @@ class MediaHydrator
         }
 
         if (property_exists($node, 'product_type')) {
-            $media->setIgtv(true);
+            $media->setIgtv($node->product_type === 'igtv');
         }
 
         return $media;
