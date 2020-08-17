@@ -47,6 +47,7 @@ class MediaHydrator
 
         if ($node->edge_media_to_caption->edges) {
             $media->setCaption($node->edge_media_to_caption->edges[0]->node->text);
+            $media->setHashtags(\Instagram\Utils\InstagramHelper::buildHashtags($node->edge_media_to_caption->edges[0]->node->text));
         }
 
         $media->setHeight($node->dimensions->height);

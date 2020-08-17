@@ -18,4 +18,15 @@ class InstagramHelper
     const QUERY_HASH_HIGHLIGHTS_STORIES = '5ec1d322b38839230f8e256e1f638d5f';
 
     const PAGINATION_DEFAULT = 12;
+
+    static function buildHashtags($caption = null)
+    {
+        if (!empty($caption)) {
+            preg_match_all('/(?<!\w)#\w+/', $caption, $allMatches);
+            
+            return reset($allMatches);
+        }
+
+        return [];
+    }
 }

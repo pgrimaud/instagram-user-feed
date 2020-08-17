@@ -95,6 +95,11 @@ class Media
     private $igtv = false;
 
     /**
+     * @var array
+     */
+    private $hashtags = [];
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -373,7 +378,8 @@ class Media
             'video'                => $this->video,
             'igtv'                 => $this->igtv,
             'videoViewCount'       => $this->videoViewCount,
-            'accessibilityCaption' => $this->accessibilityCaption
+            'accessibilityCaption' => $this->accessibilityCaption,
+            'hashtags'             => $this->hashtags
         ];
     }
 
@@ -416,5 +422,21 @@ class Media
     public function setIgtv(bool $igtv): void
     {
         $this->igtv = $igtv;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHashtags(): array
+    {
+        return \Instagram\Utils\InstagramHelper::buildHashtags($this->caption);
+    }
+
+    /**
+     * @param array $thumbnails
+     */
+    public function setHashtags(array $hashtags): void
+    {
+        $this->hashtags = $hashtags;
     }
 }
