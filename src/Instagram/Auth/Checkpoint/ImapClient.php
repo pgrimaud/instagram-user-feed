@@ -22,6 +22,11 @@ class ImapClient
      * @var string
      */
     private $password;
+    
+    /**
+     * @var string
+     */
+    private $connectionType;
 
     /**
      * @param string $server
@@ -30,11 +35,12 @@ class ImapClient
      *
      * @throws InstagramAuthException
      */
-    public function __construct(string $server, string $login, string $password)
+    public function __construct(string $server, string $login, string $password, string $connectionType = 'imap')
     {
         $this->server   = $server;
         $this->login    = $login;
         $this->password = $password;
+        $this->connectionType = $connectionType;
 
         $this->available();
     }
@@ -62,6 +68,14 @@ class ImapClient
     {
         return $this->password;
     }
+    
+    /**
+     * @return string
+     */
+    public function getConnectionType(): string
+    {
+        return $this->connectionType;
+    }
 
     /**
      * @throws InstagramAuthException
@@ -85,7 +99,7 @@ class ImapClient
      */
     public function getLastInstagramEmailContent(int $try = 1): string
     {
-        $resource  = imap_open('{' . $this->getServer() . '/imap/ssl}INBOX', $this->getLogin(), $this->getPassword());
+        $resource  = imap_open('{' . $this->getServer() . '/' . $this->getConnectionType() . '/ssl}INBOX', $this->getLogin(), $this->getPassword());
         $numberMax = imap_num_msg($resource);
 
         $foundCode = false;
