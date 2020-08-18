@@ -95,6 +95,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "gtapps",
+      "name": "gtapps",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/16778396?v=4",
+      "profile": "https://github.com/gtapps",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
