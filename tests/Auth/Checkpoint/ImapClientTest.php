@@ -13,5 +13,6 @@ class ImapClientTest extends TestCase
         $this->assertSame('imap.google.com', $credentials->getServer());
         $this->assertSame('login', $credentials->getLogin());
         $this->assertSame('password', $credentials->getPassword());
+        $this->assertSame('imap', $credentials->getConnectionType());
     }
 }

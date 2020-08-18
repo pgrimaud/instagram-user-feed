@@ -22,7 +22,7 @@ class ImapClient
      * @var string
      */
     private $password;
-    
+
     /**
      * @var string
      */
@@ -32,14 +32,15 @@ class ImapClient
      * @param string $server
      * @param string $login
      * @param string $password
+     * @param string $connectionType
      *
      * @throws InstagramAuthException
      */
     public function __construct(string $server, string $login, string $password, string $connectionType = 'imap')
     {
-        $this->server   = $server;
-        $this->login    = $login;
-        $this->password = $password;
+        $this->server         = $server;
+        $this->login          = $login;
+        $this->password       = $password;
         $this->connectionType = $connectionType;
 
         $this->available();
@@ -68,7 +69,7 @@ class ImapClient
     {
         return $this->password;
     }
-    
+
     /**
      * @return string
      */
