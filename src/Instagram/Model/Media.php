@@ -2,6 +2,8 @@
 
 namespace Instagram\Model;
 
+use Instagram\Utils\InstagramHelper;
+
 class Media
 {
     /**
@@ -429,11 +431,11 @@ class Media
      */
     public function getHashtags(): array
     {
-        return \Instagram\Utils\InstagramHelper::buildHashtags($this->caption);
+        return InstagramHelper::buildHashtags($this->caption);
     }
 
     /**
-     * @param array $thumbnails
+     * @param array $hashtags
      */
     public function setHashtags(array $hashtags): void
     {

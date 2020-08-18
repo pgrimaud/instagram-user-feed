@@ -6,7 +6,8 @@ namespace Instagram\Utils;
 
 class InstagramHelper
 {
-    const URL_IG = 'https://www.instagram.com'; /** @todo IMPROVE ME LATER HEEHH */
+    const URL_IG = 'https://www.instagram.com';
+    /** @todo IMPROVE ME LATER HEEHH */
     const URL_BASE = 'https://www.instagram.com/';
     const URL_AUTH = 'https://www.instagram.com/accounts/login/ajax/';
     const URL_MEDIA_DETAILED = 'https://www.instagram.com/p/';
@@ -19,14 +20,20 @@ class InstagramHelper
 
     const PAGINATION_DEFAULT = 12;
 
-    static function buildHashtags($caption = null)
+    /**
+     * @param string|null $caption
+     * @return array
+     *
+     * @codeCoverageIgnore
+     */
+    static function buildHashtags(?string $caption): array
     {
-        if (!empty($caption)) {
+        if ($caption) {
             preg_match_all('/(?<!\w)#\w+/', $caption, $allMatches);
-            
-            return reset($allMatches);
-        }
 
-        return [];
+            return reset($allMatches);
+        } else {
+            return [];
+        }
     }
 }
