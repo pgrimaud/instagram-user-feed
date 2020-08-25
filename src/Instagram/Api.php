@@ -318,11 +318,13 @@ class Api
     }
 
     /**
-     * @param int $id
+     * @param int    $id
+     * @param string $endCursor
      *
      * @return Following
      *
-     * @throws InstagramException
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
      */
     public function getMoreFollowings(int $id, string $endCursor): Following
     {

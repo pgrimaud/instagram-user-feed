@@ -17,7 +17,8 @@ try {
     $api     = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    $followings = $api->getMoreFollowings(1518284433, 'QVFCQkEzYXR5ZnVJQ0gtdzB5S19JbWFsZk0xWW12NF9ydzllQ3lWckNSRWZROGswUi1TMVlZQW5zTGkyZ0RrU2dDaDVoLWdaVjRMaGNwMlNJeGRIVXozNQ==');
+    // 1518284433 is robertdowneyjr's account id
+    $followings = $api->getMoreFollowings(1518284433, 'QVFCQXdxYnZvWTFTZHRsNGtSWW1VZEREczJ3T0pQblNDckE4TEZPb01JY2VNVHJLaFFydVpnOHlFQnpiNE9UOFdJajNjVWpERTZUYTdnMWhoOXlCVmgtRg==');
 
     print_r($followings);
 

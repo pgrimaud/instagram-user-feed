@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Instagram\Api;
 use Instagram\Exception\InstagramException;
 
+use Instagram\Model\Friend;
 use Psr\Cache\CacheException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -14,15 +15,35 @@ $credentials = include_once realpath(dirname(__FILE__)) . '/credentials.php';
 $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
 try {
-    $api     = new Api($cachePool);
+    $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    $followings = $api->getFollowings(1518284433);
+    // 1518284433 is robertdowneyjr's account id
+    $userId = 1518284433;
 
-    print_r($followings);
+    $followings = $api->getFollowings($userId);
+
+    printUsers($followings->getFriends());
+
+    do {
+        $followings = $api->getMoreFollowings($userId, $followings->getEndCursor());
+
+        printUsers($followings->getFriends());
+
+        // avoid 429 Rate limit from Instagram
+        sleep(1);
+    } while ($followings->hasNextPage());
 
 } catch (InstagramException $e) {
     print_r($e->getMessage());
 } catch (CacheException $e) {
     print_r($e->getMessage());
+}
+
+function printUsers(array $users)
+{
+    /** @var Friend $user */
+    foreach ($users as $user) {
+        echo $user->getUserName() . PHP_EOL;
+    }
 }

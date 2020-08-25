@@ -43,9 +43,9 @@ class Following
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function getHasNextPage(): boolean
+    public function hasNextPage(): bool
     {
         return $this->hasNextPage;
     }
@@ -67,9 +67,9 @@ class Following
     }
 
     /**
-     * @param string $endCursor
+     * @param string|null $endCursor
      */
-    public function setEndCursor(string $endCursor): void
+    public function setEndCursor(?string $endCursor): void
     {
         $this->endCursor = $endCursor;
     }
@@ -83,7 +83,7 @@ class Following
     }
 
     /**
-     * @return array
+     * @param Friend $friend
      */
     public function addFriends(Friend $friend): void
     {
