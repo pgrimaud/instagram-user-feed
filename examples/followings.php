@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Instagram\Api;
 use Instagram\Exception\InstagramException;
 
-use Instagram\Model\Friend;
+use Instagram\Model\User;
 use Psr\Cache\CacheException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -21,18 +21,18 @@ try {
     // 1518284433 is robertdowneyjr's account id
     $userId = 1518284433;
 
-    $followings = $api->getFollowings($userId);
+    $followingFeed = $api->getFollowings($userId);
 
-    printUsers($followings->getFriends());
+    printUsers($followingFeed->getUsers());
 
     do {
-        $followings = $api->getMoreFollowings($userId, $followings->getEndCursor());
+        $followingFeed = $api->getMoreFollowings($userId, $followingFeed->getEndCursor());
 
-        printUsers($followings->getFriends());
+        printUsers($followingFeed->getUsers());
 
         // avoid 429 Rate limit from Instagram
         sleep(1);
-    } while ($followings->hasNextPage());
+    } while ($followingFeed->hasNextPage());
 
 } catch (InstagramException $e) {
     print_r($e->getMessage());
@@ -42,7 +42,7 @@ try {
 
 function printUsers(array $users)
 {
-    /** @var Friend $user */
+    /** @var User $user */
     foreach ($users as $user) {
         echo $user->getUserName() . PHP_EOL;
     }

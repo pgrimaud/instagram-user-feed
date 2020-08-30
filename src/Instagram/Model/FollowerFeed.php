@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class Follower
+class FollowerFeed
 {
     /**
      * @var int
@@ -24,7 +24,7 @@ class Follower
     /**
      * @var array
      */
-    private $friends = [];
+    private $users = [];
 
     /**
      * @return int
@@ -43,15 +43,15 @@ class Follower
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function getHasNextPage(): boolean
+    public function hasNextPage(): bool
     {
         return $this->hasNextPage;
     }
 
     /**
-     * @param boolean $hasNextPage
+     * @param bool $hasNextPage
      */
     public function setHasNextPage(bool $hasNextPage): void
     {
@@ -61,7 +61,7 @@ class Follower
     /**
      * @return string
      */
-    public function getEndCursor(): string
+    public function getEndCursor(): ?string
     {
         return $this->endCursor;
     }
@@ -69,33 +69,33 @@ class Follower
     /**
      * @param string $endCursor
      */
-    public function setEndCursor(string $endCursor): void
+    public function setEndCursor(?string $endCursor): void
     {
         $this->endCursor = $endCursor;
     }
 
     /**
-     * @return Friend[]
+     * @return User[]
      */
-    public function getFriends(): array
+    public function getUsers(): array
     {
-        return $this->friends;
+        return $this->users;
     }
 
     /**
-     * @return array
+     * @param User $user
      */
-    public function addFriends(Friend $friend): void
+    public function addUsers(User $user): void
     {
-        $this->friends[] = $friend;
+        $this->users[] = $user;
     }
 
     /**
-     * @param Friend[] $friends
+     * @param User[] $users
      */
-    public function setFriends(array $friends): void
+    public function setUsers(array $users): void
     {
-        $this->friends = $friends;
+        $this->users = $users;
     }
 
     /**
@@ -104,10 +104,10 @@ class Follower
     public function toArray(): array
     {
         return [
-            'count'         => $this->count,
-            'hasNextPage'   => $this->hasNextPage,
-            'endCursor'     => $this->endCursor,
-            'friends'       => $this->friends,
+            'count'       => $this->count,
+            'hasNextPage' => $this->hasNextPage,
+            'endCursor'   => $this->endCursor,
+            'users'       => $this->users,
         ];
     }
 

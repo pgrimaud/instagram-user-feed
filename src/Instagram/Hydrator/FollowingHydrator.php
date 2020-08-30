@@ -4,57 +4,58 @@ declare(strict_types=1);
 
 namespace Instagram\Hydrator;
 
-use Instagram\Model\Following;
+use Instagram\Model\FollowingFeed;
 
 class FollowingHydrator
 {
     /**
-     * @var Following
+     * @var FollowingFeed
      */
-    private $following;
+    private $followingFeed;
 
     /**
-     * @var FriendHydrator
+     * @var UserHydrator
      */
-    private $friendHydrator;
+    private $userHydrator;
 
     /**
      * Hydration is made manually to avoid shitty Instagram variable names
      */
     public function __construct()
     {
-        $this->following = new Following();
-        $this->friendHydrator = new FriendHydrator();
+        $this->followingFeed = new FollowingFeed();
+        $this->userHydrator  = new UserHydrator();
     }
 
     /**
      * @param \StdClass $node
      */
-    public function hydrateFollowing(\StdClass $node): void
+    public function hydrateFollowingFeed(\StdClass $node): void
     {
-        $this->following->setCount((int)$node->edge_follow->count);
-        $this->following->setHasNextPage($node->edge_follow->page_info->has_next_page);
-        $this->following->setEndCursor($node->edge_follow->page_info->end_cursor);
+        $this->followingFeed->setCount((int)$node->edge_follow->count);
+        $this->followingFeed->setHasNextPage($node->edge_follow->page_info->has_next_page);
+        $this->followingFeed->setEndCursor($node->edge_follow->page_info->end_cursor);
     }
 
     /**
      * @param \StdClass $node
      */
-    public function hydrateFriend(\StdClass $node): void
+    public function hydrateUsers(\StdClass $node): void
     {
-        // reset friends
-        $this->following->setFriends([]);
+        // reset users
+        $this->followingFeed->setUsers([]);
+
         foreach ($node->edge_follow->edges as $item) {
-            $friend = $this->friendHydrator->friendBaseHydrator($item->node);
-            $this->following->addFriends($friend);
+            $user = $this->userHydrator->userBaseHydrator($item->node);
+            $this->followingFeed->addUser($user);
         }
     }
 
     /**
-     * @return Followers
+     * @return FollowingFeed
      */
-    public function getFollowings(): Following
+    public function getFollowings(): FollowingFeed
     {
-        return $this->following;
+        return $this->followingFeed;
     }
 }

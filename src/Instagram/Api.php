@@ -8,8 +8,20 @@ use GuzzleHttp\{Client, ClientInterface};
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\{MediaHydrator, StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator, FollowerHydrator, FollowingHydrator};
-use Instagram\Model\{Media, MediaDetailed, Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder, Follower, Following};
+use Instagram\Hydrator\{MediaHydrator,
+    StoriesHydrator,
+    StoryHighlightsHydrator,
+    ProfileHydrator,
+    FollowerHydrator,
+    FollowingHydrator};
+use Instagram\Model\{Media,
+    MediaDetailed,
+    Profile,
+    ProfileStory,
+    StoryHighlights,
+    StoryHighlightsFolder,
+    FollowerFeed,
+    FollowingFeed};
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
@@ -250,11 +262,13 @@ class Api
      *
      * @return Profile
      *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
      * @throws InstagramException
      */
     public function getProfileById(int $id): Profile
     {
-        $feed     = new JsonProfileDataFeed($this->client, $this->session);
+        $feed = new JsonProfileDataFeed($this->client, $this->session);
         $userName = $feed->fetchData($id);
 
         return $this->getProfile($userName);
@@ -263,18 +277,40 @@ class Api
     /**
      * @param int $id
      *
-     * @return Follower
+     * @return FollowerFeed
      *
-     * @throws InstagramException
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
      */
-    public function getFollowers(int $id): Follower
+    public function getFollowers(int $id): FollowerFeed
     {
-        $feed   = new JsonFollowerDataFeed($this->client, $this->session);
-        $data   = $feed->fetchData($id);
+        $feed = new JsonFollowerDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($id);
 
         $hydrator = new FollowerHydrator();
-        $hydrator->hydrateFollower($data);
-        $hydrator->hydrateFriend($data);
+        $hydrator->hydrateFollowerFeed($data);
+        $hydrator->hydrateUsers($data);
+
+        return $hydrator->getFollowers();
+    }
+
+    /**
+     * @param int $id
+     * @param string $endCursor
+     *
+     * @return FollowerFeed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMoreFollowers(int $id, string $endCursor): FollowerFeed
+    {
+        $feed = new JsonFollowerDataFeed($this->client, $this->session);
+        $data = $feed->fetchMoreData($id, $endCursor);
+
+        $hydrator = new FollowerHydrator();
+        $hydrator->hydrateFollowerFeed($data);
+        $hydrator->hydrateUsers($data);
 
         return $hydrator->getFollowers();
     }
@@ -282,58 +318,40 @@ class Api
     /**
      * @param int $id
      *
-     * @return Follower
+     * @return FollowingFeed
      *
-     * @throws InstagramException
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
      */
-    public function getMoreFollowers(int $id, string $endCursor): Follower
+    public function getFollowings(int $id): FollowingFeed
     {
-        $feed   = new JsonFollowerDataFeed($this->client, $this->session);
-        $data   = $feed->fetchMoreData($id, $endCursor);
-
-        $hydrator = new FollowerHydrator();
-        $hydrator->hydrateFollower($data);
-        $hydrator->hydrateFriend($data);
-
-        return $hydrator->getFollowers();
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return Following
-     *
-     * @throws InstagramException
-     */
-    public function getFollowings(int $id): Following
-    {
-        $feed   = new JsonFollowingDataFeed($this->client, $this->session);
-        $data   = $feed->fetchData($id);
+        $feed = new JsonFollowingDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($id);
 
         $hydrator = new FollowingHydrator();
-        $hydrator->hydrateFollowing($data);
-        $hydrator->hydrateFriend($data);
+        $hydrator->hydrateFollowingFeed($data);
+        $hydrator->hydrateUsers($data);
 
         return $hydrator->getFollowings();
     }
 
     /**
-     * @param int    $id
+     * @param int $id
      * @param string $endCursor
      *
-     * @return Following
+     * @return FollowingFeed
      *
      * @throws Exception\InstagramAuthException
      * @throws Exception\InstagramFetchException
      */
-    public function getMoreFollowings(int $id, string $endCursor): Following
+    public function getMoreFollowings(int $id, string $endCursor): FollowingFeed
     {
-        $feed   = new JsonFollowingDataFeed($this->client, $this->session);
-        $data   = $feed->fetchMoreData($id, $endCursor);
+        $feed = new JsonFollowingDataFeed($this->client, $this->session);
+        $data = $feed->fetchMoreData($id, $endCursor);
 
         $hydrator = new FollowingHydrator();
-        $hydrator->hydrateFollowing($data);
-        $hydrator->hydrateFriend($data);
+        $hydrator->hydrateFollowingFeed($data);
+        $hydrator->hydrateUsers($data);
 
         return $hydrator->getFollowings();
     }

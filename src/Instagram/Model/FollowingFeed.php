@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class Following
+class FollowingFeed
 {
     /**
      * @var int
@@ -24,7 +24,7 @@ class Following
     /**
      * @var array
      */
-    private $friends = [];
+    private $users = [];
 
     /**
      * @return int
@@ -75,27 +75,27 @@ class Following
     }
 
     /**
-     * @return Friend[]
+     * @return User[]
      */
-    public function getFriends(): array
+    public function getUsers(): array
     {
-        return $this->friends;
+        return $this->users;
     }
 
     /**
-     * @param Friend $friend
+     * @param User $user
      */
-    public function addFriends(Friend $friend): void
+    public function addUser(User $user): void
     {
-        $this->friends[] = $friend;
+        $this->users[] = $user;
     }
 
     /**
-     * @param Friend[] $friends
+     * @param User[] $users
      */
-    public function setFriends(array $friends): void
+    public function setUsers(array $users): void
     {
-        $this->friends = $friends;
+        $this->users = $users;
     }
 
     /**
@@ -104,10 +104,10 @@ class Following
     public function toArray(): array
     {
         return [
-            'count'         => $this->count,
-            'hasNextPage'   => $this->hasNextPage,
-            'endCursor'     => $this->endCursor,
-            'friends'       => $this->friends,
+            'count'       => $this->count,
+            'hasNextPage' => $this->hasNextPage,
+            'endCursor'   => $this->endCursor,
+            'users'       => $this->users,
         ];
     }
 
