@@ -8,8 +8,20 @@ use GuzzleHttp\{Client, ClientInterface};
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\{MediaHydrator, StoriesHydrator, StoryHighlightsHydrator, ProfileHydrator};
-use Instagram\Model\{Media, MediaDetailed, Profile, ProfileStory, StoryHighlights, StoryHighlightsFolder};
+use Instagram\Hydrator\{MediaHydrator,
+    StoriesHydrator,
+    StoryHighlightsHydrator,
+    ProfileHydrator,
+    FollowerHydrator,
+    FollowingHydrator};
+use Instagram\Model\{Media,
+    MediaDetailed,
+    Profile,
+    ProfileStory,
+    StoryHighlights,
+    StoryHighlightsFolder,
+    FollowerFeed,
+    FollowingFeed};
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
@@ -17,7 +29,9 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
     JsonStoryHighlightsStoriesDataFeed,
-    JsonMediaDetailedByShortCodeDataFeed
+    JsonMediaDetailedByShortCodeDataFeed,
+    JsonFollowerDataFeed,
+    JsonFollowingDataFeed
 };
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -248,13 +262,97 @@ class Api
      *
      * @return Profile
      *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
      * @throws InstagramException
      */
     public function getProfileById(int $id): Profile
     {
-        $feed     = new JsonProfileDataFeed($this->client, $this->session);
+        $feed = new JsonProfileDataFeed($this->client, $this->session);
         $userName = $feed->fetchData($id);
 
         return $this->getProfile($userName);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return FollowerFeed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getFollowers(int $id): FollowerFeed
+    {
+        $feed = new JsonFollowerDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($id);
+
+        $hydrator = new FollowerHydrator();
+        $hydrator->hydrateFollowerFeed($data);
+        $hydrator->hydrateUsers($data);
+
+        return $hydrator->getFollowers();
+    }
+
+    /**
+     * @param int $id
+     * @param string $endCursor
+     *
+     * @return FollowerFeed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMoreFollowers(int $id, string $endCursor): FollowerFeed
+    {
+        $feed = new JsonFollowerDataFeed($this->client, $this->session);
+        $data = $feed->fetchMoreData($id, $endCursor);
+
+        $hydrator = new FollowerHydrator();
+        $hydrator->hydrateFollowerFeed($data);
+        $hydrator->hydrateUsers($data);
+
+        return $hydrator->getFollowers();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return FollowingFeed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getFollowings(int $id): FollowingFeed
+    {
+        $feed = new JsonFollowingDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($id);
+
+        $hydrator = new FollowingHydrator();
+        $hydrator->hydrateFollowingFeed($data);
+        $hydrator->hydrateUsers($data);
+
+        return $hydrator->getFollowings();
+    }
+
+    /**
+     * @param int $id
+     * @param string $endCursor
+     *
+     * @return FollowingFeed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMoreFollowings(int $id, string $endCursor): FollowingFeed
+    {
+        $feed = new JsonFollowingDataFeed($this->client, $this->session);
+        $data = $feed->fetchMoreData($id, $endCursor);
+
+        $hydrator = new FollowingHydrator();
+        $hydrator->hydrateFollowingFeed($data);
+        $hydrator->hydrateUsers($data);
+
+        return $hydrator->getFollowings();
     }
 }

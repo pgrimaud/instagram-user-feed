@@ -24,6 +24,8 @@ If you like or use this package, please share your love by starring this reposit
 - Fetch stories of user
 - Fetch highlights stories of user
 - Fetch detailed post of user
+- Fetch feed of followers
+- Fetch feed of followings
 
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
@@ -42,6 +44,8 @@ composer require pgrimaud/instagram-user-feed
 ```
 
 ## Changelog
+
+**2020-08-30 : 6.4 is released. New feature: fetch followers and followings feeds. Thanks to @David-Kurniawan)**
 
 **2020-07-03 : [6.3](#version-63-checkpoint-challenge-bypass) is released. New feature: checkpoint challenge bypass using IMAP configuration.**
 

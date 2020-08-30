@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Instagram\Transport;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Instagram\Auth\Session;
 use Instagram\Exception\{InstagramAuthException, InstagramFetchException};
@@ -40,6 +39,7 @@ abstract class AbstractDataFeed
 
     /**
      * @param string $endpoint
+     * @return \StdClass
      *
      * @throws InstagramFetchException
      */
