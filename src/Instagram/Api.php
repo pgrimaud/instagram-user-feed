@@ -31,7 +31,8 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonStoryHighlightsStoriesDataFeed,
     JsonMediaDetailedByShortCodeDataFeed,
     JsonFollowerDataFeed,
-    JsonFollowingDataFeed
+    JsonFollowingDataFeed,
+    FollowUnfollow
 };
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -354,5 +355,37 @@ class Api
         $hydrator->hydrateUsers($data);
 
         return $hydrator->getFollowings();
+    }
+
+    /**
+     * @param int $accountId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function createFriend(int $accountId): string
+    {
+        $request = new FollowUnfollow($this->client, $this->session);
+        $data = $request->createFriend($accountId);
+
+        return $data;
+    }
+
+    /**
+     * @param int $accountId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function destroyFriend(int $accountId): string
+    {
+        $request = new FollowUnfollow($this->client, $this->session);
+        $data = $request->destroyFriend($accountId);
+
+        return $data;
     }
 }
