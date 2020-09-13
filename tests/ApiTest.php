@@ -627,4 +627,56 @@ class ApiTest extends TestCase
 
         $api->getFollowings(1234567);
     }
+
+    public function testNotFoundOnProfile()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(404, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+        $api->getProfile('odazdozajdoazjdazodjzaodazjdazod');
+
+        $api->logout('username');
+    }
+
+    public function testInternalErrorOnProfile()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(429, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+        $api->getProfile('odazdozajdoazjdazodjzaodazjdazod');
+
+        $api->logout('username');
+    }
 }
