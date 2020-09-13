@@ -117,7 +117,19 @@ class ImapClient
                 $headers = imap_headerinfo($resource, $i, 0);
 
                 preg_match('/<font size="6">([0-9]{6})<\/font>/s', $body, $match);
-                if ($headers->senderaddress === 'Instagram <security@mail.instagram.com>' && isset($match[1])) {
+
+                $isMailFromInstagram = false;
+
+                // confirm instagram is the mail sender
+                if (
+                    (property_exists($headers, 'senderaddress') &&
+                        $headers->senderaddress === 'Instagram <security@mail.instagram.com>')
+                    || $headers->from->host === 'mail.instagram.com'
+                ) {
+                    $isMailFromInstagram = true;
+                }
+
+                if ($isMailFromInstagram && isset($match[1])) {
                     imap_delete($resource, $i);
 
                     $foundCode = true;
