@@ -31,7 +31,7 @@ class HtmlProfileDataFeed extends AbstractDataFeed
             $res = $this->client->request('GET', $endpoint, $headers);
         } catch (ClientException $exception) {
             if ($exception->getCode() === 404) {
-                throw new InstagramFetchException('User' . $userName . ' not found');
+                throw new InstagramFetchException('User ' . $userName . ' not found');
             } else {
                 throw new InstagramFetchException('Internal error');
             }
