@@ -37,7 +37,7 @@
     }
   },
   "require": {
-    "php": "^7.2.5",
+    "php": ">=7.2.5",
     "ext-curl": "*",
     "ext-json": "*",
     "symfony/cache": "^3.4|^4.3|^5.0",
@@ -45,7 +45,7 @@
   },
   "require-dev": {
     "php-coveralls/php-coveralls": "^2.2",
-    "phpunit/phpunit": "^8.5",
+    "phpunit/phpunit": "^8.5|^9.3",
     "symfony/var-dumper": "^5.0"
   }
 }
