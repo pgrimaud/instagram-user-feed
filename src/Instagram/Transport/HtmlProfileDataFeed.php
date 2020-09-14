@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Transport;
 
+use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\{InstagramHelper, UserAgentHelper};
 
@@ -11,7 +12,6 @@ class HtmlProfileDataFeed extends AbstractDataFeed
 {
     /**
      * @param string $userName
-     *
      * @return \StdClass
      *
      * @throws InstagramFetchException
@@ -27,7 +27,15 @@ class HtmlProfileDataFeed extends AbstractDataFeed
             'cookies' => $this->session->getCookies()
         ];
 
-        $res = $this->client->request('GET', $endpoint, $headers);
+        try {
+            $res = $this->client->request('GET', $endpoint, $headers);
+        } catch (ClientException $exception) {
+            if ($exception->getCode() === 404) {
+                throw new InstagramFetchException('User ' . $userName . ' not found');
+            } else {
+                throw new InstagramFetchException('Internal error');
+            }
+        }
 
         $html = (string)$res->getBody();
 
