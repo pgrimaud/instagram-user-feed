@@ -13,7 +13,8 @@ use Instagram\Hydrator\{MediaHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
     FollowerHydrator,
-    FollowingHydrator};
+    FollowingHydrator
+};
 use Instagram\Model\{Media,
     MediaDetailed,
     Profile,
@@ -21,7 +22,8 @@ use Instagram\Model\{Media,
     StoryHighlights,
     StoryHighlightsFolder,
     FollowerFeed,
-    FollowingFeed};
+    FollowingFeed
+};
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
@@ -269,7 +271,7 @@ class Api
      */
     public function getProfileById(int $id): Profile
     {
-        $feed = new JsonProfileDataFeed($this->client, $this->session);
+        $feed     = new JsonProfileDataFeed($this->client, $this->session);
         $userName = $feed->fetchData($id);
 
         return $this->getProfile($userName);
@@ -365,12 +367,10 @@ class Api
      * @throws Exception\InstagramAuthException
      * @throws Exception\InstagramFetchException
      */
-    public function createFriend(int $accountId): string
+    public function follow(int $accountId): string
     {
         $request = new FollowUnfollow($this->client, $this->session);
-        $data = $request->createFriend($accountId);
-
-        return $data;
+        return $request->follow($accountId);
     }
 
     /**
@@ -381,11 +381,9 @@ class Api
      * @throws Exception\InstagramAuthException
      * @throws Exception\InstagramFetchException
      */
-    public function destroyFriend(int $accountId): string
+    public function unfollow(int $accountId): string
     {
         $request = new FollowUnfollow($this->client, $this->session);
-        $data = $request->destroyFriend($accountId);
-
-        return $data;
+        return $request->unfollow($accountId);
     }
 }

@@ -627,4 +627,141 @@ class ApiTest extends TestCase
 
         $api->getFollowings(1234567);
     }
+
+    private function generateCookiesForFollow(): FilesystemAdapter
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $cookiesJar = new CookieJar();
+
+        // dummy cookies
+        $cookie = new SetCookie();
+        $cookie->setName('csrftoken');
+        $cookie->setValue('123456789');
+        $cookie->setExpires(1621543830);
+        $cookie->setDomain('.instagram.com');
+
+        $cookiesJar->setCookie($cookie);
+
+        $cookie = new SetCookie();
+        $cookie->setName('sessionId');
+        $cookie->setValue('123456789');
+        $cookie->setExpires(1621543830);
+        $cookie->setDomain('.instagram.com');
+        $cookiesJar->setCookie($cookie);
+
+        $cacheItem = $cachePool->getItem(Session::SESSION_KEY . '.username');
+        $cacheItem->set($cookiesJar);
+        $cachePool->save($cacheItem);
+
+        return $cachePool;
+    }
+
+    public function testErrorWithRolloutHash()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, ['Set-Cookie' => 'cookie'], ''),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+        $api->login('username', 'password');
+
+        $api->follow(1234567);
+    }
+
+    public function testFollowAndUnfollowUser()
+    {
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/follow.json')),
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/unfollow.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($this->generateCookiesForFollow(), $client);
+
+        // clear cache
+        $api->login('username', 'password');
+
+        $result = $api->follow(1234567);
+        $this->assertSame('ok', $result);
+
+        $result = $api->unfollow(1234567);
+        $this->assertSame('ok', $result);
+
+        $api->logout('username');
+    }
+
+    public function testFollowUserWithError()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, []),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($this->generateCookiesForFollow(), $client);
+
+        // clear cache
+        $api->login('username', 'password');
+
+        $result = $api->follow(1234567);
+        $this->assertSame('ok', $result);
+
+        $result = $api->unfollow(1234567);
+        $this->assertSame('ok', $result);
+
+        $api->logout('username');
+    }
+
+    public function testFollowUserWithWrongResultStatus()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], '{"status": ""}'),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($this->generateCookiesForFollow(), $client);
+
+        // clear cache
+        $api->login('username', 'password');
+
+        $result = $api->follow(1234567);
+        $this->assertSame('ok', $result);
+
+        $result = $api->unfollow(1234567);
+        $this->assertSame('ko', $result);
+
+        $this->assertSame(true, true);
+    }
 }

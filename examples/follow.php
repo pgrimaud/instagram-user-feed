@@ -21,9 +21,9 @@ try {
     // 1518284433 is robertdowneyjr's account id
     $userId = 1518284433;
 
-    $follow = $api->createFriend($userId);
+    $follow = $api->follow($userId);
 
-    echo $follow;
+    echo $follow . PHP_EOL;
 
 } catch (InstagramException $e) {
     print_r($e->getMessage());

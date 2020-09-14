@@ -94,7 +94,13 @@ abstract class AbstractDataFeed
         return $data;
     }
 
-    private function getRolloutHash()
+    /**
+     * @return mixed
+     *
+     * @throws InstagramFetchException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    private function getRolloutHash(): string
     {
         try {
             $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
@@ -112,9 +118,7 @@ abstract class AbstractDataFeed
             }
 
             $data = json_decode($matches[1]);
-            $rollout_hash = $data->rollout_hash;
-
-            return $rollout_hash;
+            return $data->rollout_hash;
         } catch (\Exception $e) {
             throw new InstagramFetchException($e->getMessage());
         }

@@ -9,17 +9,23 @@ class Endpoints
     const FOLLOW_URL = 'https://www.instagram.com/web/friendships/{{accountId}}/follow/';
     const UNFOLLOW_URL = 'https://www.instagram.com/web/friendships/{{accountId}}/unfollow/';
 
+    /**
+     * @param int $accountId
+     *
+     * @return string
+     */
     public static function getFollowUrl(int $accountId): string
     {
-        $url = str_replace('{{accountId}}', $accountId, static::FOLLOW_URL);
-
-        return $url;
+        return str_replace('{{accountId}}', $accountId, static::FOLLOW_URL);
     }
 
+    /**
+     * @param int $accountId
+     *
+     * @return string
+     */
     public static function getUnfollowUrl(int $accountId): string
     {
-        $url = str_replace('{{accountId}}', $accountId, static::UNFOLLOW_URL);
-
-        return $url;
+        return str_replace('{{accountId}}', $accountId, static::UNFOLLOW_URL);
     }
 }

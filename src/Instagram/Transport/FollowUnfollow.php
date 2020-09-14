@@ -16,17 +16,10 @@ class FollowUnfollow extends AbstractDataFeed
      *
      * @throws InstagramFetchException
      */
-    public function createFriend(int $accountId): string
+    public function follow(int $accountId): string
     {
         $endpoint = Endpoints::getFollowUrl($accountId);
-
-        $data = $this->postJsonDataFeed($endpoint);
-
-        if (!$data->status) {
-            throw new InstagramFetchException('Whoops, looks like something went wrong!');
-        }
-
-        return $data->status;
+        return $this->fetchData($endpoint);
     }
 
     /**
@@ -36,10 +29,21 @@ class FollowUnfollow extends AbstractDataFeed
      *
      * @throws InstagramFetchException
      */
-    public function destroyFriend(int $accountId): string
+    public function unfollow(int $accountId): string
     {
         $endpoint = Endpoints::getUnfollowUrl($accountId);
+        return $this->fetchData($endpoint);
+    }
 
+    /**
+     * @param string $endpoint
+     *
+     * @return string
+     *
+     * @throws InstagramFetchException
+     */
+    private function fetchData(string $endpoint): string
+    {
         $data = $this->postJsonDataFeed($endpoint);
 
         if (!$data->status) {
