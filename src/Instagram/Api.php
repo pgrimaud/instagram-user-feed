@@ -13,7 +13,8 @@ use Instagram\Hydrator\{MediaHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
     FollowerHydrator,
-    FollowingHydrator};
+    FollowingHydrator
+};
 use Instagram\Model\{Media,
     MediaDetailed,
     Profile,
@@ -21,7 +22,8 @@ use Instagram\Model\{Media,
     StoryHighlights,
     StoryHighlightsFolder,
     FollowerFeed,
-    FollowingFeed};
+    FollowingFeed
+};
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
@@ -31,7 +33,8 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonStoryHighlightsStoriesDataFeed,
     JsonMediaDetailedByShortCodeDataFeed,
     JsonFollowerDataFeed,
-    JsonFollowingDataFeed
+    JsonFollowingDataFeed,
+    FollowUnfollow
 };
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -268,7 +271,7 @@ class Api
      */
     public function getProfileById(int $id): Profile
     {
-        $feed = new JsonProfileDataFeed($this->client, $this->session);
+        $feed     = new JsonProfileDataFeed($this->client, $this->session);
         $userName = $feed->fetchData($id);
 
         return $this->getProfile($userName);
@@ -354,5 +357,33 @@ class Api
         $hydrator->hydrateUsers($data);
 
         return $hydrator->getFollowings();
+    }
+
+    /**
+     * @param int $accountId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function follow(int $accountId): string
+    {
+        $request = new FollowUnfollow($this->client, $this->session);
+        return $request->follow($accountId);
+    }
+
+    /**
+     * @param int $accountId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function unfollow(int $accountId): string
+    {
+        $request = new FollowUnfollow($this->client, $this->session);
+        return $request->unfollow($accountId);
     }
 }

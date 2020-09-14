@@ -45,7 +45,9 @@ composer require pgrimaud/instagram-user-feed
 
 ## Changelog
 
-**2020-08-30 : 6.4 is released. New feature: fetch followers and followings feeds. Thanks to @David-Kurniawan)**
+**2020-09-14 : 6.5 is released. New feature: follow and unfollow users. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))**
+
+**2020-08-30 : 6.4 is released. New feature: fetch followers and followings feeds. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))**
 
 **2020-07-03 : [6.3](#version-63-checkpoint-challenge-bypass) is released. New feature: checkpoint challenge bypass using IMAP configuration.**
 
