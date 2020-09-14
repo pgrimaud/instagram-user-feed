@@ -45,7 +45,7 @@
   },
   "require-dev": {
     "php-coveralls/php-coveralls": "^2.2",
-    "phpunit/phpunit": "^8.5|^9.3",
+    "phpunit/phpunit": "^8.5",
     "symfony/var-dumper": "^5.0"
   }
 }
