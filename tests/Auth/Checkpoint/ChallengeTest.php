@@ -43,7 +43,7 @@ class ChallengeTest extends TestCase
 
         $challenge->submitSecurityCode($challengeContent, '123456');
 
-        $this->assertSame(true, true);
+        $this->assertTrue(true);
     }
 
     public function testSubmitWrongCode()
@@ -77,6 +77,6 @@ class ChallengeTest extends TestCase
 
         $challenge->submitSecurityCode($challengeContent, '123456');
 
-        $this->assertSame(true, true);
+        $this->assertTrue(true);
     }
 }
