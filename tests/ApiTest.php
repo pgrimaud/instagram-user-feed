@@ -44,10 +44,10 @@ class ApiTest extends TestCase
         $this->assertSame(50, $profile->getFollowing());
         $this->assertSame('https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/s320x320/72702032_542075739927421_3928117925747097600_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=h2zGWoshNjUAX90AcTx&oh=ec27e20298c8765eccdfeb9c1b655f76&oe=5EEEC338', $profile->getProfilePicture());
         $this->assertSame('http://coreresponse.org/covid19', $profile->getExternalUrl());
-        $this->assertSame(false, $profile->isPrivate());
-        $this->assertSame(true, $profile->isVerified());
+        $this->assertFalse($profile->isPrivate());
+        $this->assertTrue($profile->isVerified());
         $this->assertSame(453, $profile->getMediaCount());
-        $this->assertSame(true, $profile->hasMoreMedias());
+        $this->assertTrue($profile->hasMoreMedias());
         $this->assertCount(12, $profile->getMedias());
         $this->assertSame('Photo shared by Robert Downey Jr. Official on May 12, 2020 tagging @netflix, @jefflemire, and @nxonnetflix. Image may contain: text', $profile->getMedias()[0]->getAccessibilityCaption());
 
@@ -59,10 +59,10 @@ class ApiTest extends TestCase
         $this->assertSame(50, $profile->__serialize()['following']);
         $this->assertSame('https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/s320x320/72702032_542075739927421_3928117925747097600_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=h2zGWoshNjUAX90AcTx&oh=ec27e20298c8765eccdfeb9c1b655f76&oe=5EEEC338', $profile->__serialize()['profilePicture']);
         $this->assertSame('http://coreresponse.org/covid19', $profile->__serialize()['externalUrl']);
-        $this->assertSame(false, $profile->__serialize()['private']);
-        $this->assertSame(true, $profile->__serialize()['verified']);
+        $this->assertFalse($profile->__serialize()['private']);
+        $this->assertTrue($profile->__serialize()['verified']);
         $this->assertSame(453, $profile->__serialize()['mediaCount']);
-        $this->assertSame(true, $profile->__serialize()['hasMoreMedias']);
+        $this->assertTrue($profile->__serialize()['hasMoreMedias']);
         $this->assertCount(12, $profile->__serialize()['medias']);
 
         $profile = $api->getMoreMedias($profile);
@@ -81,8 +81,8 @@ class ApiTest extends TestCase
         $this->assertSame(695047, $media->getLikes());
         $this->assertCount(5, $media->getThumbnails());
         $this->assertInstanceOf(\StdClass::class, $media->getLocation());
-        $this->assertSame(true, $media->isVideo());
-        $this->assertSame(false, $media->isIgtv());
+        $this->assertTrue($media->isVideo());
+        $this->assertFalse($media->isIgtv());
         $this->assertSame(2726827, $media->getVideoViewCount());
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->getThumbnailSrc());
 
@@ -98,8 +98,8 @@ class ApiTest extends TestCase
         $this->assertSame(695047, $media->__serialize()['likes']);
         $this->assertCount(5, $media->__serialize()['thumbnails']);
         $this->assertInstanceOf(\StdClass::class, $media->__serialize()['location']);
-        $this->assertSame(true, $media->__serialize()['video']);
-        $this->assertSame(false, $media->__serialize()['igtv']);
+        $this->assertTrue($media->__serialize()['video']);
+        $this->assertFalse($media->__serialize()['igtv']);
         $this->assertSame(2726827, $media->__serialize()['videoViewCount']);
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->__serialize()['thumbnailSrc']);
         $this->assertCount(9, $media->getHashtags());
@@ -212,8 +212,8 @@ class ApiTest extends TestCase
 
         $this->assertInstanceOf(\DateTime::class, $instagramStories->getExpiringDate());
         $this->assertInstanceOf(\StdClass::class, $instagramStories->getOwner());
-        $this->assertSame(false, $instagramStories->isAllowedToReply());
-        $this->assertSame(true, $instagramStories->isReshareable());
+        $this->assertFalse($instagramStories->isAllowedToReply());
+        $this->assertTrue($instagramStories->isReshareable());
 
         foreach ($instagramStories->getStories() as $story) {
             $this->assertSame(2313478624923545316, $story->getId());
@@ -227,7 +227,7 @@ class ApiTest extends TestCase
             $this->assertSame(14.5, $story->getVideoDuration());
             $this->assertCount(2, $story->getVideoResources());
             $this->assertCount(3, $story->getDisplayResources());
-            $this->assertSame(true, $story->isAudio());
+            $this->assertTrue($story->isAudio());
         }
 
         $api->logout('username');
@@ -333,8 +333,8 @@ class ApiTest extends TestCase
 
         $mediaDetailed = $api->getMediaDetailed($media);
 
-        $this->assertSame(false, $mediaDetailed->hasAudio());
-        $this->assertSame(null, $mediaDetailed->getVideoUrl());
+        $this->assertFalse($mediaDetailed->hasAudio());
+        $this->assertNull($mediaDetailed->getVideoUrl());
         $this->assertCount(0, $mediaDetailed->getTaggedUsers());
         $this->assertCount(3, $mediaDetailed->getSideCarItems());
         $this->assertCount(3, $mediaDetailed->getDisplayResources());
@@ -343,7 +343,7 @@ class ApiTest extends TestCase
 
         $mediaDetailed = $api->getMediaDetailed($media);
 
-        $this->assertSame(true, $mediaDetailed->hasAudio());
+        $this->assertTrue($mediaDetailed->hasAudio());
         $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/v/t50.2886-16/97784581_115199903279540_8370161409519117911_n.mp4?_nc_ht=scontent-cdg2-1.cdninstagram.com&_nc_cat=108&_nc_ohc=gOgqaQBnBEEAX9xddWo&oe=5ED69D0B&oh=edbbe40e7747f95edda907926a9e6af6', $mediaDetailed->getVideoUrl());
         $this->assertCount(2, $mediaDetailed->getTaggedUsers());
         $this->assertCount(0, $mediaDetailed->getSideCarItems());
@@ -353,7 +353,7 @@ class ApiTest extends TestCase
 
         $mediaDetailed = $api->getMediaDetailed($media);
 
-        $this->assertSame(false, $mediaDetailed->hasAudio());
+        $this->assertFalse($mediaDetailed->hasAudio());
         $this->assertCount(0, $mediaDetailed->getTaggedUsers());
         $this->assertCount(4, $mediaDetailed->getSideCarItems());
         $this->assertCount(3, $mediaDetailed->getDisplayResources());
@@ -523,7 +523,7 @@ class ApiTest extends TestCase
         $followersFeed = $api->getFollowers(1234567);
         $this->assertCount(24, $followersFeed->getUsers());
         $this->assertSame(46650946, $followersFeed->getCount());
-        $this->assertSame(true, $followersFeed->hasNextPage());
+        $this->assertTrue($followersFeed->hasNextPage());
         $this->assertSame('QVFBVUJiZjcydktSUHZyMFFkbjdrU3NGN0M2bUhzWHQwRUNuMHJHNF9hWlBNSVA3aUxvRk5YSC02WlVNbXpHaGpUMUFJeFdjYVRIcVpaYXVVWEtfbDhYUw==', $followersFeed->getEndCursor());
         $this->assertCount(4, $followersFeed->__serialize());
 
@@ -533,10 +533,10 @@ class ApiTest extends TestCase
         $this->assertSame('martinasalomao0602', $userToTest->getUserName());
         $this->assertSame('Martina S', $userToTest->getFullName());
         $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-19/s150x150/118546270_727334558122985_5873885402138414428_n.jpg?_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_ohc=3nIm_ZGjF-cAX9tM_rk&oh=a27e90a68da855ed18d8a23d72e1629c&oe=5F76E1FF', $userToTest->getProfilePicUrl());
-        $this->assertSame(false, $userToTest->isPrivate());
-        $this->assertSame(false, $userToTest->isVerified());
-        $this->assertSame(false, $userToTest->isFollowedByViewer());
-        $this->assertSame(false, $userToTest->isRequestedByViewer());
+        $this->assertFalse($userToTest->isPrivate());
+        $this->assertFalse($userToTest->isVerified());
+        $this->assertFalse($userToTest->isFollowedByViewer());
+        $this->assertFalse($userToTest->isRequestedByViewer());
 
         $this->assertCount(8, $userToTest->__serialize());
 
@@ -594,7 +594,7 @@ class ApiTest extends TestCase
         $followersFeed = $api->getFollowings(1234567);
         $this->assertCount(24, $followersFeed->getUsers());
         $this->assertSame(55, $followersFeed->getCount());
-        $this->assertSame(true, $followersFeed->hasNextPage());
+        $this->assertTrue($followersFeed->hasNextPage());
         $this->assertSame('QVFCa2oybzk2OGxERHdEMzFPMGtsUjUzTUZ5MU9WZFo2SWFyeVkycWJucWlNb1FVV3VOY3V3NzZ2TkFSWHJ0MUJvX2ZQN2EzV29lRHVFQ0V3TE1vM05vNA==', $followersFeed->getEndCursor());
         $this->assertCount(4, $followersFeed->__serialize());
 
@@ -815,6 +815,6 @@ class ApiTest extends TestCase
         $result = $api->unfollow(1234567);
         $this->assertSame('ko', $result);
 
-        $this->assertSame(true, true);
+        $this->assertTrue(true);
     }
 }
