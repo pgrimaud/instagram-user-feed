@@ -104,6 +104,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "peter279k",
+      "name": "Chun-Sheng, Li",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9021747?v=4",
+      "profile": "https://peterli.website/",
+      "contributions": [
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
