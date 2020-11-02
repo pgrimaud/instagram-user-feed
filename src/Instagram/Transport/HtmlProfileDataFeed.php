@@ -24,8 +24,11 @@ class HtmlProfileDataFeed extends AbstractDataFeed
             'headers' => [
                 'user-agent' => UserAgentHelper::AGENT_DEFAULT,
             ],
-            'cookies' => $this->session->getCookies()
         ];
+        
+        if (!empty($this->session)) { //to add
+            $headers['cookies'] = $this->session->getCookies();
+        }
 
         try {
             $res = $this->client->request('GET', $endpoint, $headers);

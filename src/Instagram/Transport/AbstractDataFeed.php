@@ -50,8 +50,11 @@ abstract class AbstractDataFeed
                 'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
                 'x-requested-with' => 'XMLHttpRequest',
             ],
-            'cookies' => $this->session->getCookies()
         ];
+        
+        if (!empty($this->session)) { //to add
+            $headers['cookies'] = $this->session->getCookies();
+        }
 
         $res = $this->client->request('GET', $endpoint, $headers);
 
