@@ -67,6 +67,11 @@ class StoryMedia
     private $ctaUrl;
 
     /**
+     * @var array
+     */
+    private $hashtags;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -256,5 +261,21 @@ class StoryMedia
     public function setCtaUrl(?string $ctaUrl): void
     {
         $this->ctaUrl = $ctaUrl;
+    }
+
+    /**
+     * @param array $hashtags
+     */
+    public function setHashtags(array $hashtags): void
+    {
+        $this->hashtags = $hashtags;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHashtags(): array
+    {
+        return $this->hashtags;
     }
 }

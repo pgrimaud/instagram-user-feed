@@ -40,6 +40,17 @@ abstract class AbstractStoryHydrator
             $story->setAudio($item->has_audio);
         }
 
+        $hashtags = [];
+
+        // extract tags (tappable_objects)
+        foreach ($item->tappable_objects as $object) {
+            if ($object->__typename === 'GraphTappableHashtag') {
+                $hashtags[] = $object->name;
+            }
+        }
+
+        $story->setHashtags($hashtags);
+
         return $story;
     }
 }
