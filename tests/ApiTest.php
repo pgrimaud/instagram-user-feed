@@ -229,6 +229,7 @@ class ApiTest extends TestCase
             $this->assertCount(3, $story->getDisplayResources());
             $this->assertTrue($story->isAudio());
             $this->assertCount(1, $story->getHashtags());
+            $this->assertCount(1, $story->getMentions());
         }
 
         $api->logout('username');

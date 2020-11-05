@@ -72,6 +72,11 @@ class StoryMedia
     private $hashtags;
 
     /**
+     * @var array
+     */
+    private $mentions;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -277,5 +282,21 @@ class StoryMedia
     public function getHashtags(): array
     {
         return $this->hashtags;
+    }
+
+    /**
+     * @param array $mentions
+     */
+    public function setMentions(array $mentions): void
+    {
+        $this->mentions = $mentions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMentions(): array
+    {
+        return $this->mentions;
     }
 }

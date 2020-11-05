@@ -41,15 +41,22 @@ abstract class AbstractStoryHydrator
         }
 
         $hashtags = [];
+        $mentions = [];
 
-        // extract tags (tappable_objects)
+        // tappable objects
         foreach ($item->tappable_objects as $object) {
-            if ($object->__typename === 'GraphTappableHashtag') {
-                $hashtags[] = $object->name;
+            switch ($object->__typename) {
+                case 'GraphTappableHashtag':
+                    $hashtags[] = $object->name;
+                    break;
+                case 'GraphTappableMention':
+                    $mentions[] = $object->username;
+                    break;
             }
         }
 
         $story->setHashtags($hashtags);
+        $story->setMentions($mentions);
 
         return $story;
     }
