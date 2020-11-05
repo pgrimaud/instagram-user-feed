@@ -45,19 +45,37 @@ composer require pgrimaud/instagram-user-feed
 
 ## Changelog
 
-**2020-10-06 : 6.6 is released. New features: like and unlike posts. You could know retrieve #hashtags and @mentions from stories.**
+**v6.6** - 2020-10-06: 
 
-**2020-09-14 : 6.5 is released. New feature: follow and unfollow users. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))**
+- New feature: **like** and **unlike** posts. 
+- Retrieval **#hashtags** and **@mentions** from stories.
+- Minor changes and improvements. 
 
-**2020-08-30 : 6.4 is released. New feature: fetch followers and followings feeds. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))**
+**v6.5** - 2020-09-14: 
 
-**2020-07-03 : [6.3](#version-63-checkpoint-challenge-bypass) is released. New feature: checkpoint challenge bypass using IMAP configuration.**
+- New feature: follow and unfollow users. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))
+- Minor fixes.
 
-**2020-06-01 : 6.2 is released. Improve medias crawling && cache constraints.**
+**v6.4** - 2020-08-30: 
 
-**2020-05-21 : 6.1 is released. New feature: fetch stories and highlights stories.**
+- New feature: fetch followers and followings feeds. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))
+- Minor improvements.
 
-**2020-05-21 : [6.0](#version-60-login) is released. Please upgrade from ^5.0 for cookies session stability.** 
+**[v6.3](#version-63-checkpoint-challenge-bypass)** -2020-07-03: 
+
+- Add checkpoint challenge bypass using IMAP configuration.
+
+**v6.2** - 2020-06-01: 
+
+- Improve medias crawling && cache constraints.
+
+**v6.1** - 2020-05-21: 
+
+- New feature: Fetch stories and highlights stories.
+
+**[6.0](#version-60-login)** - 2020-05-20
+
+- Please upgrade from ^5.0 for cookies session stability.
 
 ## Version ^6.3: Checkpoint challenge bypass
 
