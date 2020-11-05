@@ -45,6 +45,8 @@ composer require pgrimaud/instagram-user-feed
 
 ## Changelog
 
+**2020-10-06 : 6.6 is released. New features: like and unlike posts. You could know retrieve #hashtags and @mentions from stories.**
+
 **2020-09-14 : 6.5 is released. New feature: follow and unfollow users. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))**
 
 **2020-08-30 : 6.4 is released. New feature: fetch followers and followings feeds. Thanks to [@David-Kurniawan](https://github.com/David-Kurniawan))**

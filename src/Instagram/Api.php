@@ -35,8 +35,8 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedByShortCodeDataFeed,
     JsonFollowerDataFeed,
     JsonFollowingDataFeed,
-    FollowUnfollow
-};
+    FollowUnfollow,
+    LikeUnlike};
 use Psr\Cache\CacheItemPoolInterface;
 
 class Api
@@ -388,5 +388,33 @@ class Api
     {
         $request = new FollowUnfollow($this->client, $this->session);
         return $request->unfollow($accountId);
+    }
+
+    /**
+     * @param int $postId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function like(int $postId): string
+    {
+        $request = new LikeUnlike($this->client, $this->session);
+        return $request->like($postId);
+    }
+
+    /**
+     * @param int $postId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function unlike(int $postId): string
+    {
+        $request = new LikeUnlike($this->client, $this->session);
+        return $request->unlike($postId);
     }
 }

@@ -17,10 +17,10 @@ try {
     $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    // 1518284433 is robertdowneyjr's account id
-    $userId = 1518284433;
+    // 2407752139969665290 is https://www.instagram.com/p/CFqDdCCFBkK/
+    $postId = 2407752139969665290;
 
-    $follow = $api->follow($userId);
+    $follow = $api->like($postId);
 
     echo $follow . PHP_EOL;
 

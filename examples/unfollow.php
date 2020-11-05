@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Instagram\Api;
 use Instagram\Exception\InstagramException;
 
-use Instagram\Model\User;
 use Psr\Cache\CacheException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
