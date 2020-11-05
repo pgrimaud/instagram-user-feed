@@ -44,17 +44,17 @@ class Api
     /**
      * @var CacheItemPoolInterface
      */
-    private $cachePool;
+    protected $cachePool;
 
     /**
      * @var ClientInterface
      */
-    private $client;
+    protected $client;
 
     /**
      * @var Session
      */
-    private $session = null;
+    protected $session = null;
 
     /**
      * @param CacheItemPoolInterface $cachePool
