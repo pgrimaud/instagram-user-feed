@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Instagram;
 
 use GuzzleHttp\{Client, ClientInterface};
+use Instagram\Utils\CacheHelper;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\InstagramException;
@@ -79,7 +80,7 @@ class Api
         $login = new Login($this->client, $username, $password, $imapClient);
 
         // fetch previous session an re-use it
-        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . $username);
+        $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($username));
         $cookies     = $sessionData->get();
 
         if ($cookies instanceof CookieJar) {
@@ -108,6 +109,8 @@ class Api
      */
     public function logout(?string $username = ''): void
     {
+        $username = CacheHelper::sanitizeUsername($username);
+
         $this->cachePool->deleteItem(Session::SESSION_KEY . ($username !== '' ? '.' . $username : ''));
     }
 

@@ -2,6 +2,8 @@ composer.lock
 vendor
 build
 
+clover.xml
+
 examples/credentials.php
 
 !cache/.gitkeep
