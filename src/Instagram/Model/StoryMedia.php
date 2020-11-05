@@ -117,15 +117,15 @@ class StoryMedia
     /**
      * @return string
      */
-    public function getDisplayUrl(): string
+    public function getDisplayUrl(): ?string
     {
         return $this->displayUrl;
     }
 
     /**
-     * @param string $displayUrl
+     * @param string|null $displayUrl
      */
-    public function setDisplayUrl(string $displayUrl): void
+    public function setDisplayUrl(?string $displayUrl): void
     {
         $this->displayUrl = $displayUrl;
     }
@@ -227,31 +227,31 @@ class StoryMedia
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTypeName(): string
+    public function getTypeName(): ?string
     {
         return $this->typeName;
     }
 
     /**
-     * @param string $typeName
+     * @param string|null $typeName
      */
-    public function setTypeName(string $typeName): void
+    public function setTypeName(?string $typeName): void
     {
         $this->typeName = $typeName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCtaUrl(): string
+    public function getCtaUrl(): ?string
     {
         return $this->ctaUrl;
     }
 
     /**
-     * @param string $ctaUrl
+     * @param string|null $ctaUrl
      */
     public function setCtaUrl(?string $ctaUrl): void
     {
