@@ -15,7 +15,7 @@
 ## Information
 Easily fetch any Instagram feed and more without OAuth for PHP.
 
-If you like or use this package, please share your love by starring this repository, follow [@pgrimaud](https://github.com/pgrimaud) or [become a sponsor](https://github.com/sponsors/pgrimaud). 🙏
+If you like or use this package, please share your love by starring this repository, follow [@pgrimaud](https://github.com/pgrimaud) or [become a sponsor](https://github.com/sponsors/pgrimaud). 🙏💓
 
 ## Features
 
@@ -26,6 +26,8 @@ If you like or use this package, please share your love by starring this reposit
 - Fetch detailed post of user
 - Fetch feed of followers
 - Fetch feed of followings
+- **NEW : Follow or unfollow users**
+- **NEW : Like or unlike posts**
 
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
@@ -73,7 +75,7 @@ composer require pgrimaud/instagram-user-feed
 
 - New feature: Fetch stories and highlights stories.
 
-**[6.0](#version-60-login)** - 2020-05-20
+**[v6.0](#version-60-login)** - 2020-05-20
 
 - Please upgrade from ^5.0 for cookies session stability.
 
