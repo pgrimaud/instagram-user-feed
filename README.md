@@ -1,5 +1,5 @@
 # Instagram user feed PHP
-[![Build Status](https://travis-ci.org/pgrimaud/instagram-user-feed.svg?branch=master)](https://travis-ci.org/pgrimaud/instagram-user-feed)
+[![Build Status](https://api.cirrus-ci.com/github/pgrimaud/instagram-user-feed.svg)](https://cirrus-ci.com/github/pgrimaud/instagram-user-feed)
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Coverage Status](https://coveralls.io/repos/github/pgrimaud/instagram-user-feed/badge.svg?branch=master)](https://coveralls.io/github/pgrimaud/instagram-user-feed?branch=master)
 
@@ -51,7 +51,7 @@ composer require pgrimaud/instagram-user-feed
 
 - New feature: **like** and **unlike** posts. 
 - Retrieval **#hashtags** and **@mentions** from stories.
-- Minor changes and improvements. 
+- Minor changes and improvements.
 
 **v6.5** - 2020-09-14: 
 
