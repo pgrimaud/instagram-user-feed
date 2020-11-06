@@ -7,3 +7,5 @@ test_task:
   install_script:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer install
+  test_script:
+    - php vendor/bin/phpunit
