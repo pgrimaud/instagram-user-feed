@@ -26,7 +26,7 @@ class HtmlProfileDataFeed extends AbstractDataFeed
             ],
         ];
         
-        if (!empty($this->session)) { //to add
+        if (!empty($this->session)) {
             $headers['cookies'] = $this->session->getCookies();
         }
 
