@@ -11,6 +11,7 @@ test_task:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer install
   test_script:
+    - php -v
     - php vendor/bin/phpunit --coverage-clover ./clover.xml
     - ls -la
   coverage_script:
