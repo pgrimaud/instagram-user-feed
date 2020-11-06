@@ -29,10 +29,6 @@ abstract class AbstractDataFeed
      */
     public function __construct(ClientInterface $client, ?Session $session)
     {
-        if (!$session) {
-            throw new InstagramAuthException('Please login before fetching data.');
-        }
-
         $this->client  = $client;
         $this->session = $session;
     }
@@ -52,7 +48,7 @@ abstract class AbstractDataFeed
             ],
         ];
         
-        if (!empty($this->session)) { //to add
+        if (!empty($this->session)) {
             $headers['cookies'] = $this->session->getCookies();
         }
 
