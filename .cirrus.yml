@@ -1,12 +1,10 @@
 test_task:
   container:
     matrix:
-      - image: php:7.2-alpine
-      - image: php:7.3-alpine
-      - image: php:7.4-alpine
-  install_ext_script:
-    - pecl install imap
-  install_php_script:
+      - dockerfile: ci/php72/Dockerfile
+      - dockerfile: ci/php73/Dockerfile
+      - dockerfile: ci/php74/Dockerfile
+  install_dependencies_script:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer install
   test_script:
