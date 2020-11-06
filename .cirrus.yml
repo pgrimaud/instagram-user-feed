@@ -2,8 +2,8 @@ test_task:
   container:
     matrix:
       - dockerfile: ci/php72/Dockerfile
-      - dockerfile: ci/php73/Dockerfile
-      - dockerfile: ci/php74/Dockerfile
+      #- dockerfile: ci/php73/Dockerfile
+      #- dockerfile: ci/php74/Dockerfile
   install_dependencies_script:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer install
