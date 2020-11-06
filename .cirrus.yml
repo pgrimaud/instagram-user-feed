@@ -5,4 +5,5 @@ test_task:
       - image: php:7.3-alpine
       - image: php:7.4-alpine
   install_script:
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer install
