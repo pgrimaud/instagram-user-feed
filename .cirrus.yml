@@ -1,5 +1,5 @@
 env:
-  COVERALLS_TOKEN: ENCRYPTED[6fa8f786e85de5afed956883add19c9eb7f137e13a0d50d99adf10ed9410629ee208f9c9dfd341213613d12e2e880a8a]
+  COVERALLS_REPO_TOKEN: ENCRYPTED[6fa8f786e85de5afed956883add19c9eb7f137e13a0d50d99adf10ed9410629ee208f9c9dfd341213613d12e2e880a8a]
 
 test_task:
   container:
@@ -11,9 +11,6 @@ test_task:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer install
   test_script:
-    - php -v
-    - php vendor/bin/phpunit --coverage-clover ./clover.xml
-    - ls -la
+    - php vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
   coverage_script:
-    - ls -la
     - php vendor/bin/php-coveralls -v
