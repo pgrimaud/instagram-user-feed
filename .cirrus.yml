@@ -1,0 +1,8 @@
+test_task:
+  container:
+    matrix:
+      - image: php:7.2-alpine
+      - image: php:7.3-alpine
+      - image: php:7.4-alpine
+  install_script:
+    - composer install

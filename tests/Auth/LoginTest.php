@@ -153,22 +153,4 @@ class LoginTest extends TestCase
 
         $api->logout('username');
     }
-
-    public function testFetchingDataWithoutLogin()
-    {
-        $this->expectException(InstagramAuthException::class);
-
-        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
-
-        $mock = new MockHandler([
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.html')),
-        ]);
-
-        $handlerStack = HandlerStack::create($mock);
-        $client       = new Client(['handler' => $handlerStack]);
-
-        $api = new Api($cachePool, $client);
-        $api->logout('username');
-        $api->getProfile('robertdowneyjr');
-    }
 }
