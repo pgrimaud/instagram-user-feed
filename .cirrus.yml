@@ -12,6 +12,7 @@ test_task:
     - composer install
   test_script:
     - php vendor/bin/phpunit --coverage-clover ./clover.xml
+    - ls -la
   coverage_script:
     - ls -la
     - php vendor/bin/php-coveralls -v
