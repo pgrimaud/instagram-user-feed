@@ -1,4 +1,4 @@
-FROM php:7.3-alpine
+FROM php:7.3
 
 RUN apt-get update && apt-get install -y libc-client-dev libkrb5-dev zip git && rm -r /var/lib/apt/lists/*
 
