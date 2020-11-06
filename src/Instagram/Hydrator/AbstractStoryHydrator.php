@@ -40,8 +40,9 @@ abstract class AbstractStoryHydrator
             $story->setAudio($item->has_audio);
         }
 
-        $hashtags = [];
-        $mentions = [];
+        $hashtags  = [];
+        $mentions  = [];
+        $locations = [];
 
         // tappable objects
         foreach ($item->tappable_objects as $object) {
@@ -52,11 +53,15 @@ abstract class AbstractStoryHydrator
                 case 'GraphTappableMention':
                     $mentions[] = $object->username;
                     break;
+                case 'GraphTappableLocation':
+                    $locations[] = $object->id;
+                    break;
             }
         }
 
         $story->setHashtags($hashtags);
         $story->setMentions($mentions);
+        $story->setLocations($locations);
 
         return $story;
     }

@@ -77,6 +77,11 @@ class StoryMedia
     private $mentions;
 
     /**
+     * @var array
+     */
+    private $locations;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -298,5 +303,21 @@ class StoryMedia
     public function getMentions(): array
     {
         return $this->mentions;
+    }
+
+    /**
+     * @param array $locations
+     */
+    public function setLocations(array $locations): void
+    {
+        $this->locations = $locations;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLocations(): array
+    {
+        return $this->locations;
     }
 }

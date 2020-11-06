@@ -9,14 +9,16 @@ use Instagram\Utils\CacheHelper;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\InstagramException;
-use Instagram\Hydrator\{MediaHydrator,
+use Instagram\Hydrator\{LocationHydrator,
+    MediaHydrator,
     StoriesHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
     FollowerHydrator,
     FollowingHydrator
 };
-use Instagram\Model\{Media,
+use Instagram\Model\{Location,
+    Media,
     MediaDetailed,
     Profile,
     ProfileStory,
@@ -36,7 +38,9 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonFollowerDataFeed,
     JsonFollowingDataFeed,
     FollowUnfollow,
-    LikeUnlike};
+    LikeUnlike,
+    LocationData
+};
 use Psr\Cache\CacheItemPoolInterface;
 
 class Api
@@ -416,5 +420,25 @@ class Api
     {
         $request = new LikeUnlike($this->client, $this->session);
         return $request->unlike($postId);
+    }
+
+    /**
+     * @param int $locationId
+     *
+     * @return Location
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getLocation(int $locationId): Location
+    {
+        $feed = new LocationData($this->client, $this->session);
+        $data = $feed->fetchData($locationId);
+
+        $hydrator = new LocationHydrator();
+        $hydrator->hydrateLocation($data);
+
+        return $hydrator->getLocation();
     }
 }

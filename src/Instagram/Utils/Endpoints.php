@@ -12,6 +12,8 @@ class Endpoints
     const LIKE_URL = 'https://www.instagram.com/web/likes/{{postId}}/like/';
     const UNLIKE_URL = 'https://www.instagram.com/web/likes/{{postId}}/unlike/';
 
+    const LOCATION_URL = 'https://www.instagram.com/explore/locations/{{locationId}}/';
+
     /**
      * @param int $accountId
      *
@@ -50,5 +52,15 @@ class Endpoints
     public static function getUnlikeUrl(int $postId): string
     {
         return str_replace('{{postId}}', $postId, static::UNLIKE_URL);
+    }
+
+    /**
+     * @param int $locationId
+     *
+     * @return string
+     */
+    public static function getLocationUrl(int $locationId): string
+    {
+        return str_replace('{{locationId}}', $locationId, static::LOCATION_URL);
     }
 }

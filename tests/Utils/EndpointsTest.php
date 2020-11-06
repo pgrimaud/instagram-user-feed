@@ -32,4 +32,10 @@ class EndpointsTest extends TestCase
         $endpoint = Endpoints::getUnlikeUrl(123456789);
         $this->assertSame('https://www.instagram.com/web/likes/123456789/unlike/', $endpoint);
     }
+
+    public function testGetLocationUrl()
+    {
+        $endpoint = Endpoints::getLocationUrl(123456789);
+        $this->assertSame('https://www.instagram.com/explore/locations/123456789/', $endpoint);
+    }
 }
