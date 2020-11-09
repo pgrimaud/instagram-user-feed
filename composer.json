@@ -1,7 +1,7 @@
 {
   "name": "pgrimaud/instagram-user-feed",
   "type": "library",
-  "description": "This is a scrapper to easily fetch any Instagram feed and more without OAuth for PHP.",
+  "description": "This is a scrapper to easily fetch any feed and interact with Instagram (like, follow, etc.) without OAuth for PHP.",
   "keywords": [
     "instagram",
     "api",
