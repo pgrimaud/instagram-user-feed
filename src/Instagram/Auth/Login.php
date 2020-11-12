@@ -33,17 +33,24 @@ class Login
     private $imapClient;
 
     /**
+     * @var int|null
+     */
+    private $challengeDelay;
+
+    /**
      * @param ClientInterface $client
      * @param string $login
      * @param string $password
      * @param ImapClient|null $imapClient
+     * @param int|null $challengeDelay
      */
-    public function __construct(ClientInterface $client, string $login, string $password, ?ImapClient $imapClient = null)
+    public function __construct(ClientInterface $client, string $login, string $password, ?ImapClient $imapClient = null, ?int $challengeDelay = null)
     {
-        $this->client     = $client;
-        $this->login      = $login;
-        $this->password   = $password;
-        $this->imapClient = $imapClient;
+        $this->client         = $client;
+        $this->login          = $login;
+        $this->password       = $password;
+        $this->imapClient     = $imapClient;
+        $this->challengeDelay = $challengeDelay;
     }
 
     /**
@@ -124,7 +131,7 @@ class Login
             throw new InstagramAuthException('Checkpoint required, please provide IMAP credentials to process authentication.');
         }
 
-        $challenge = new Challenge($this->client, $cookieJar, $data->checkpoint_url);
+        $challenge = new Challenge($this->client, $cookieJar, $data->checkpoint_url, $this->challengeDelay);
 
         $challengeContent = $challenge->fetchChallengeContent();
 
