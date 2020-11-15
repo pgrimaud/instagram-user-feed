@@ -61,13 +61,20 @@ class Api
     protected $session = null;
 
     /**
+     * @var int|null
+     */
+    protected $challengeDelay;
+
+    /**
      * @param CacheItemPoolInterface $cachePool
      * @param ClientInterface|null $client
+     * @param int|null $challengeDelay
      */
-    public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null)
+    public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null, ?int $challengeDelay = null)
     {
-        $this->cachePool = $cachePool;
-        $this->client    = $client ?: new Client();
+        $this->cachePool      = $cachePool;
+        $this->client         = $client ?: new Client();
+        $this->challengeDelay = $challengeDelay;
     }
 
     /**
@@ -81,7 +88,7 @@ class Api
      */
     public function login(string $username, string $password, ?ImapClient $imapClient = null): void
     {
-        $login = new Login($this->client, $username, $password, $imapClient);
+        $login = new Login($this->client, $username, $password, $imapClient, $this->challengeDelay);
 
         // fetch previous session an re-use it
         $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($username));
