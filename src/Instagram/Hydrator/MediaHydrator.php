@@ -124,6 +124,12 @@ class MediaHydrator
 
         $media->setTaggedUsers($taggedUsers);
 
+        if (property_exists($node, 'owner')) {
+            $hydrator = new ProfileHydrator();
+            $hydrator->hydrateProfile($node->owner);
+            $media->setProfile($hydrator->getProfile());
+        }
+
         if ($node->__typename === 'GraphSidecar') {
             $scItems = [];
             foreach ($node->edge_sidecar_to_children->edges as $item) {

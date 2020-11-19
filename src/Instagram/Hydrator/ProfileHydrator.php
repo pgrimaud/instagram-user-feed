@@ -38,14 +38,28 @@ class ProfileHydrator
         $this->profile->setId32Bit($data->id);
         $this->profile->setUserName($data->username);
         $this->profile->setFullName($data->full_name);
-        $this->profile->setBiography($data->biography);
-        $this->profile->setExternalUrl($data->external_url);
         $this->profile->setFollowers($data->edge_followed_by->count);
-        $this->profile->setFollowing($data->edge_follow->count);
-        $this->profile->setProfilePicture($data->profile_pic_url_hd);
         $this->profile->setPrivate($data->is_private);
         $this->profile->setVerified($data->is_verified);
         $this->profile->setMediaCount($data->edge_owner_to_timeline_media->count);
+
+        if (property_exists($data, 'biography')) {
+            $this->profile->setBiography($data->biography);
+        }
+
+        if (property_exists($data, 'external_url')) {
+            $this->profile->setExternalUrl($data->external_url);
+        }
+
+        if (property_exists($data, 'edge_follow')) {
+            $this->profile->setFollowing($data->edge_follow->count);
+        }
+
+        if (property_exists($data, 'profile_pic_url_hd')) {
+            $this->profile->setProfilePicture($data->profile_pic_url_hd);
+        } elseif (property_exists($data, 'profile_pic_url')) {
+            $this->profile->setProfilePicture($data->profile_pic_url);
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ use Instagram\Api;
 use Instagram\Auth\Session;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Model\Media;
+use Instagram\Model\Profile;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -361,6 +362,7 @@ class ApiTest extends TestCase
         $this->assertCount(4, $mediaDetailed->getSideCarItems());
         $this->assertCount(3, $mediaDetailed->getDisplayResources());
 
+        $this->assertInstanceOf(Profile::class, $mediaDetailed->getProfile());
 
         $api->logout('username');
     }
