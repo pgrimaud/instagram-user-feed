@@ -9,7 +9,7 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
@@ -297,6 +297,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/David-Kurniawan"><img src="https://avatars1.githubusercontent.com/u/7419157?v=4" width="100px;" alt=""/><br /><sub><b>David Kurniawan</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=David-Kurniawan" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/gtapps"><img src="https://avatars0.githubusercontent.com/u/16778396?v=4" width="100px;" alt=""/><br /><sub><b>gtapps</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=gtapps" title="Code">💻</a></td>
     <td align="center"><a href="https://peterli.website/"><img src="https://avatars2.githubusercontent.com/u/9021747?v=4" width="100px;" alt=""/><br /><sub><b>Chun-Sheng, Li</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=peter279k" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/schelmo"><img src="https://avatars1.githubusercontent.com/u/47602?v=4" width="100px;" alt=""/><br /><sub><b>schelmo</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=schelmo" title="Code">💻</a></td>
   </tr>
 </table>
 
