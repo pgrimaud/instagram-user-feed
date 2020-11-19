@@ -30,6 +30,11 @@ class MediaDetailed extends Media
     private $displayResources = [];
 
     /**
+     * @var Instagram\Model\Profile
+     */
+    private $profile;
+
+    /**
      * @return string
      */
     public function getVideoUrl(): ?string
@@ -91,6 +96,22 @@ class MediaDetailed extends Media
     public function setDisplayResources(array $displayResources): void
     {
         $this->displayResources = $displayResources;
+    }
+
+    /**
+     * @return Profile
+     */
+    public function getProfile(): Profile
+    {
+        return $this->profile;
+    }
+
+    /**
+     * @param Instagram\Model\Profile
+     */
+    public function setProfile(Profile $profile)
+    {
+        $this->profile = $profile;
     }
 
     /**
