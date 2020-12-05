@@ -14,6 +14,7 @@ use Instagram\Hydrator\{LocationHydrator,
     StoriesHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
+    HashtagHydrator,
     FollowerHydrator,
     FollowingHydrator
 };
@@ -21,6 +22,7 @@ use Instagram\Model\{Location,
     Media,
     MediaDetailed,
     Profile,
+    Hashtag,
     ProfileStory,
     StoryHighlights,
     StoryHighlightsFolder,
@@ -30,6 +32,7 @@ use Instagram\Model\{Location,
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
+    JsonHashtagDataFeed,
     JsonProfileDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
@@ -160,6 +163,45 @@ class Api
         $hydrator->hydrateMedias($data);
 
         return $hydrator->getProfile();
+    }
+
+    /**
+     * @param string $hashtag
+     *
+     * @return Hashtag
+     *
+     * @throws InstagramException
+     */
+    public function getHashtag(string $hashtag): Hashtag
+    {
+        $feed = new JsonHashtagDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($hashtag);
+
+        $hydrator = new HashtagHydrator();
+        $hydrator->hydrateHashtag($data);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getHashtag();
+    }
+
+    /**
+     * @param string $hashtag
+     * @param int $maxId
+     *
+     * @return Hashtag
+     *
+     * @throws InstagramException
+     */
+    public function getHashtagMedias(string $hashtag, int $maxId): Hashtag
+    {
+        $feed = new JsonHashtagDataFeed($this->client, $this->session);
+        $data = $feed->fetchMoreData($hashtag, $maxId);
+
+        $hydrator = new HashtagHydrator();
+        $hydrator->hydrateHashtag($data);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getHashtag();
     }
 
     /**
