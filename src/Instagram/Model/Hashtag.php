@@ -57,11 +57,6 @@ class Hashtag
     private $endCursor = null;
 
     /**
-     * @var int
-     */
-    private $maxId;
-
-    /**
      * @return string
      */
     public function getName(): string
@@ -219,22 +214,6 @@ class Hashtag
     }
 
     /**
-     * @return int
-     */
-    public function getMaxId(): int
-    {
-        return $this->maxId;
-    }
-
-    /**
-     * @param int $maxId
-     */
-    public function setMaxId(int $maxId): void
-    {
-        $this->maxId = $maxId;
-    }
-
-    /**
      * @param Media[] $medias
      */
     public function setMedias(array $medias): void
@@ -259,8 +238,7 @@ class Hashtag
                 return $media->toArray();
             }, $this->medias),
             'hasMoreMedias'  => $this->hasMoreMedias,
-            'endCursor'      => $this->endCursor,
-            'maxId'          => $this->maxId
+            'endCursor'      => $this->endCursor
         ];
     }
 

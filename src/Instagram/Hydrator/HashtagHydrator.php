@@ -63,9 +63,6 @@ class HashtagHydrator
 
         $this->hashtag->setHasMoreMedias($data->edge_hashtag_to_media->page_info->end_cursor != null);
         $this->hashtag->setEndCursor($data->edge_hashtag_to_media->page_info->end_cursor);
-        if (property_exists($data->edge_hashtag_to_media->page_info, 'max_id')) {
-            $this->hashtag->setMaxId($data->edge_hashtag_to_media->page_info->max_id);
-        }
     }
 
     /**

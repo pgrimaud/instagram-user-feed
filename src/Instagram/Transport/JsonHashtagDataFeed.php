@@ -18,27 +18,38 @@ class JsonHashtagDataFeed extends AbstractDataFeed
      */
     public function fetchData(string $hashtag): \StdClass
     {
-        $endpoint = InstagramHelper::URL_BASE . 'explore/tags/' . $hashtag . '/?__a=1';
+        $variables = [
+            'tag_name' => $hashtag,
+            'first'    => InstagramHelper::PAGINATION_DEFAULT
+        ];
+
+        $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH_HASHTAG . '&variables=' . json_encode($variables);
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return $data->graphql->hashtag;
+        return $data->data->hashtag;
     }
 
     /**
      * @param string $hashtag
-     * @param string $maxId
+     * @param string $endCursor
      *
      * @return \StdClass
      *
      * @throws InstagramFetchException
      */
-    public function fetchMoreData(string $hashtag, int $maxId): \StdClass
+    public function fetchMoreData(string $hashtag, string $endCursor): \StdClass
     {
-        $endpoint = InstagramHelper::URL_BASE . 'explore/tags/' . $hashtag . '/?__a=1&max_id=' . $maxId;
+        $variables = [
+            'tag_name' => $hashtag,
+            'first'    => InstagramHelper::PAGINATION_DEFAULT,
+            'after'    => $endCursor
+        ];
+
+        $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH_HASHTAG . '&variables=' . json_encode($variables);
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return $data->graphql->hashtag;
+        return $data->data->hashtag;
     }
 }
