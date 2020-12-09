@@ -186,16 +186,16 @@ class Api
 
     /**
      * @param string $hashtag
-     * @param int $maxId
+     * @param string $endCursor
      *
      * @return Hashtag
      *
      * @throws InstagramException
      */
-    public function getHashtagMedias(string $hashtag, int $maxId): Hashtag
+    public function getHashtagMedias(string $hashtag, string $endCursor): Hashtag
     {
         $feed = new JsonHashtagDataFeed($this->client, $this->session);
-        $data = $feed->fetchMoreData($hashtag, $maxId);
+        $data = $feed->fetchMoreData($hashtag, $endCursor);
 
         $hydrator = new HashtagHydrator();
         $hydrator->hydrateHashtag($data);
@@ -487,6 +487,27 @@ class Api
 
         $hydrator = new LocationHydrator();
         $hydrator->hydrateLocation($data);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getLocation();
+    }
+
+    /**
+     * @param int $locationId
+     * @param string $endCursor
+     *
+     * @return Location
+     *
+     * @throws InstagramException
+     */
+    public function getLocationMedias(int $locationId, string $endCursor): Location
+    {
+        $feed = new LocationData($this->client, $this->session);
+        $data = $feed->fetchMoreData($locationId, $endCursor);
+
+        $hydrator = new LocationHydrator();
+        $hydrator->hydrateLocation($data);
+        $hydrator->hydrateMedias($data);
 
         return $hydrator->getLocation();
     }

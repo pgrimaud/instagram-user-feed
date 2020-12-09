@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\Endpoints;
 use Instagram\Utils\UserAgentHelper;
+use Instagram\Utils\InstagramHelper;
 
 class LocationData extends AbstractDataFeed
 {
@@ -51,5 +52,22 @@ class LocationData extends AbstractDataFeed
         $data = json_decode($matches[1], false);
 
         return $data->entry_data->LocationsPage[0]->graphql->location;
+    }
+
+    /**
+     * @param int $locationId
+     * @param string $endCursor
+     *
+     * @return \StdClass
+     *
+     * @throws InstagramFetchException
+     */
+    public function fetchMoreData(int $locationId, string $endCursor): \StdClass
+    {
+        $endpoint = InstagramHelper::URL_BASE . 'explore/locations/' . $locationId . '/?__a=1&max_id=' . $endCursor;
+
+        $data = $this->fetchJsonDataFeed($endpoint);
+
+        return $data->graphql->location;
     }
 }

@@ -25,6 +25,10 @@ try {
     // location data
     print_r($location);
 
+    // get more data
+    $locationMore = $api->getLocationMedias($postId, $location->getEndCursor());
+    print_r($locationMore);
+
 } catch (InstagramException $e) {
     print_r($e->getMessage());
 } catch (CacheException $e) {

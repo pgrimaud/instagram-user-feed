@@ -17,13 +17,16 @@ try {
     $api     = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    $hashtag = $api->getHashtag('envato');
+    $hashtag = $api->getHashtag('paris');
 
     $medias = $hashtag->getMedias();
 
     echo '<pre>';
         print_r($medias);
     echo '</pre>';
+
+    $medias = $api->getHashtagMedias('paris', $hashtag->getEndCursor());
+    print_r($medias);
 
 } catch (InstagramException $e) {
     print_r($e->getMessage());
