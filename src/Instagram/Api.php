@@ -45,6 +45,7 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     LocationData
 };
 use Psr\Cache\CacheItemPoolInterface;
+use Instagram\Utils\InstagramHelper;
 
 class Api
 {
@@ -149,15 +150,16 @@ class Api
 
     /**
      * @param Profile $instagramProfile
+	 * @param int $limit
      *
      * @return Profile
      *
      * @throws InstagramException
      */
-    public function getMoreMedias(Profile $instagramProfile): Profile
+    public function getMoreMedias(Profile $instagramProfile, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
     {
         $feed = new JsonMediasDataFeed($this->client, $this->session);
-        $data = $feed->fetchData($instagramProfile);
+        $data = $feed->fetchData($instagramProfile, $limit);
 
         $hydrator = new ProfileHydrator($instagramProfile);
         $hydrator->hydrateMedias($data);
@@ -207,18 +209,35 @@ class Api
     /**
      * @param int $userId
      * @param string $endCursor
+	 * @param int $limit
      *
      * @return Profile
      *
      * @throws InstagramException
      */
-    public function getMoreMediasWithCursor(int $userId, string $endCursor): Profile
+    public function getMoreMediasWithCursor(int $userId, string $endCursor, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
     {
         $instagramProfile = new Profile();
         $instagramProfile->setId($userId);
         $instagramProfile->setEndCursor($endCursor);
 
-        return $this->getMoreMedias($instagramProfile);
+        return $this->getMoreMedias($instagramProfile, $limit);
+    }
+
+    /**
+     * @param int $userId
+	 * @param int $limit
+     *
+     * @return Profile
+     *
+     * @throws InstagramException
+     */
+    public function getMoreMediasWithId(int $userId, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
+    {
+        $instagramProfile = new Profile();
+        $instagramProfile->setId($userId);
+
+        return $this->getMoreMedias($instagramProfile, $limit);
     }
 
     /**

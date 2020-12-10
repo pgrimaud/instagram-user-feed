@@ -19,7 +19,7 @@ class Media
     /**
      * @var string
      */
-    private $typeName;
+    private $typeName = '';
 
     /**
      * @var int
