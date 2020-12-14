@@ -11,6 +11,7 @@ use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\{LocationHydrator,
     MediaHydrator,
+    MediaCommentsHydrator,
     StoriesHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
@@ -21,6 +22,7 @@ use Instagram\Hydrator\{LocationHydrator,
 use Instagram\Model\{Location,
     Media,
     MediaDetailed,
+    MediaComments,
     Profile,
     Hashtag,
     ProfileStory,
@@ -32,6 +34,7 @@ use Instagram\Model\{Location,
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
+    JsonMediaCommentsFeed,
     JsonHashtagDataFeed,
     JsonProfileDataFeed,
     JsonStoriesDataFeed,
@@ -238,6 +241,41 @@ class Api
         $instagramProfile->setId($userId);
 
         return $this->getMoreMedias($instagramProfile, $limit);
+    }
+
+    /**
+     * @param string $mediaCode
+     * @param int $limit
+     *
+     * @return MediaComments
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMediaComments(string $mediaCode, int $limit = InstagramHelper::PAGINATION_DEFAULT): MediaComments
+    {
+        $feed = new JsonMediaCommentsFeed($this->client, $this->session);
+        $data = $feed->fetchData($mediaCode, $limit);
+
+        $hydrator = new MediaCommentsHydrator();
+        $hydrator->hydrateMediaComments($data);
+
+        return $hydrator->getMediaComments();
+    }
+
+    /**
+     * @param string $mediaId
+     * @param int $limit
+     *
+     * @return MediaComments
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMediaCommentsByID(string $mediaId, int $limit = InstagramHelper::PAGINATION_DEFAULT): MediaComments
+    {
+        $mediaCode = InstagramHelper::getCodeFromId($mediaId);
+        return $this->getMediaComments($mediaCode, $limit);
     }
 
     /**

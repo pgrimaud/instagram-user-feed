@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Instagram\Api;
 use Instagram\Exception\InstagramException;
 
-use Instagram\Model\Media;
 use Psr\Cache\CacheException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -18,12 +17,12 @@ try {
     $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    $media = new Media();
-    $media->setShortCode('CIvZJcurJaW');
+    // we need media code
+    $feedComments = $api->getMediaComments('CIvZJcurJaW');
+    // $feedComments = $api->getMediaCommentsByID('2463298121680852630');
 
-    $mediaDetailed = $api->getMediaDetailedByShortCode($media);
+    print_r($feedComments->getComments());
 
-    print_r($mediaDetailed);
 } catch (InstagramException $e) {
     print_r($e->getMessage());
 } catch (CacheException $e) {
