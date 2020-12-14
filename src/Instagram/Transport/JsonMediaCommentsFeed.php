@@ -6,6 +6,7 @@ namespace Instagram\Transport;
 
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\InstagramHelper;
+use stdClass;
 
 class JsonMediaCommentsFeed extends AbstractDataFeed
 {
@@ -28,7 +29,7 @@ class JsonMediaCommentsFeed extends AbstractDataFeed
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return $data->data->shortcode_media->edge_media_to_comment;
+        return ! empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new stdClass;
     }
 
     /**
@@ -51,6 +52,6 @@ class JsonMediaCommentsFeed extends AbstractDataFeed
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return $data->data->shortcode_media->edge_media_to_comment;
+        return ! empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new stdClass;
     }
 }

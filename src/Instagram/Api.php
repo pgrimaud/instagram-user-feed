@@ -272,7 +272,7 @@ class Api
      * @throws Exception\InstagramAuthException
      * @throws Exception\InstagramFetchException
      */
-    public function getMediaCommentsByID(string $mediaId, int $limit = InstagramHelper::PAGINATION_DEFAULT): MediaComments
+    public function getMediaCommentsById(string $mediaId, int $limit = InstagramHelper::PAGINATION_DEFAULT): MediaComments
     {
         $mediaCode = InstagramHelper::getCodeFromId($mediaId);
         return $this->getMediaComments($mediaCode, $limit);

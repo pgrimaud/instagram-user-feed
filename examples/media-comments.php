@@ -19,7 +19,7 @@ try {
 
     // we need media code
     $feedComments = $api->getMediaComments('CIvZJcurJaW');
-    // $feedComments = $api->getMediaCommentsByID('2463298121680852630');
+    // $feedComments = $api->getMediaCommentsById('2463298121680852630');
 
     print_r($feedComments->getComments());
 
