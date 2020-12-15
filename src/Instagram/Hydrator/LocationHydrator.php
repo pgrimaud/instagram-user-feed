@@ -13,9 +13,20 @@ class LocationHydrator
      */
     private $location;
 
-    public function __construct()
+    /**
+     * @var MediaHydrator
+     */
+    private $mediaHydrator;
+
+    /**
+     * Hydration is made manually to avoid shitty Instagram variable names
+     *
+     * @param Location|null $instagramLocation
+     */
+    public function __construct(Location $instagramLocation = null)
     {
-        $this->location = new Location();
+        $this->location      = $instagramLocation ?: new Location();
+        $this->mediaHydrator = new MediaHydrator();
     }
 
     public function hydrateLocation(\StdClass $data): void
@@ -33,6 +44,23 @@ class LocationHydrator
         $this->location->setAddress(json_decode($data->address_json, true));
         $this->location->setProfilePicture($data->profile_pic_url);
         $this->location->setTotalMedia($data->edge_location_to_media->count);
+    }
+
+    /**
+     * @param \StdClass $data
+     */
+    public function hydrateMedias(\StdClass $data): void
+    {
+        // reset medias
+        $this->location->setMedias([]);
+
+        foreach ($data->edge_location_to_media->edges as $item) {
+            $media = $this->mediaHydrator->hydrateMediaFromProfile($item->node);
+            $this->location->addMedia($media);
+        }
+
+        $this->location->setHasMoreMedias($data->edge_location_to_media->page_info->end_cursor != null);
+        $this->location->setEndCursor($data->edge_location_to_media->page_info->end_cursor);
     }
 
     /**

@@ -43,7 +43,9 @@ class MediaHydrator
     {
         $media->setId((int)$node->id);
         $media->setShortCode($node->shortcode);
-        $media->setTypeName($node->__typename);
+        if (property_exists($node, '__typename')) {
+            $media->setTypeName($node->__typename);
+        }
 
         if ($node->edge_media_to_caption->edges) {
             $media->setCaption($node->edge_media_to_caption->edges[0]->node->text);
