@@ -36,7 +36,7 @@ class HtmlProfileDataFeed extends AbstractDataFeed
             if ($exception->getCode() === 404) {
                 throw new InstagramFetchException('User ' . $userName . ' not found');
             } else {
-                throw new InstagramFetchException('Internal error');
+                throw new InstagramFetchException('Internal error: ' . $exception->getMessage());
             }
         }
 
