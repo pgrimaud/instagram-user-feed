@@ -309,7 +309,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 # Feedback
 
-You found a bug? You need a new feature? You can [create an issue](https://github.com/pgrimaud/horaires-ratp-api/issues) if needed or contact me on [Twitter](https://twitter.com/pgrimaud_).
+You found a bug? You need a new feature? You can [create an issue](https://github.com/pgrimaud/instagram-user-feed/issues) if needed or contact me on [Twitter](https://twitter.com/pgrimaud_).
 
 # License
 
