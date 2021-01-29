@@ -61,7 +61,7 @@ class Api
     protected $session = null;
 
     /**
-     * @var int|null
+     * @var int
      */
     protected $challengeDelay;
 
@@ -70,7 +70,7 @@ class Api
      * @param ClientInterface|null $client
      * @param int|null $challengeDelay
      */
-    public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null, ?int $challengeDelay = null)
+    public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null, ?int $challengeDelay = 3)
     {
         $this->cachePool      = $cachePool;
         $this->client         = $client ?: new Client();
