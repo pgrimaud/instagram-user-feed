@@ -11,16 +11,20 @@ use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\{LocationHydrator,
     MediaHydrator,
+    MediaCommentsHydrator,
     StoriesHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
+    HashtagHydrator,
     FollowerHydrator,
     FollowingHydrator
 };
 use Instagram\Model\{Location,
     Media,
     MediaDetailed,
+    MediaComments,
     Profile,
+    Hashtag,
     ProfileStory,
     StoryHighlights,
     StoryHighlightsFolder,
@@ -30,6 +34,8 @@ use Instagram\Model\{Location,
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
+    JsonMediaCommentsFeed,
+    JsonHashtagDataFeed,
     JsonProfileDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
@@ -42,6 +48,7 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     LocationData
 };
 use Psr\Cache\CacheItemPoolInterface;
+use Instagram\Utils\InstagramHelper;
 
 class Api
 {
@@ -146,15 +153,16 @@ class Api
 
     /**
      * @param Profile $instagramProfile
+	 * @param int $limit
      *
      * @return Profile
      *
      * @throws InstagramException
      */
-    public function getMoreMedias(Profile $instagramProfile): Profile
+    public function getMoreMedias(Profile $instagramProfile, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
     {
         $feed = new JsonMediasDataFeed($this->client, $this->session);
-        $data = $feed->fetchData($instagramProfile);
+        $data = $feed->fetchData($instagramProfile, $limit);
 
         $hydrator = new ProfileHydrator($instagramProfile);
         $hydrator->hydrateMedias($data);
@@ -163,20 +171,111 @@ class Api
     }
 
     /**
+     * @param string $hashtag
+     *
+     * @return Hashtag
+     *
+     * @throws InstagramException
+     */
+    public function getHashtag(string $hashtag): Hashtag
+    {
+        $feed = new JsonHashtagDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($hashtag);
+
+        $hydrator = new HashtagHydrator();
+        $hydrator->hydrateHashtag($data);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getHashtag();
+    }
+
+    /**
+     * @param string $hashtag
+     * @param string $endCursor
+     *
+     * @return Hashtag
+     *
+     * @throws InstagramException
+     */
+    public function getHashtagMedias(string $hashtag, string $endCursor): Hashtag
+    {
+        $feed = new JsonHashtagDataFeed($this->client, $this->session);
+        $data = $feed->fetchMoreData($hashtag, $endCursor);
+
+        $hydrator = new HashtagHydrator();
+        $hydrator->hydrateHashtag($data);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getHashtag();
+    }
+
+    /**
      * @param int $userId
      * @param string $endCursor
+	 * @param int $limit
      *
      * @return Profile
      *
      * @throws InstagramException
      */
-    public function getMoreMediasWithCursor(int $userId, string $endCursor): Profile
+    public function getMoreMediasWithCursor(int $userId, string $endCursor, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
     {
         $instagramProfile = new Profile();
         $instagramProfile->setId($userId);
         $instagramProfile->setEndCursor($endCursor);
 
-        return $this->getMoreMedias($instagramProfile);
+        return $this->getMoreMedias($instagramProfile, $limit);
+    }
+
+    /**
+     * @param int $userId
+	 * @param int $limit
+     *
+     * @return Profile
+     *
+     * @throws InstagramException
+     */
+    public function getMoreMediasWithId(int $userId, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
+    {
+        $instagramProfile = new Profile();
+        $instagramProfile->setId($userId);
+
+        return $this->getMoreMedias($instagramProfile, $limit);
+    }
+
+    /**
+     * @param string $mediaCode
+     * @param int $limit
+     *
+     * @return MediaComments
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMediaComments(string $mediaCode, int $limit = InstagramHelper::PAGINATION_DEFAULT): MediaComments
+    {
+        $feed = new JsonMediaCommentsFeed($this->client, $this->session);
+        $data = $feed->fetchData($mediaCode, $limit);
+
+        $hydrator = new MediaCommentsHydrator();
+        $hydrator->hydrateMediaComments($data);
+
+        return $hydrator->getMediaComments();
+    }
+
+    /**
+     * @param string $mediaId
+     * @param int $limit
+     *
+     * @return MediaComments
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMediaCommentsById(string $mediaId, int $limit = InstagramHelper::PAGINATION_DEFAULT): MediaComments
+    {
+        $mediaCode = InstagramHelper::getCodeFromId($mediaId);
+        return $this->getMediaComments($mediaCode, $limit);
     }
 
     /**
@@ -445,6 +544,27 @@ class Api
 
         $hydrator = new LocationHydrator();
         $hydrator->hydrateLocation($data);
+        $hydrator->hydrateMedias($data);
+
+        return $hydrator->getLocation();
+    }
+
+    /**
+     * @param int $locationId
+     * @param string $endCursor
+     *
+     * @return Location
+     *
+     * @throws InstagramException
+     */
+    public function getLocationMedias(int $locationId, string $endCursor): Location
+    {
+        $feed = new LocationData($this->client, $this->session);
+        $data = $feed->fetchMoreData($locationId, $endCursor);
+
+        $hydrator = new LocationHydrator();
+        $hydrator->hydrateLocation($data);
+        $hydrator->hydrateMedias($data);
 
         return $hydrator->getLocation();
     }

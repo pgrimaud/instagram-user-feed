@@ -72,6 +72,21 @@ class Location
     private $totalMedia = 0;
 
     /**
+     * @var Media[]
+     */
+    private $medias = [];
+
+    /**
+     * @var bool
+     */
+    private $hasMoreMedias = false;
+
+    /**
+     * @var string
+     */
+    private $endCursor = null;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -277,5 +292,58 @@ class Location
     public function setTotalMedia(int $totalMedia): void
     {
         $this->totalMedia = $totalMedia;
+    }
+
+    /**
+     * @return Media[]
+     */
+    public function getMedias(): array
+    {
+        return $this->medias;
+    }
+
+    /**
+     * @param Media $media
+     */
+    public function addMedia(Media $media): void
+    {
+        $this->medias[] = $media;
+    }
+
+    public function setHasMoreMedias(bool $hasMoreMedias): void
+    {
+        $this->hasMoreMedias = $hasMoreMedias;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMoreMedias(): bool
+    {
+        return $this->hasMoreMedias;
+    }
+
+    /**
+     * @param string|null $endCursor
+     */
+    public function setEndCursor(?string $endCursor): void
+    {
+        $this->endCursor = $endCursor;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEndCursor(): ?string
+    {
+        return $this->endCursor;
+    }
+
+    /**
+     * @param Media[] $medias
+     */
+    public function setMedias(array $medias): void
+    {
+        $this->medias = $medias;
     }
 }
