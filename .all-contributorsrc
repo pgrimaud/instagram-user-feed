@@ -131,6 +131,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "GooseBumpsOS",
+      "name": "Georgy Gusev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32247640?v=4",
+      "profile": "https://t.me/goosebumpsos",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
