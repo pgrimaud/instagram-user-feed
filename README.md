@@ -54,6 +54,7 @@ composer require pgrimaud/instagram-user-feed
 - New feature: get **post** of **hashtag**.
 - New feature: get **comments** of **post**.
 - Add support for PHP 8.
+- Minor changes and improvements.
 
 **v6.6** - 2020-10-06: 
 
