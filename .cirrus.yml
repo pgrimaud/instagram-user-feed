@@ -12,6 +12,6 @@ test_task:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer install
   test_script:
-    - XDEBUG_MODE=coverage php vendor/bin/phpunit tests --whitelist src  --coverage-clover ./build/logs/clover.xml
+    - XDEBUG_MODE=coverage php vendor/bin/phpunit tests --whitelist src --coverage-clover ./build/logs/clover.xml
   coverage_script:
     - php vendor/bin/php-coveralls -v

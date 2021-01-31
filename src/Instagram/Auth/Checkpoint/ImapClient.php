@@ -100,10 +100,12 @@ class ImapClient
      */
     public function getLastInstagramEmailContent(int $try = 1): string
     {
-        $resource  = imap_open('{' . $this->getServer() . '/' . $this->getConnectionType() . '/ssl}INBOX', $this->getLogin(), $this->getPassword());
+        $resource  = @imap_open('{' . $this->getServer() . '/' . $this->getConnectionType() . '/ssl}INBOX', $this->getLogin(), $this->getPassword());
+
         if (!$resource) {
           throw new InstagramAuthException('Unable to open IMAP stream.');
         }
+
         $numberMax = imap_num_msg($resource);
 
         $foundCode = false;
