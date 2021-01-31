@@ -21,7 +21,7 @@ class Endpoints
      */
     public static function getFollowUrl(int $accountId): string
     {
-        return str_replace('{{accountId}}', $accountId, static::FOLLOW_URL);
+        return str_replace('{{accountId}}', (string)$accountId, static::FOLLOW_URL);
     }
 
     /**
@@ -31,7 +31,7 @@ class Endpoints
      */
     public static function getUnfollowUrl(int $accountId): string
     {
-        return str_replace('{{accountId}}', $accountId, static::UNFOLLOW_URL);
+        return str_replace('{{accountId}}', (string)$accountId, static::UNFOLLOW_URL);
     }
 
     /**
@@ -41,7 +41,7 @@ class Endpoints
      */
     public static function getLikeUrl(int $postId): string
     {
-        return str_replace('{{postId}}', $postId, static::LIKE_URL);
+        return str_replace('{{postId}}', (string)$postId, static::LIKE_URL);
     }
 
     /**
@@ -51,7 +51,7 @@ class Endpoints
      */
     public static function getUnlikeUrl(int $postId): string
     {
-        return str_replace('{{postId}}', $postId, static::UNLIKE_URL);
+        return str_replace('{{postId}}', (string)$postId, static::UNLIKE_URL);
     }
 
     /**
@@ -61,6 +61,6 @@ class Endpoints
      */
     public static function getLocationUrl(int $locationId): string
     {
-        return str_replace('{{locationId}}', $locationId, static::LOCATION_URL);
+        return str_replace('{{locationId}}', (string)$locationId, static::LOCATION_URL);
     }
 }
