@@ -41,11 +41,17 @@ class HashtagHydrator
         $this->hashtag->setTopMediaOnly($data->is_top_media_only);
         $this->hashtag->setMediaCount($data->edge_hashtag_to_media->count);
 
-        if (property_exists($data, 'profile_pic_url_hd')) {
-            $this->hashtag->setProfilePicture($data->profile_pic_url_hd);
-        } elseif (property_exists($data, 'profile_pic_url')) {
-            $this->hashtag->setProfilePicture($data->profile_pic_url);
+        $profilePicture = '';
+
+        if (property_exists($data, 'profile_pic_url')) {
+            $profilePicture = $data->profile_pic_url;
         }
+
+        if (property_exists($data, 'profile_pic_url_hd')) {
+            $profilePicture = $data->profile_pic_url_hd;
+        }
+
+        $this->hashtag->setProfilePicture($profilePicture);
     }
 
     /**

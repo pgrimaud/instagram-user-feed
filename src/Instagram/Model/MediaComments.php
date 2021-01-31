@@ -27,6 +27,11 @@ class MediaComments
     private $endCursor = null;
 
     /**
+     * @var int
+     */
+    private $mediaCount = 0;
+
+    /**
      * @param Comment $comment
      */
     public function addComment(Comment $comment): void
@@ -72,18 +77,18 @@ class MediaComments
     }
 
     /**
-     * @return int
-     */
-    public function getMediaCount(): int
-    {
-        return $this->mediaCount;
-    }
-
-    /**
      * @param int $mediaCount
      */
     public function setMediaCount(int $mediaCount): void
     {
         $this->mediaCount = $mediaCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMediaCount(): int
+    {
+        return $this->mediaCount;
     }
 }

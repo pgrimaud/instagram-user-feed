@@ -6,7 +6,6 @@ namespace Instagram\Transport;
 
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\InstagramHelper;
-use stdClass;
 
 class JsonMediaCommentsFeed extends AbstractDataFeed
 {
@@ -22,14 +21,14 @@ class JsonMediaCommentsFeed extends AbstractDataFeed
     {
         $variables = [
             'shortcode' => $code,
-            'first'     => $limit
+            'first'     => $limit,
         ];
 
         $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH_COMMENTS . '&variables=' . json_encode($variables);
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return ! empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new stdClass;
+        return !empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new \StdClass;
     }
 
     /**
@@ -45,13 +44,13 @@ class JsonMediaCommentsFeed extends AbstractDataFeed
         $variables = [
             'shortcode' => $code,
             'first'     => InstagramHelper::PAGINATION_DEFAULT,
-            'after'     => $endCursor
+            'after'     => $endCursor,
         ];
 
         $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH_COMMENTS . '&variables=' . json_encode($variables);
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return ! empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new stdClass;
+        return !empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new \StdClass;
     }
 }

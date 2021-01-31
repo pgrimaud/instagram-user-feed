@@ -11,7 +11,7 @@ class CommentHydrator
     /**
      * @param \StdClass $node
      *
-     * @return Media
+     * @return Comment
      */
     public function hydrateComment(\StdClass $node): Comment
     {

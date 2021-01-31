@@ -24,7 +24,7 @@ class MediaCommentsHydrator extends AbstractStoryHydrator
      */
     public function __construct()
     {
-        $this->comments = new MediaComments();
+        $this->comments        = new MediaComments();
         $this->commentHydrator = new CommentHydrator();
     }
 
@@ -33,13 +33,15 @@ class MediaCommentsHydrator extends AbstractStoryHydrator
      */
     public function hydrateMediaComments(\StdClass $data): void
     {
+        $this->comments->setMediaCount($data->count);
+
         if (property_exists($data, 'edges')) {
             foreach ($data->edges as $item) {
                 $comment = $this->commentHydrator->hydrateComment($item->node);
                 $this->comments->addComment($comment);
             }
         }
-        
+
         if (property_exists($data, 'page_info')) {
             $this->comments->setHasMoreComments($data->page_info->end_cursor != null);
             $this->comments->setEndCursor($data->page_info->end_cursor);

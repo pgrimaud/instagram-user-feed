@@ -197,7 +197,7 @@ class Api
      *
      * @throws InstagramException
      */
-    public function getHashtagMedias(string $hashtag, string $endCursor): Hashtag
+    public function getMoreHashtagMedias(string $hashtag, string $endCursor): Hashtag
     {
         $feed = new JsonHashtagDataFeed($this->client, $this->session);
         $data = $feed->fetchMoreData($hashtag, $endCursor);
@@ -235,7 +235,7 @@ class Api
      *
      * @throws InstagramException
      */
-    public function getMoreMediasWithId(int $userId, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
+    public function getMoreMediasWithProfileId(int $userId, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
     {
         $instagramProfile = new Profile();
         $instagramProfile->setId($userId);
@@ -256,6 +256,26 @@ class Api
     {
         $feed = new JsonMediaCommentsFeed($this->client, $this->session);
         $data = $feed->fetchData($mediaCode, $limit);
+
+        $hydrator = new MediaCommentsHydrator();
+        $hydrator->hydrateMediaComments($data);
+
+        return $hydrator->getMediaComments();
+    }
+
+    /**
+     * @param string $mediaCode
+     * @param string $endCursor
+     *
+     * @return MediaComments
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getMoreMediaComments(string $mediaCode, string $endCursor): MediaComments
+    {
+        $feed = new JsonMediaCommentsFeed($this->client, $this->session);
+        $data = $feed->fetchMoreData($mediaCode, $endCursor);
 
         $hydrator = new MediaCommentsHydrator();
         $hydrator->hydrateMediaComments($data);
@@ -557,7 +577,7 @@ class Api
      *
      * @throws InstagramException
      */
-    public function getLocationMedias(int $locationId, string $endCursor): Location
+    public function getMoreLocationMedias(int $locationId, string $endCursor): Location
     {
         $feed = new LocationData($this->client, $this->session);
         $data = $feed->fetchMoreData($locationId, $endCursor);

@@ -7,6 +7,7 @@ use Instagram\Api;
 
 use Instagram\Auth\Session;
 use Instagram\Exception\InstagramFetchException;
+use Instagram\Model\Hashtag;
 use Instagram\Model\Media;
 use Instagram\Model\Profile;
 use PHPUnit\Framework\TestCase;
@@ -885,6 +886,7 @@ class ApiTest extends TestCase
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/location.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/location-medias.json')),
         ]);
 
         $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
@@ -914,8 +916,12 @@ class ApiTest extends TestCase
         $this->assertCount(8, $location->getAddress());
         $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/v/t51.2885-15/e35/c0.179.1440.1440a/s150x150/74607460_3223523367722884_955674193158361307_n.jpg?_nc_ht=scontent-cdg2-1.cdninstagram.com&_nc_cat=104&_nc_ohc=jU8HIsOILvoAX_HbDTh&tp=16&oh=2fa2f9f8da8a84e17bcecf934e37d673&oe=5FCFAF2A', $location->getProfilePicture());
         $this->assertEquals(6446, $location->getTotalMedia());
+        $this->assertIsArray($location->getMedias());
+        $this->assertTrue($location->hasMoreMedias());
+        $this->assertSame('2420224628294009909', $location->getEndCursor());
 
-        $this->assertTrue(true);
+        $moreMedias = $api->getMoreLocationMedias(558750588, $location->getEndCursor());
+        $this->assertCount(24, $moreMedias->getMedias());
 
         $api->logout('username');
     }
@@ -997,6 +1003,144 @@ class ApiTest extends TestCase
         $api->login('username', 'password');
 
         $api->getLocation(1234567);
+
+        $api->logout('username');
+    }
+
+    public function testGetHashtag()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/hashtag.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+
+        /** @var Hashtag $hashtag */
+        $hashtag = $api->getHashtag('paris');
+
+        $this->assertSame(17841562894101784, $hashtag->getId());
+        $this->assertSame('paris', $hashtag->getName());
+        $this->assertFalse($hashtag->isTopMediaOnly());
+        $this->assertFalse($hashtag->isFollowing());
+        $this->assertTrue($hashtag->isAllowFollowing());
+        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/v/t51.2885-15/e35/s150x150/143729191_707659816564323_8378880941716604054_n.jpg?_nc_ht=scontent-cdg2-1.cdninstagram.com&_nc_cat=1&_nc_ohc=k1fqM0dgMikAX8TI-Xu&tp=1&oh=0ce210f245a8b7789031a2a77d3b8357&oe=60406A2A', $hashtag->getProfilePicture());
+        $this->assertSame(125782874, $hashtag->getMediaCount());
+        $this->assertCount(34, $hashtag->getMedias());
+        $this->assertTrue($hashtag->hasMoreMedias());
+        $this->assertSame('QVFEYy1pYW90TGt4aWF0aExLQnM4c1JCYV9BbkhkbmZySzRKRVBrWEtCR0pJQlJES0NNUFVmbE5CUDF2eW45eVp0Mk1odG5KT3pJeHE0R2ZDd05reEItbA==', $hashtag->getEndCursor());
+        $this->assertIsArray($hashtag->toArray());
+        $this->assertSame(17841562894101784, $hashtag->__serialize()['id']);
+
+        $api->logout('username');
+    }
+
+    public function testGetMoreHashtag()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/hashtag-2.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+
+        /** @var Hashtag $hashtag */
+        $hashtag = $api->getMoreHashtagMedias('paris', 'endcursor');
+
+        $this->assertSame('paris', $hashtag->getName());
+
+        $api->logout('username');
+    }
+
+    public function testGetMoreProfileById()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/medias.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+
+        $profile = $api->getMoreMediasWithProfileId(12345);
+        $this->assertSame(12345, $profile->getId());
+
+        $api->logout('username');
+    }
+
+    public function testGetMediaComments()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/media-comments.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/media-comments-2.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/media-comments.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+
+        $comments = $api->getMediaComments('CIvZJcurJaW');
+        $this->assertCount(12, $comments->getComments());
+        $this->assertTrue($comments->hasMoreComments());
+        $this->assertSame('QVFCbnROamtGemh0QWdoN0Z1YVhTNWtPV3RqSXhIVkJaaEszdUlYNlozSGlUVi1nbXdtbF93VUliVFYzaWM5a2prMGJDNmlLZTR2VHcwajNOZWVWR3Z0ZA==', $comments->getEndCursor());
+        $this->assertSame(45, $comments->getMediaCount());
+
+        $comment = $comments->getComments()[0];
+        $this->assertSame(17969014687354566, $comment->getId());
+        $this->assertSame('Good themw', $comment->getCaption());
+        $this->assertSame('26965138089', $comment->getOwner()->id);
+        $this->assertInstanceOf(\DateTime::class, $comment->getDate());
+        $this->assertIsArray($comment->toArray());
+        $this->assertSame(17969014687354566, $comment->__serialize()['id']);
+
+        $comments = $api->getMoreMediaComments('CIvZJcurJaW', $comments->getEndCursor());
+        $this->assertCount(12, $comments->getComments());
+
+        $comments2 = $api->getMediaCommentsById(2463298121680852630);
+        $this->assertCount(12, $comments2->getComments());
 
         $api->logout('username');
     }

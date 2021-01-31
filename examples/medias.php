@@ -25,6 +25,10 @@ try {
         $profile = $api->getMoreMedias($profile);
         printMedias($profile->getMedias());
 
+        // Or with profile id
+        //$profile = $api->getMoreMediasWithProfileId(3504244670);
+        //printMedias($profile->getMedias());
+
         // avoid 429 Rate limit from Instagram
         sleep(1);
     } while ($profile->hasMoreMedias());

@@ -49,7 +49,7 @@ class Comment
     }
 
     /**
-     * @param string $caption
+     * @param string|null $caption
      */
     public function setCaption(?string $caption): void
     {

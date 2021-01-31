@@ -14,7 +14,7 @@ $credentials = include_once realpath(dirname(__FILE__)) . '/credentials.php';
 $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
 try {
-    $api     = new Api($cachePool);
+    $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
     $hashtag = $api->getHashtag('paris');
@@ -22,10 +22,9 @@ try {
     $medias = $hashtag->getMedias();
 
     echo '<pre>';
-        print_r($medias);
-    echo '</pre>';
+    print_r($medias);
 
-    $medias = $api->getHashtagMedias('paris', $hashtag->getEndCursor());
+    $medias = $api->getMoreHashtagMedias('paris', $hashtag->getEndCursor());
     print_r($medias);
 
 } catch (InstagramException $e) {

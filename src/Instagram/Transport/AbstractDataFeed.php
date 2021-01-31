@@ -47,7 +47,7 @@ abstract class AbstractDataFeed
                 'x-requested-with' => 'XMLHttpRequest',
             ],
         ];
-        
+
         if (!empty($this->session)) {
             $headers['cookies'] = $this->session->getCookies();
         }
@@ -104,8 +104,8 @@ abstract class AbstractDataFeed
         try {
             $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
                 'headers' => [
-                    'user-agent' => UserAgentHelper::AGENT_DEFAULT
-                ]
+                    'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                ],
             ]);
 
             $html = (string)$baseRequest->getBody();
