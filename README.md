@@ -9,7 +9,7 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
@@ -283,26 +283,28 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/pgrimaud"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4" width="100px;" alt=""/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=pgrimaud" title="Code">💻</a></td>
-    <td align="center"><a href="https://janostlund.com"><img src="https://avatars3.githubusercontent.com/u/543616?v=4" width="100px;" alt=""/><br /><sub><b>Jan Östlund</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=jannejava" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/cookieguru"><img src="https://avatars0.githubusercontent.com/u/1888809?v=4" width="100px;" alt=""/><br /><sub><b>Tim Bond</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=cookieguru" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Dlinny"><img src="https://avatars0.githubusercontent.com/u/1443580?v=4" width="100px;" alt=""/><br /><sub><b>Dlinny</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3ADlinny" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/renedekat"><img src="https://avatars0.githubusercontent.com/u/8975204?v=4" width="100px;" alt=""/><br /><sub><b>René</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Arenedekat" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://t.me/ikiselev1989"><img src="https://avatars1.githubusercontent.com/u/22061871?v=4" width="100px;" alt=""/><br /><sub><b>ikiselev1989</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Aikiselev1989" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="http://pezhvak.imvx.org/"><img src="https://avatars1.githubusercontent.com/u/3134479?v=4" width="100px;" alt=""/><br /><sub><b>Pezhvak</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=Pezhvak" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/pgrimaud"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=pgrimaud" title="Code">💻</a></td>
+    <td align="center"><a href="https://janostlund.com"><img src="https://avatars3.githubusercontent.com/u/543616?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jan Östlund</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=jannejava" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/cookieguru"><img src="https://avatars0.githubusercontent.com/u/1888809?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tim Bond</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=cookieguru" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Dlinny"><img src="https://avatars0.githubusercontent.com/u/1443580?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dlinny</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3ADlinny" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/renedekat"><img src="https://avatars0.githubusercontent.com/u/8975204?v=4?s=100" width="100px;" alt=""/><br /><sub><b>René</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Arenedekat" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://t.me/ikiselev1989"><img src="https://avatars1.githubusercontent.com/u/22061871?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ikiselev1989</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Aikiselev1989" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://pezhvak.imvx.org/"><img src="https://avatars1.githubusercontent.com/u/3134479?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pezhvak</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=Pezhvak" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://1up.io"><img src="https://avatars3.githubusercontent.com/u/754921?v=4" width="100px;" alt=""/><br /><sub><b>David Greminger</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=bytehead" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/kumamidori"><img src="https://avatars0.githubusercontent.com/u/384567?v=4" width="100px;" alt=""/><br /><sub><b>Nana YAMANE</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=kumamidori" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/David-Kurniawan"><img src="https://avatars1.githubusercontent.com/u/7419157?v=4" width="100px;" alt=""/><br /><sub><b>David Kurniawan</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=David-Kurniawan" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/gtapps"><img src="https://avatars0.githubusercontent.com/u/16778396?v=4" width="100px;" alt=""/><br /><sub><b>gtapps</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=gtapps" title="Code">💻</a></td>
-    <td align="center"><a href="https://peterli.website/"><img src="https://avatars2.githubusercontent.com/u/9021747?v=4" width="100px;" alt=""/><br /><sub><b>Chun-Sheng, Li</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=peter279k" title="Tests">⚠️</a></td>
-    <td align="center"><a href="https://github.com/schelmo"><img src="https://avatars1.githubusercontent.com/u/47602?v=4" width="100px;" alt=""/><br /><sub><b>schelmo</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=schelmo" title="Code">💻</a></td>
+    <td align="center"><a href="https://1up.io"><img src="https://avatars3.githubusercontent.com/u/754921?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Greminger</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=bytehead" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kumamidori"><img src="https://avatars0.githubusercontent.com/u/384567?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nana YAMANE</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=kumamidori" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/David-Kurniawan"><img src="https://avatars1.githubusercontent.com/u/7419157?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Kurniawan</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=David-Kurniawan" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/gtapps"><img src="https://avatars0.githubusercontent.com/u/16778396?v=4?s=100" width="100px;" alt=""/><br /><sub><b>gtapps</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=gtapps" title="Code">💻</a></td>
+    <td align="center"><a href="https://peterli.website/"><img src="https://avatars2.githubusercontent.com/u/9021747?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chun-Sheng, Li</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=peter279k" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/schelmo"><img src="https://avatars1.githubusercontent.com/u/47602?v=4?s=100" width="100px;" alt=""/><br /><sub><b>schelmo</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=schelmo" title="Code">💻</a></td>
+    <td align="center"><a href="https://axentmedia.com/"><img src="https://avatars.githubusercontent.com/u/5845453?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mojtaba</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=mnajafzadeh" title="Code">💻</a></td>
   </tr>
 </table>
 
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
