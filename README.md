@@ -9,7 +9,7 @@
 [![Monthly Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/d/monthly)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
@@ -302,6 +302,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://t.me/goosebumpsos"><img src="https://avatars.githubusercontent.com/u/32247640?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Georgy Gusev</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=GooseBumpsOS" title="Code">💻</a></td>
+    <td align="center"><a href="https://jibran.github.io/"><img src="https://avatars.githubusercontent.com/u/2111106?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jibran Ijaz</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=jibran" title="Code">💻</a></td>
   </tr>
 </table>
 
