@@ -33,7 +33,7 @@ class Login
     private $imapClient;
 
     /**
-     * @var int|null
+     * @var int
      */
     private $challengeDelay;
 
@@ -44,7 +44,7 @@ class Login
      * @param ImapClient|null $imapClient
      * @param int|null $challengeDelay
      */
-    public function __construct(ClientInterface $client, string $login, string $password, ?ImapClient $imapClient = null, ?int $challengeDelay = null)
+    public function __construct(ClientInterface $client, string $login, string $password, ?ImapClient $imapClient = null, ?int $challengeDelay = 3)
     {
         $this->client         = $client;
         $this->login          = $login;
