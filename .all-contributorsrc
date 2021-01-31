@@ -140,6 +140,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jibran",
+      "name": "Jibran Ijaz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2111106?v=4",
+      "profile": "https://jibran.github.io/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
