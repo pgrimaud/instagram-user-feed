@@ -28,6 +28,8 @@ If you like or use this package, please share your love by starring this reposit
 - Fetch feed of followings
 - **NEW : Follow or unfollow users**
 - **NEW : Like or unlike posts**
+- **NEW : Get posts of hashtag**
+- **NEW : Get comments of a post**
 
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
@@ -46,6 +48,11 @@ composer require pgrimaud/instagram-user-feed
 ```
 
 ## Changelog
+
+**v6.7** - 2021-01-31:
+
+- New feature: get **post** of **hashtag**.
+- New feature: get **comments** of **post**.
 
 **v6.6** - 2020-10-06: 
 
