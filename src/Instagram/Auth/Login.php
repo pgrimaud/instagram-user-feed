@@ -39,10 +39,10 @@ class Login
 
     /**
      * @param ClientInterface $client
-     * @param string $login
-     * @param string $password
+     * @param string          $login
+     * @param string          $password
      * @param ImapClient|null $imapClient
-     * @param int|null $challengeDelay
+     * @param int|null        $challengeDelay
      */
     public function __construct(ClientInterface $client, string $login, string $password, ?ImapClient $imapClient = null, ?int $challengeDelay = 3)
     {
@@ -63,11 +63,11 @@ class Login
     {
         $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT
-            ]
+                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+            ],
         ]);
 
-        $html = (string)$baseRequest->getBody();
+        $html = (string) $baseRequest->getBody();
 
         preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
 
@@ -91,10 +91,10 @@ class Login
                     'x-csrftoken' => $data->config->csrf_token,
                     'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
                 ],
-                'cookies'     => $cookieJar
+                'cookies'     => $cookieJar,
             ]);
         } catch (ClientException $exception) {
-            $data = json_decode((string)$exception->getResponse()->getBody());
+            $data = json_decode((string) $exception->getResponse()->getBody());
 
             if ($data && $data->message === 'checkpoint_required') {
                 // @codeCoverageIgnoreStart
@@ -105,10 +105,12 @@ class Login
             }
         }
 
-        $response = json_decode((string)$query->getBody());
+        $response = json_decode((string) $query->getBody());
 
-        if ($response->authenticated == true) {
+        if (property_exists($response, 'authenticated') && $response->authenticated == true) {
             return $cookieJar;
+        } else if (property_exists($response, 'error_type') && $response->error_type === 'generic_request_error') {
+            throw new InstagramAuthException('Generic error / Your IP may be block from Instagram. You should consider using a proxy.');
         } else {
             throw new InstagramAuthException('Wrong login / password');
         }

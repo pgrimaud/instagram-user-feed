@@ -64,6 +64,25 @@ class LoginTest extends TestCase
         $this->assertInstanceOf(CookieJar::class, $cookies);
     }
 
+    public function testLoginWithGenericError()
+    {
+        $this->expectException(InstagramAuthException::class);
+        $this->expectExceptionMessage('Generic error / Your IP may be block from Instagram. You should consider using a proxy.');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/../fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/login-generic-errors.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $login   = new Login($client, 'username', 'password');
+        $cookies = $login->process();
+
+        $this->assertInstanceOf(CookieJar::class, $cookies);
+    }
+
     public function testSucceededLogin()
     {
         $mock = new MockHandler([
