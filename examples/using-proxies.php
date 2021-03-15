@@ -17,7 +17,7 @@ $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 try {
     $client = new Client([
         'proxy' => [
-            'https' => '91.209.25.156:8080'
+            'https' => '91.209.25.156:8080' #this is a dummy example, change with your proxy
         ]
     ]);
 
