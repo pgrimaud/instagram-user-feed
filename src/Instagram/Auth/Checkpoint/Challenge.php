@@ -169,7 +169,7 @@ class Challenge
         $cookie      = 'ig_cb=1; ig_did=' . $challengeContent->device_id . '; csrftoken=' . $challengeContent->config->csrf_token . '; mid=' . $this->getMidCookie();
         $postHeaders = [
             'form_params' => [
-                'security_code' => (int)$code,
+                'security_code' => $code,
             ],
             'headers'     => [
                 'x-instagram-ajax' => $challengeContent->rollout_hash,
