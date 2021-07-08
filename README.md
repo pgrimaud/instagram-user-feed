@@ -51,8 +51,8 @@ composer require pgrimaud/instagram-user-feed
 
 **[v6.8](#version-68-strict-origin-when-cross-origin)** - 2021-07-08:
 
-- Add video url in media feed. Thanks to [@Nispeon](https://github.com/Nispeon))
-- Add helper to download media (ref to #205 : strict-origin-when-cross-origin). Thanks to [@Nispeon](https://github.com/Nispeon))
+- Add video url in media feed. Thanks to [@Nispeon](https://github.com/Nispeon)
+- Add helper to download media (ref to [#205 : strict-origin-when-cross-origin](https://github.com/pgrimaud/instagram-user-feed/issues/205)). Thanks to [@Nispeon](https://github.com/Nispeon)
 - Minor changes and improvements.
 
 **v6.7** - 2021-01-31:
