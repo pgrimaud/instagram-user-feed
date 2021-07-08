@@ -149,6 +149,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Nispeon",
+      "name": "Julien Cousin-Alliot",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37938250?v=4",
+      "profile": "https://www.nispeon.tk",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
