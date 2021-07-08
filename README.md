@@ -49,6 +49,12 @@ composer require pgrimaud/instagram-user-feed
 
 ## Changelog
 
+**[v6.8](#version-68-strict-origin-when-cross-origin)** - 2021-07-08:
+
+- Add video url in media feed. Thanks to [@Nispeon](https://github.com/Nispeon))
+- Add helper to download media (ref to #205 : strict-origin-when-cross-origin). Thanks to [@Nispeon](https://github.com/Nispeon))
+- Minor changes and improvements.
+
 **v6.7** - 2021-01-31:
 
 - New feature: get **post** of **hashtag**.
@@ -87,6 +93,29 @@ composer require pgrimaud/instagram-user-feed
 **[v6.0](#version-60-login)** - 2020-05-20
 
 - Please upgrade from ^5.0 for cookies session stability.
+
+## Version ^6.8: strict-origin-when-cross-origin
+
+Facebook added a new CORS policy, and you can't display the data directly.
+
+You can now download media on your storage or server to serve it directly on your website. You can find an example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/medias-download.php).
+
+**Example:**
+
+```php
+<?php
+
+// include vendor & classes
+
+// random picture from instagram
+$url = 'https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-19/s150x150/156309873_1632221153646196_1273891214497323498_n.jpg?tp=1&_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_ohc=vbxGNZrjPmUAX8CIDdC&edm=ABfd0MgBAAAA&ccb=7-4&oh=ae5811c07f0e73b945eb203cd58c2101&oe=60EDD1EE&_nc_sid=7bff83'
+
+// define directory
+$downloadDir = __DIR__ . '/../assets'; // change it
+
+$fileName = MediaDownloadHelper::downloadMedia($url, $downloadDir);
+// file was downloaded here : __DIR__ . '/../assets/v-t51.2885-19-s150x150-156309873_1632221153646196_1273891214497323498_n.jpg
+```
 
 ## Version ^6.3: Checkpoint challenge bypass
 
