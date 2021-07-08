@@ -82,6 +82,11 @@ class Media
     private $video = false;
 
     /**
+     * @var string
+     */
+    private $videoUrl = '';
+
+    /**
      * @var int
      */
     private $videoViewCount = 0;
@@ -342,6 +347,22 @@ class Media
     }
 
     /**
+     * @return ?string
+     */
+    public function getVideoUrl(): ?string
+    {
+        return $this->videoUrl;
+    }
+
+    /**
+     * @param ?string $videoUrl
+     */
+    public function setVideoUrl(?string $videoUrl): void
+    {
+        $this->videoUrl = $videoUrl;
+    }
+
+    /**
      * @return int
      */
     public function getVideoViewCount(): int
@@ -378,6 +399,7 @@ class Media
             'thumbnails'           => $this->thumbnails,
             'location'             => $this->location,
             'video'                => $this->video,
+            'videoUrl'             => $this->videoUrl,
             'igtv'                 => $this->igtv,
             'videoViewCount'       => $this->videoViewCount,
             'accessibilityCaption' => $this->accessibilityCaption,
