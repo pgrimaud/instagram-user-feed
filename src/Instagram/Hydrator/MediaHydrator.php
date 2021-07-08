@@ -89,6 +89,10 @@ class MediaHydrator
 
         $media->setVideo((bool)$node->is_video);
 
+        if (property_exists($node, 'video_url')) {
+            $media->setVideoUrl($node->video_url);
+        }
+
         if (property_exists($node, 'video_view_count')) {
             $media->setVideoViewCount((int)$node->video_view_count);
         }

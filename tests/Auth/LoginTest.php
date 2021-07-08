@@ -145,7 +145,7 @@ class LoginTest extends TestCase
         $cookie = new SetCookie();
         $cookie->setName('sessionId');
         $cookie->setValue('123456789');
-        $cookie->setExpires(1621543830);
+        $cookie->setExpires(2621543830);
         $cookie->setDomain('.instagram.com');
 
         $cookiesJar = new CookieJar();

@@ -35,7 +35,7 @@ class MediaDetailed extends Media
     private $profile;
 
     /**
-     * @return string
+     * @return ?string
      */
     public function getVideoUrl(): ?string
     {
@@ -43,9 +43,9 @@ class MediaDetailed extends Media
     }
 
     /**
-     * @param string $videoUrl
+     * @param ?string $videoUrl
      */
-    public function setVideoUrl(string $videoUrl): void
+    public function setVideoUrl(?string $videoUrl): void
     {
         $this->videoUrl = $videoUrl;
     }
