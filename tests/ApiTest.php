@@ -87,6 +87,7 @@ class ApiTest extends TestCase
         $this->assertFalse($media->isIgtv());
         $this->assertSame(2726827, $media->getVideoViewCount());
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->getThumbnailSrc());
+        $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t50.2886-16/83335079_254957552139702_725315034130023361_n.mp4?efg=eyJ2ZW5jb2RlX3RhZyI6InZ0c192b2RfdXJsZ2VuLjcyMC5mZWVkIiwicWVfZ3JvdXBzIjoiW1wiaWdfd2ViX2RlbGl2ZXJ5X3Z0c19vdGZcIl0ifQ&_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=106&_nc_ohc=SKlxV9v5K-MAX86Q58R&vs=17865910405614045_1706490228&_nc_vs=HBksFQAYJEdLZVg5d1MyLVZQdTRlY0FBTUVEa2o4dTFoQUtia1lMQUFBRhUAAsgBABUAGCRHTmppLXdRaWVxb3dDNGtGQUZRTnYyNVdTSUVUYmtZTEFBQUYVAgLIAQAoABgAGwGIB3VzZV9vaWwBMBUAABgAFrq6n%2FPsvLw%2FFQIoAkMzLBdAPMQYk3S8ahgSZGFzaF9iYXNlbGluZV8xX3YxEQB16gcA&_nc_rid=91150bc2b9&oe=5EC805C4&oh=4d13b190d246a46430b05fe1da4b1fa8', $media->getVideoUrl());
 
         $this->assertSame(2224305748263047050, $media->__serialize()['id']);
         $this->assertSame('GraphVideo', $media->__serialize()['typeName']);

@@ -10,3 +10,6 @@ examples/credentials.php
 cache/
 
 .phpunit.result.cache
+
+!assets/.gitkeep
+assets/
