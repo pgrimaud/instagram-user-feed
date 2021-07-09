@@ -18,6 +18,7 @@ try {
     $client = new Client([
         'proxy' => [
             'https' => '91.209.25.156:8080' #this is a dummy example, change with your proxy
+           #'https' => 'login:password@ip:port
         ]
     ]);
 
