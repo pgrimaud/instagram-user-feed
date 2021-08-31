@@ -17,7 +17,7 @@ try {
     $api     = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    $profile = $api->getProfile('robertdowneyjr');
+    $profile = $api->getProfile('just_dev_69');
 
     echo '============================' . "\n";
     echo 'User Information : ' . "\n";

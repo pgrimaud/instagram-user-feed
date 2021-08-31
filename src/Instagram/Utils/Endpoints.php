@@ -14,6 +14,8 @@ class Endpoints
 
     const LOCATION_URL = 'https://www.instagram.com/explore/locations/{{locationId}}/';
 
+    const LIVE_URL = 'https://www.instagram.com/{{username}}/live/?__a=1';
+
     /**
      * @param int $accountId
      *
@@ -62,5 +64,15 @@ class Endpoints
     public static function getLocationUrl(int $locationId): string
     {
         return str_replace('{{locationId}}', (string)$locationId, static::LOCATION_URL);
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return string
+     */
+    public static function getLiveUrl(string $username): string
+    {
+        return str_replace('{{username}}', (string)$username, static::LIVE_URL);
     }
 }
