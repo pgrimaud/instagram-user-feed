@@ -107,6 +107,7 @@ class ApiTest extends TestCase
         $this->assertSame('https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/c157.0.405.405a/81891490_817416122018719_3074772560002831394_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=pInBTStlOVIAX_wSuVO&oh=72390bf5e7b875de6d6b7222337bb46e&oe=5EC7F96E', $media->__serialize()['thumbnailSrc']);
         $this->assertCount(9, $media->getHashtags());
         $this->assertSame('#happybirthday', $media->getHashtags()[0]);
+        $this->assertSame(1518284433, $media->getOwnerId());
 
         $api->logout('username');
     }

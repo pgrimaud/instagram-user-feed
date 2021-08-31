@@ -105,6 +105,10 @@ class MediaHydrator
             $media->setIgtv($node->product_type === 'igtv');
         }
 
+        if (property_exists($node, 'owner')) {
+            $media->setOwnerId((int)$node->owner->id);
+        }
+
         return $media;
     }
 

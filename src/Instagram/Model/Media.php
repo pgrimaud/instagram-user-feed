@@ -107,6 +107,11 @@ class Media
     private $hashtags = [];
 
     /**
+     * @var int
+     */
+    private $ownerId;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -462,5 +467,21 @@ class Media
     public function setHashtags(array $hashtags): void
     {
         $this->hashtags = $hashtags;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOwnerId(): ?int
+    {
+        return $this->ownerId;
+    }
+
+    /**
+     * @param int $ownerId
+     */
+    public function setOwnerId(int $ownerId): void
+    {
+        $this->ownerId = $ownerId;
     }
 }
