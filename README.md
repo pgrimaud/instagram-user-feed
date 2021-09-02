@@ -27,10 +27,11 @@ If you like or use this package, please share your love by starring this reposit
 - Fetch detailed post of user
 - Fetch feed of followers
 - Fetch feed of followings
-- **NEW : Follow or unfollow users**
-- **NEW : Like or unlike posts**
-- **NEW : Get posts of hashtag**
-- **NEW : Get comments of a post**
+- Follow or unfollow users
+- Like or unlike posts
+- Get posts of hashtag
+- Get comments of a post
+- **NEW : Get live-streaming info**
 
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
@@ -49,6 +50,10 @@ composer require pgrimaud/instagram-user-feed
 ```
 
 ## Changelog
+
+**v6.9** - 2021-09-02:
+- Add method to fetch Instagram live-streaming info. Thanks to [David-Kurniawan](https://github.com/David-Kurniawan)
+- Minor fixes.
 
 **[v6.8](#version-68-strict-origin-when-cross-origin)** - 2021-07-08:
 
