@@ -17,7 +17,8 @@ use Instagram\Hydrator\{LocationHydrator,
     ProfileHydrator,
     HashtagHydrator,
     FollowerHydrator,
-    FollowingHydrator
+    FollowingHydrator,
+    LiveHydrator
 };
 use Instagram\Model\{Location,
     Media,
@@ -29,7 +30,8 @@ use Instagram\Model\{Location,
     StoryHighlights,
     StoryHighlightsFolder,
     FollowerFeed,
-    FollowingFeed
+    FollowingFeed,
+    Live
 };
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
@@ -45,7 +47,9 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonFollowingDataFeed,
     FollowUnfollow,
     LikeUnlike,
-    LocationData
+    LocationData,
+    LiveData,
+    StreamingData
 };
 use Psr\Cache\CacheItemPoolInterface;
 use Instagram\Utils\InstagramHelper;
@@ -587,5 +591,37 @@ class Api
         $hydrator->hydrateMedias($data);
 
         return $hydrator->getLocation();
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return Live
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getLive(string $username): Live
+    {
+        $feed = new LiveData($this->client, $this->session);
+        $data = $feed->fetchData($username);
+
+        $hydrator = new LiveHydrator();
+        $hydrator->liveBaseHydrator($data);
+
+        return $hydrator->getLive();
+    }
+
+    /**
+     * @param string $preview_height
+     * @param string $preview_width
+     */
+    public function createStreaming(string $preview_height, string $preview_width)
+    {
+        $feed = new StreamingData($this->client, $this->session);
+        $data = $feed->fetchData($preview_height, $preview_width);
+
+        return $data;
     }
 }
