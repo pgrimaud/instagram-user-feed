@@ -17,15 +17,15 @@ try {
     $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    $username = 'just_dev_69';
+    // user must be on live
+    $username = 'pgrimaud';
 
     $live = $api->getLive($username);
 
-    // location data
     print_r($live);
 
 } catch (InstagramException $e) {
-    print_r('InstagramException '.$e->getMessage());
+    print_r($e->getMessage() . ' for ' . $username);
 } catch (CacheException $e) {
-    print_r('CacheException '.$e->getMessage());
+    print_r('CacheException ' . $e->getMessage());
 }

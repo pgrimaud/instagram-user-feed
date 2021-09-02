@@ -73,6 +73,6 @@ class Endpoints
      */
     public static function getLiveUrl(string $username): string
     {
-        return str_replace('{{username}}', (string)$username, static::LIVE_URL);
+        return str_replace('{{username}}', $username, static::LIVE_URL);
     }
 }

@@ -38,4 +38,10 @@ class EndpointsTest extends TestCase
         $endpoint = Endpoints::getLocationUrl(123456789);
         $this->assertSame('https://www.instagram.com/explore/locations/123456789/', $endpoint);
     }
+
+    public function testGetLiveUrl()
+    {
+        $endpoint = Endpoints::getLiveUrl('pgrimaud');
+        $this->assertSame('https://www.instagram.com/pgrimaud/live/?__a=1', $endpoint);
+    }
 }

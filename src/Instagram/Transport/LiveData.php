@@ -33,7 +33,8 @@ class LiveData extends AbstractDataFeed
         try {
             $res = $this->client->request('GET', $endpoint, $headers);
         } catch (ClientException $exception) {
-            throw new InstagramFetchException('Error #'.$exception->getCode());
+            // should throw a 404 if live isn't on
+            throw new InstagramFetchException('No live streaming found');
         }
 
         $data = (string)$res->getBody();

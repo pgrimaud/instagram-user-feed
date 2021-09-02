@@ -612,16 +612,4 @@ class Api
 
         return $hydrator->getLive();
     }
-
-    /**
-     * @param string $preview_height
-     * @param string $preview_width
-     */
-    public function createStreaming(string $preview_height, string $preview_width)
-    {
-        $feed = new StreamingData($this->client, $this->session);
-        $data = $feed->fetchData($preview_height, $preview_width);
-
-        return $data;
-    }
 }

@@ -7,29 +7,29 @@ namespace Instagram\Model;
 class Live
 {
     /**
-     * @var string
+     * @var int
      */
-    private $broadcast_id;
+    private $broadcastId;
 
     /**
      * @var object
      */
-    private $broadcast_dict;
+    private $broadcastDict;
 
     /**
      * @return string
      */
-    public function getBroadcastId(): string
+    public function getBroadcastId(): int
     {
-        return $this->broadcast_id;
+        return $this->broadcastId;
     }
 
     /**
      * @param string $broadcast_id
      */
-    public function setBroadcastId(string $broadcast_id): void
+    public function setBroadcastId(int $broadcast_id): void
     {
-        $this->broadcast_id = $broadcast_id;
+        $this->broadcastId = $broadcast_id;
     }
 
     /**
@@ -37,7 +37,7 @@ class Live
      */
     public function getBroadcastDict(): object
     {
-        return $this->broadcast_dict;
+        return $this->broadcastDict;
     }
 
     /**
@@ -45,7 +45,7 @@ class Live
      */
     public function setBroadcastDict(object $broadcast_dict): void
     {
-        $this->broadcast_dict = $broadcast_dict;
+        $this->broadcastDict = $broadcast_dict;
     }
 
     /**
@@ -54,8 +54,8 @@ class Live
     public function toArray(): array
     {
         return [
-            'broadcast_id'      => $this->broadcast_id,
-            'broadcast_dict'    => $this->broadcast_dict,
+            'broadcastId'   => $this->broadcastId,
+            'broadcastDict' => $this->broadcastDict,
         ];
     }
 

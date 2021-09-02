@@ -23,11 +23,11 @@ class LiveHydrator
     /**
      * @param \StdClass $node
      *
-     * @return Live
+     * @return void
      */
     public function liveBaseHydrator(\StdClass $node): void
     {
-        $this->live->setBroadcastId($node->broadcast_id);
+        $this->live->setBroadcastId((int) $node->broadcast_id);
         $this->live->setBroadcastDict($node->broadcast_dict);
     }
 

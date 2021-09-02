@@ -17,8 +17,8 @@ try {
     $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
-    // 1518284433 is robertdowneyjr's account id
-    $userId = 1518284433;
+    // 184263228 is pgrimaud's account id
+    $userId = 184263228;
 
     $follow = $api->follow($userId);
 
