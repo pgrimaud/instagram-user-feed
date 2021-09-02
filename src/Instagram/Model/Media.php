@@ -224,9 +224,9 @@ class Media
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDisplaySrc(): string
+    public function getDisplaySrc(): ?string
     {
         return $this->displaySrc;
     }
