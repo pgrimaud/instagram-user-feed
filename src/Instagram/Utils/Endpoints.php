@@ -16,6 +16,8 @@ class Endpoints
 
     const LIVE_URL = 'https://www.instagram.com/{{username}}/live/?__a=1';
 
+    const REELS_URL = 'https://i.instagram.com/api/v1/clips/user/?hl=en';
+
     /**
      * @param int $accountId
      *
@@ -23,7 +25,7 @@ class Endpoints
      */
     public static function getFollowUrl(int $accountId): string
     {
-        return str_replace('{{accountId}}', (string)$accountId, static::FOLLOW_URL);
+        return str_replace('{{accountId}}', (string) $accountId, static::FOLLOW_URL);
     }
 
     /**
@@ -33,7 +35,7 @@ class Endpoints
      */
     public static function getUnfollowUrl(int $accountId): string
     {
-        return str_replace('{{accountId}}', (string)$accountId, static::UNFOLLOW_URL);
+        return str_replace('{{accountId}}', (string) $accountId, static::UNFOLLOW_URL);
     }
 
     /**
@@ -43,7 +45,7 @@ class Endpoints
      */
     public static function getLikeUrl(int $postId): string
     {
-        return str_replace('{{postId}}', (string)$postId, static::LIKE_URL);
+        return str_replace('{{postId}}', (string) $postId, static::LIKE_URL);
     }
 
     /**
@@ -53,7 +55,7 @@ class Endpoints
      */
     public static function getUnlikeUrl(int $postId): string
     {
-        return str_replace('{{postId}}', (string)$postId, static::UNLIKE_URL);
+        return str_replace('{{postId}}', (string) $postId, static::UNLIKE_URL);
     }
 
     /**
@@ -63,7 +65,7 @@ class Endpoints
      */
     public static function getLocationUrl(int $locationId): string
     {
-        return str_replace('{{locationId}}', (string)$locationId, static::LOCATION_URL);
+        return str_replace('{{locationId}}', (string) $locationId, static::LOCATION_URL);
     }
 
     /**

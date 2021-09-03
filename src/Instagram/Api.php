@@ -12,6 +12,7 @@ use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\{LocationHydrator,
     MediaHydrator,
     MediaCommentsHydrator,
+    ReelsHydrator,
     StoriesHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
@@ -27,6 +28,7 @@ use Instagram\Model\{Location,
     Profile,
     Hashtag,
     ProfileStory,
+    ReelsFeed,
     StoryHighlights,
     StoryHighlightsFolder,
     FollowerFeed,
@@ -49,7 +51,7 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     LikeUnlike,
     LocationData,
     LiveData,
-    StreamingData
+    ReelsData
 };
 use Psr\Cache\CacheItemPoolInterface;
 use Instagram\Utils\InstagramHelper;
@@ -78,8 +80,8 @@ class Api
 
     /**
      * @param CacheItemPoolInterface $cachePool
-     * @param ClientInterface|null $client
-     * @param int|null $challengeDelay
+     * @param ClientInterface|null   $client
+     * @param int|null               $challengeDelay
      */
     public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null, ?int $challengeDelay = 3)
     {
@@ -89,8 +91,8 @@ class Api
     }
 
     /**
-     * @param string $username
-     * @param string $password
+     * @param string          $username
+     * @param string          $password
      * @param ImapClient|null $imapClient
      *
      * @throws Exception\InstagramAuthException
@@ -157,7 +159,7 @@ class Api
 
     /**
      * @param Profile $instagramProfile
-	 * @param int $limit
+     * @param int     $limit
      *
      * @return Profile
      *
@@ -214,9 +216,9 @@ class Api
     }
 
     /**
-     * @param int $userId
+     * @param int    $userId
      * @param string $endCursor
-	 * @param int $limit
+     * @param int    $limit
      *
      * @return Profile
      *
@@ -233,7 +235,7 @@ class Api
 
     /**
      * @param int $userId
-	 * @param int $limit
+     * @param int $limit
      *
      * @return Profile
      *
@@ -249,7 +251,7 @@ class Api
 
     /**
      * @param string $mediaCode
-     * @param int $limit
+     * @param int    $limit
      *
      * @return MediaComments
      *
@@ -289,7 +291,7 @@ class Api
 
     /**
      * @param string $mediaId
-     * @param int $limit
+     * @param int    $limit
      *
      * @return MediaComments
      *
@@ -435,7 +437,7 @@ class Api
     }
 
     /**
-     * @param int $id
+     * @param int    $id
      * @param string $endCursor
      *
      * @return FollowerFeed
@@ -476,7 +478,7 @@ class Api
     }
 
     /**
-     * @param int $id
+     * @param int    $id
      * @param string $endCursor
      *
      * @return FollowingFeed
@@ -574,7 +576,7 @@ class Api
     }
 
     /**
-     * @param int $locationId
+     * @param int    $locationId
      * @param string $endCursor
      *
      * @return Location
@@ -611,5 +613,26 @@ class Api
         $hydrator->liveBaseHydrator($data);
 
         return $hydrator->getLive();
+    }
+
+    /**
+     * @param int         $userId
+     * @param string|null $maxId
+     *
+     * @return ReelsFeed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getReels(int $userId, string $maxId = null): ReelsFeed
+    {
+        $feed = new ReelsData($this->client, $this->session);
+        $data = $feed->fetchData($userId, $maxId);
+
+        $hydrator = new ReelsHydrator();
+        $hydrator->hydrateReels($data);
+
+        return $hydrator->getReelsFeed();
     }
 }

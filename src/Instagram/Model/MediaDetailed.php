@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Instagram\Model;
 
 class MediaDetailed extends Media
@@ -30,7 +32,7 @@ class MediaDetailed extends Media
     private $displayResources = [];
 
     /**
-     * @var Instagram\Model\Profile
+     * @var Profile
      */
     private $profile;
 

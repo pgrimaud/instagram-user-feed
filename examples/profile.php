@@ -14,7 +14,7 @@ $credentials = include_once realpath(dirname(__FILE__)) . '/credentials.php';
 $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
 try {
-    $api     = new Api($cachePool);
+    $api = new Api($cachePool);
     $api->login($credentials->getLogin(), $credentials->getPassword());
 
     $profile = $api->getProfile('robertdowneyjr');
