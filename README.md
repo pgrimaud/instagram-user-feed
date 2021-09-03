@@ -51,7 +51,7 @@ This version can retrieve **ANY** Instagram feed using **web scrapping**.
 composer require pgrimaud/instagram-user-feed
 ```
 
-## Changelog
+# Changelog
 
 **v6.10** - 2021-09-03:
 
