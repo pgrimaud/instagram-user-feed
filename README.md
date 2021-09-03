@@ -60,7 +60,7 @@ composer require pgrimaud/instagram-user-feed
 - Split dirty tests in multiple files.
 
 **v6.9** - 2021-09-02:
-- 
+
 - Add method to fetch Instagram live-streaming info. Thanks to [David-Kurniawan](https://github.com/David-Kurniawan)
 - Minor fixes.
 
