@@ -55,7 +55,7 @@ composer require pgrimaud/instagram-user-feed
 
 **v6.10** - 2021-09-03:
 - Add method to fetch IGTV (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/igtv.php)) 🎉.
-- Add method to fetch Reels (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/reels.php) 🎉.
+- Add method to fetch Reels (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/reels.php)) 🎉.
 - Split dirty tests in multiple files.
 
 **v6.9** - 2021-09-02:
