@@ -29,9 +29,11 @@ If you like or use this package, please share your love by starring this reposit
 - Fetch feed of followings
 - Follow or unfollow users
 - Like or unlike posts
-- Get posts of hashtag
-- Get comments of a post
-- **NEW : Get live-streaming info**
+- Fetch posts of hashtag
+- Fetch comments of a post
+- **NEW : Fetch live-streaming info**
+- **NEW : Fetch Reels 🎉**
+- **NEW : Fetch IGTV 🎉**
 
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
@@ -50,6 +52,11 @@ composer require pgrimaud/instagram-user-feed
 ```
 
 ## Changelog
+
+**v6.10** - 2021-09-03:
+- Add method to fetch IGTV (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/igtv.php)) 🎉.
+- Add method to fetch Reels (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/reels.php) 🎉.
+- Split dirty tests in multiple files.
 
 **v6.9** - 2021-09-02:
 - Add method to fetch Instagram live-streaming info. Thanks to [David-Kurniawan](https://github.com/David-Kurniawan)

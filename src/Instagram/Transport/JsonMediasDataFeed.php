@@ -11,21 +11,25 @@ class JsonMediasDataFeed extends AbstractDataFeed
 {
     /**
      * @param Profile $instagramProfile
-     * @param int $limit
+     * @param int     $limit
+     * @param string  $queryHash
      *
      * @return \StdClass
      *
      * @throws InstagramFetchException
      */
-    public function fetchData(Profile $instagramProfile, int $limit): \StdClass
+    public function fetchData(Profile $instagramProfile, int $limit, string $queryHash = InstagramHelper::QUERY_HASH_MEDIAS): \StdClass
     {
+        // check if this method was called for medias or igtvs
+        $after = $queryHash === InstagramHelper::QUERY_HASH_MEDIAS ? $instagramProfile->getEndCursor() : $instagramProfile->getEndCursorIgtvs();
+
         $variables = [
             'id'    => PHP_INT_SIZE === 4 ? $instagramProfile->getId32Bit() : $instagramProfile->getId(),
             'first' => $limit,
-            'after' => $instagramProfile->getEndCursor()
+            'after' => $after,
         ];
 
-        $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH_MEDIAS . '&variables=' . json_encode($variables);
+        $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . $queryHash . '&variables=' . json_encode($variables);
 
         $data = $this->fetchJsonDataFeed($endpoint);
 

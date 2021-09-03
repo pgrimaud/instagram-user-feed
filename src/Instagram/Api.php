@@ -103,7 +103,7 @@ class Api
     {
         $login = new Login($this->client, $username, $password, $imapClient, $this->challengeDelay);
 
-        // fetch previous session an re-use it
+        // fetch previous session and re-use it
         $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($username));
         $cookies     = $sessionData->get();
 
@@ -153,6 +153,7 @@ class Api
         $hydrator = new ProfileHydrator();
         $hydrator->hydrateProfile($data);
         $hydrator->hydrateMedias($data);
+        $hydrator->hydrateIgtvs($data);
 
         return $hydrator->getProfile();
     }
@@ -634,5 +635,24 @@ class Api
         $hydrator->hydrateReels($data);
 
         return $hydrator->getReelsFeed();
+    }
+
+    /**
+     * @param Profile $instagramProfile
+     * @param int     $limit
+     *
+     * @return Profile
+     *
+     * @throws InstagramException
+     */
+    public function getMoreIgtvs(Profile $instagramProfile, int $limit = InstagramHelper::PAGINATION_DEFAULT): Profile
+    {
+        $feed = new JsonMediasDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($instagramProfile, $limit, InstagramHelper::QUERY_HASH_IGTVS);
+
+        $hydrator = new ProfileHydrator($instagramProfile);
+        $hydrator->hydrateIgtvs($data);
+
+        return $hydrator->getProfile();
     }
 }

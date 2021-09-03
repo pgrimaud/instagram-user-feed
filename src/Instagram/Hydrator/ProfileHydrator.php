@@ -79,6 +79,20 @@ class ProfileHydrator
         $this->profile->setEndCursor($data->edge_owner_to_timeline_media->page_info->end_cursor);
     }
 
+    public function hydrateIgtvs(\StdClass $data): void
+    {
+        // reset igtvs
+        $this->profile->setIGTV([]);
+
+        foreach ($data->edge_felix_video_timeline->edges as $item) {
+            $igtv = $this->mediaHydrator->hydrateMediaFromProfile($item->node);
+            $this->profile->addIGTV($igtv);
+        }
+
+        $this->profile->setHasMoreIgtvs($data->edge_felix_video_timeline->page_info->end_cursor != null);
+        $this->profile->setEndCursorIgtvs($data->edge_felix_video_timeline->page_info->end_cursor);
+    }
+
     /**
      * @return Profile
      */

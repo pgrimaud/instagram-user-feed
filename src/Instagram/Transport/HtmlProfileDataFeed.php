@@ -45,7 +45,7 @@ class HtmlProfileDataFeed extends AbstractDataFeed
         preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
 
         if (!isset($matches[1])) {
-            throw new InstagramFetchException('Unable to extract JSON data');
+            throw new InstagramFetchException('Profile #1 : Unable to extract JSON data');
         }
 
         $data = json_decode($matches[1], false);
@@ -61,7 +61,7 @@ class HtmlProfileDataFeed extends AbstractDataFeed
         preg_match('/<script type="text\/javascript">window\.__additionalDataLoaded\([^,]*,(.+)\);<\/script>/', $html, $matches);
 
         if (!isset($matches[1])) {
-            throw new InstagramFetchException('Unable to extract JSON data');
+            throw new InstagramFetchException('Profile #2 : Unable to extract JSON data');
         }
 
         $data = json_decode($matches[1], false);

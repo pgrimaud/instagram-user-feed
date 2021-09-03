@@ -82,6 +82,21 @@ class Profile
     private $endCursor = null;
 
     /**
+     * @var Media[]
+     */
+    private $igtvs = [];
+
+    /**
+     * @var bool
+     */
+    private $hasMoreIgtvs = false;
+
+    /**
+     * @var string
+     */
+    private $endCursorIgtvs = null;
+
+    /**
      * @return string
      */
     public function getUserName(): string
@@ -274,6 +289,9 @@ class Profile
         $this->medias[] = $media;
     }
 
+    /**
+     * @param bool $hasMoreMedias
+     */
     public function setHasMoreMedias(bool $hasMoreMedias): void
     {
         $this->hasMoreMedias = $hasMoreMedias;
@@ -331,6 +349,9 @@ class Profile
             'medias'         => array_map(function ($media) {
                 return $media->toArray();
             }, $this->medias),
+            'igtvs'         => array_map(function ($igtv) {
+                return $igtv->toArray();
+            }, $this->igtvs),
             'hasMoreMedias'  => $this->hasMoreMedias,
             'endCursor'      => $this->endCursor,
         ];
@@ -358,5 +379,61 @@ class Profile
     public function setId32Bit(string $id32Bit): void
     {
         $this->id32Bit = $id32Bit;
+    }
+
+    /**
+     * @param Media[] $igtvs
+     */
+    public function setIgtv(array $igtvs): void
+    {
+        $this->igtvs = $igtvs;
+    }
+
+    /**
+     * @return Media[]
+     */
+    public function getIgtvs(): array
+    {
+        return $this->igtvs;
+    }
+
+    /**
+     * @param Media $igtv
+     */
+    public function addIgtv(Media $igtv): void
+    {
+        $this->igtvs[] = $igtv;
+    }
+
+    /**
+     * @param bool $hasMoreIgtvs
+     */
+    public function setHasMoreIgtvs(bool $hasMoreIgtvs): void
+    {
+        $this->hasMoreIgtvs = $hasMoreIgtvs;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMoreIgtvs(): bool
+    {
+        return $this->hasMoreIgtvs;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndCursorIgtvs(): ?string
+    {
+        return $this->endCursorIgtvs;
+    }
+
+    /**
+     * @param string|null $endCursorIgtvs
+     */
+    public function setEndCursorIgtvs(?string $endCursorIgtvs): void
+    {
+        $this->endCursorIgtvs = $endCursorIgtvs;
     }
 }
