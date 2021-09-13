@@ -34,6 +34,7 @@ If you like or use this package, please share your love by starring this reposit
 - **NEW : Fetch live-streaming info**
 - **NEW : Fetch Reels 🎉**
 - **NEW : Fetch IGTV 🎉**
+- **NEW : Fetch medias where a user has been tagged on 🎉**
 
 This version can retrieve **ANY** Instagram feed using **web scrapping**.
 
@@ -52,6 +53,10 @@ composer require pgrimaud/instagram-user-feed
 ```
 
 ## Changelog
+
+**v6.11** - 2021-09-13:
+
+- Add method to fetch medias where a user has been tagged on (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/tagged-medias.php)) 🎉.
 
 **v6.10** - 2021-09-03:
 
