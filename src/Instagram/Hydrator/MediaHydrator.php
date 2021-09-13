@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Hydrator;
 
-use Instagram\Model\{Media, MediaDetailed};
+use Instagram\Model\{Media, MediaDetailed, TaggedMediasFeed};
 use Instagram\Utils\InstagramHelper;
 
 class MediaHydrator
@@ -34,14 +34,14 @@ class MediaHydrator
     }
 
     /**
-     * @param Media $media
+     * @param Media     $media
      * @param \StdClass $node
      *
      * @return Media|MediaDetailed
      */
     private function mediaBaseHydrator(Media $media, \StdClass $node): Media
     {
-        $media->setId((int)$node->id);
+        $media->setId((int) $node->id);
         $media->setShortCode($node->shortcode);
         if (property_exists($node, '__typename')) {
             $media->setTypeName($node->__typename);
@@ -87,14 +87,14 @@ class MediaHydrator
             $media->setLocation($node->location);
         }
 
-        $media->setVideo((bool)$node->is_video);
+        $media->setVideo((bool) $node->is_video);
 
         if (property_exists($node, 'video_url')) {
             $media->setVideoUrl($node->video_url);
         }
 
         if (property_exists($node, 'video_view_count')) {
-            $media->setVideoViewCount((int)$node->video_view_count);
+            $media->setVideoViewCount((int) $node->video_view_count);
         }
 
         if (property_exists($node, 'accessibility_caption')) {
@@ -106,7 +106,7 @@ class MediaHydrator
         }
 
         if (property_exists($node, 'owner')) {
-            $media->setOwnerId((int)$node->owner->id);
+            $media->setOwnerId((int) $node->owner->id);
         }
 
         return $media;
@@ -114,7 +114,7 @@ class MediaHydrator
 
     /**
      * @param MediaDetailed $media
-     * @param \StdClass $node
+     * @param \StdClass     $node
      *
      * @return MediaDetailed
      */
@@ -144,17 +144,17 @@ class MediaHydrator
             $scItems = [];
             foreach ($node->edge_sidecar_to_children->edges as $item) {
                 $scItem = new MediaDetailed();
-                $scItem->setId((int)$item->node->id);
+                $scItem->setId((int) $item->node->id);
                 $scItem->setShortCode($item->node->shortcode);
                 $scItem->setHeight($item->node->dimensions->height);
                 $scItem->setWidth($item->node->dimensions->height);
                 $scItem->setTypeName($item->node->__typename);
                 $scItem->setDisplayResources($item->node->display_resources);
 
-                $scItem->setVideo((bool)$item->node->is_video);
+                $scItem->setVideo((bool) $item->node->is_video);
 
                 if (property_exists($item->node, 'video_view_count')) {
-                    $scItem->setVideoViewCount((int)$item->node->video_view_count);
+                    $scItem->setVideoViewCount((int) $item->node->video_view_count);
                 }
                 if (property_exists($item->node, 'video_url')) {
                     $scItem->setVideoUrl($item->node->video_url);
@@ -172,4 +172,24 @@ class MediaHydrator
 
         return $media;
     }
+
+    /**
+     * @param \StdClass $node
+     *
+     * @return TaggedMediasFeed
+     */
+    public function hydrateTaggedMedias(\StdClass $node): TaggedMediasFeed
+    {
+        $feed = new TaggedMediasFeed();
+        $feed->setHasNextPage($node->edge_user_to_photos_of_you->page_info->has_next_page);
+        $feed->setEndCursor($node->edge_user_to_photos_of_you->page_info->end_cursor);
+
+        foreach ($node->edge_user_to_photos_of_you->edges as $node) {
+            $media = $this->mediaBaseHydrator(new Media, $node->node);
+            $feed->addMedia($media);
+        }
+
+        return $feed;
+    }
+
 }

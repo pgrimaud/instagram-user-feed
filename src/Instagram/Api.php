@@ -33,8 +33,8 @@ use Instagram\Model\{Location,
     StoryHighlightsFolder,
     FollowerFeed,
     FollowingFeed,
-    Live
-};
+    Live,
+    TaggedMediasFeed};
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
@@ -48,6 +48,7 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     JsonFollowerDataFeed,
     JsonFollowingDataFeed,
     FollowUnfollow,
+    JsonTaggedMediasDataFeed,
     LikeUnlike,
     LocationData,
     LiveData,
@@ -654,5 +655,21 @@ class Api
         $hydrator->hydrateIgtvs($data);
 
         return $hydrator->getProfile();
+    }
+
+    /**
+     * @param int         $userId
+     * @param string|null $maxId
+     * @return ReelsFeed
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getTaggedMedias(int $userId, string $endCursor = ''): TaggedMediasFeed
+    {
+        $feed = new JsonTaggedMediasDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($userId, $endCursor);
+
+        $hydrator = new MediaHydrator();
+        return $hydrator->hydrateTaggedMedias($data);
     }
 }
