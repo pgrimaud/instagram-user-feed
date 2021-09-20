@@ -23,7 +23,7 @@ abstract class AbstractDataFeed
 
     /**
      * @param ClientInterface $client
-     * @param Session|null $session
+     * @param Session|null    $session
      *
      * @throws InstagramAuthException
      */
@@ -54,7 +54,7 @@ abstract class AbstractDataFeed
 
         $res = $this->client->request('GET', $endpoint, $headers);
 
-        $data = (string)$res->getBody();
+        $data = (string) $res->getBody();
         $data = json_decode($data);
 
         if ($data === null) {
@@ -69,9 +69,9 @@ abstract class AbstractDataFeed
      *
      * @throws InstagramFetchException
      */
-    protected function postJsonDataFeed(string $endpoint): \StdClass
+    protected function postJsonDataFeed(string $endpoint, array $formParameters = []): \StdClass
     {
-        $headers = [
+        $options = [
             'headers' => [
                 'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
                 'x-requested-with' => 'XMLHttpRequest',
@@ -81,9 +81,15 @@ abstract class AbstractDataFeed
             'cookies' => $this->session->getCookies(),
         ];
 
-        $res = $this->client->request('POST', $endpoint, $headers);
+        if (count($formParameters) > 0) {
+            $options = array_merge($options, [
+                'form_params' => $formParameters,
+            ]);
+        }
 
-        $data = (string)$res->getBody();
+        $res = $this->client->request('POST', $endpoint, $options);
+
+        $data = (string) $res->getBody();
         $data = json_decode($data);
 
         if ($data === null) {
@@ -108,7 +114,7 @@ abstract class AbstractDataFeed
                 ],
             ]);
 
-            $html = (string)$baseRequest->getBody();
+            $html = (string) $baseRequest->getBody();
 
             preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
 

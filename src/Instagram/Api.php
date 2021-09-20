@@ -37,7 +37,8 @@ use Instagram\Model\{Location,
     Live,
     TaggedMediasFeed
 };
-use Instagram\Transport\{HtmlProfileDataFeed,
+use Instagram\Transport\{CommentPost,
+    HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
     JsonMediaCommentsFeed,
@@ -696,5 +697,20 @@ class Api
         $hydrator->hydrateProfile($data);
 
         return $hydrator->getProfile();
+    }
+
+    /**
+     * @param int    $postId
+     * @param string $message
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function commentPost(int $postId, string $message): string
+    {
+        $request = new CommentPost($this->client, $this->session);
+        return $request->comment($postId, $message);
     }
 }

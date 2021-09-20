@@ -20,6 +20,8 @@ class Endpoints
 
     const PROFILE_URL = 'https://i.instagram.com/api/v1/users/{{userId}}/info/';
 
+    const COMMENT_URL = 'https://www.instagram.com/web/comments/{{postId}}/add/';
+
     /**
      * @param int $accountId
      *
@@ -88,5 +90,15 @@ class Endpoints
     public static function getProfileUrl(int $userId): string
     {
         return str_replace('{{userId}}', (string) $userId, static::PROFILE_URL);
+    }
+
+    /**
+     * @param int $postId
+     *
+     * @return string
+     */
+    public static function getCommentUrl(int $postId): string
+    {
+        return str_replace('{{postId}}', (string) $postId, static::COMMENT_URL);
     }
 }
