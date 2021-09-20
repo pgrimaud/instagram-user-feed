@@ -44,4 +44,15 @@ class EndpointsTest extends TestCase
         $endpoint = Endpoints::getLiveUrl('pgrimaud');
         $this->assertSame('https://www.instagram.com/pgrimaud/live/?__a=1', $endpoint);
     }
+
+    public function testGetCommentUrl()
+    {
+        $endpoint = Endpoints::getCommentUrl(123456789);
+        $this->assertSame('https://www.instagram.com/web/comments/123456789/add/', $endpoint);
+    }
+    public function testGetProfileUrl()
+    {
+        $endpoint = Endpoints::getProfileUrl(123456789);
+        $this->assertSame('https://i.instagram.com/api/v1/users/123456789/info/', $endpoint);
+    }
 }
