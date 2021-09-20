@@ -18,6 +18,8 @@ class Endpoints
 
     const REELS_URL = 'https://i.instagram.com/api/v1/clips/user/?hl=en';
 
+    const PROFILE_URL = 'https://i.instagram.com/api/v1/users/{{userId}}/info/';
+
     /**
      * @param int $accountId
      *
@@ -76,5 +78,15 @@ class Endpoints
     public static function getLiveUrl(string $username): string
     {
         return str_replace('{{username}}', $username, static::LIVE_URL);
+    }
+
+    /**
+     * @param int $userId
+     *
+     * @return string
+     */
+    public static function getProfileUrl(int $userId): string
+    {
+        return str_replace('{{userId}}', (string) $userId, static::PROFILE_URL);
     }
 }

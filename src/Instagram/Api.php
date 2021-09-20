@@ -12,6 +12,7 @@ use Instagram\Exception\InstagramException;
 use Instagram\Hydrator\{LocationHydrator,
     MediaHydrator,
     MediaCommentsHydrator,
+    ProfileAlternativeHydrator,
     ReelsHydrator,
     StoriesHydrator,
     StoryHighlightsHydrator,
@@ -34,12 +35,14 @@ use Instagram\Model\{Location,
     FollowerFeed,
     FollowingFeed,
     Live,
-    TaggedMediasFeed};
+    TaggedMediasFeed
+};
 use Instagram\Transport\{HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
     JsonMediaCommentsFeed,
     JsonHashtagDataFeed,
+    JsonProfileAlternativeDataFeed,
     JsonProfileDataFeed,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
@@ -52,7 +55,7 @@ use Instagram\Transport\{HtmlProfileDataFeed,
     LikeUnlike,
     LocationData,
     LiveData,
-    ReelsData
+    ReelsDataFeed
 };
 use Psr\Cache\CacheItemPoolInterface;
 use Instagram\Utils\InstagramHelper;
@@ -629,7 +632,7 @@ class Api
      */
     public function getReels(int $userId, string $maxId = null): ReelsFeed
     {
-        $feed = new ReelsData($this->client, $this->session);
+        $feed = new ReelsDataFeed($this->client, $this->session);
         $data = $feed->fetchData($userId, $maxId);
 
         $hydrator = new ReelsHydrator();
@@ -660,7 +663,9 @@ class Api
     /**
      * @param int         $userId
      * @param string|null $maxId
+     *
      * @return ReelsFeed
+     *
      * @throws Exception\InstagramAuthException
      * @throws Exception\InstagramFetchException
      */
@@ -671,5 +676,25 @@ class Api
 
         $hydrator = new MediaHydrator();
         return $hydrator->hydrateTaggedMedias($data);
+    }
+
+    /**
+     * @param int $userId
+     *
+     * @return Profile
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getProfileAlternative(int $userId): Profile
+    {
+        $feed = new JsonProfileAlternativeDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($userId);
+
+        $hydrator = new ProfileAlternativeHydrator();
+        $hydrator->hydrateProfile($data);
+
+        return $hydrator->getProfile();
     }
 }

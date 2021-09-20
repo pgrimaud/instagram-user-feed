@@ -15,6 +15,8 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class ProfileTest extends TestCase
 {
+    use GenerateCookiesTrait;
+
     public function testValidApiCalls()
     {
         $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
@@ -528,6 +530,80 @@ class ProfileTest extends TestCase
 
         $this->assertSame('QVFCN0wyU1FnVXBfSkhVRmlOLTZTSDdvRHZzZTc5X3hIdU10NkhzTm5WWFZDYkd1QlRUZDBEUVFhZmdZSnJOcHZQN1Y1N29KQmItcGc1UXVKR3J2VDhyQg==', $profile->getEndCursorIgtvs());
         $this->assertTrue($profile->hasMoreIgtvs());
+
+        $api->logout('username');
+    }
+
+    public function testProfileAlternativeFeed()
+    {
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile-alternative.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($this->generateCookiesForFollow(), $client);
+
+        $api->login('username', 'password');
+        $profile = $api->getProfileAlternative(12345678);
+
+        $this->assertSame(1518284433, $profile->getId());
+        $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-19/143237481_227994098925572_6634984787450078090_n.jpg?_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_ohc=XLHUTgFQFyMAX8ZQ_xh&edm=AEF8tYYBAAAA&ccb=7-4&oh=d97910fcfa8d73e4da653d56773f2f2f&oe=614FCC01&_nc_sid=a9513d', $profile->getProfilePicture());
+
+        $api->logout('username');
+    }
+
+    public function testErrorOnProfileAlternativeFeed()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(429, [], file_get_contents(__DIR__ . '/fixtures/profile-alternative.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+        $api->getProfileAlternative(1234);
+
+        $api->logout('username');
+    }
+
+    public function testEmptyJsonOnProfileAlternativeFeed()
+    {
+        $this->expectException(InstagramFetchException::class);
+
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], ''),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+        $api->getProfileAlternative(1234);
 
         $api->logout('username');
     }

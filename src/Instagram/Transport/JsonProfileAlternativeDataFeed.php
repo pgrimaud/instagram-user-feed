@@ -10,7 +10,7 @@ use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\Endpoints;
 use Instagram\Utils\UserAgentHelper;
 
-class ReelsData extends AbstractDataFeed
+class JsonProfileAlternativeDataFeed extends AbstractDataFeed
 {
     const IG_APP_ID = 936619743392459;
 
@@ -23,10 +23,8 @@ class ReelsData extends AbstractDataFeed
      * @throws InstagramFetchException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchData(int $userId, string $maxId = null): \StdClass
+    public function fetchData(int $userId): \StdClass
     {
-        $endpoint = Endpoints::REELS_URL;
-
         $csrfToken = '';
 
         /** @var SetCookie $cookie */
@@ -46,21 +44,8 @@ class ReelsData extends AbstractDataFeed
             'cookies' => $this->session->getCookies(),
         ];
 
-        $params = [
-            'target_user_id' => $userId,
-            'page_size'      => 12,
-        ];
-
-        if ($maxId) {
-            $params = array_merge($params, [
-                'max_id' => $maxId,
-            ]);
-        }
-
-        $options = array_merge($options, ['form_params' => $params]);
-
         try {
-            $res = $this->client->request('POST', $endpoint, $options);
+            $res = $this->client->request('GET', Endpoints::getProfileUrl($userId), $options);
         } catch (ClientException $exception) {
             throw new InstagramFetchException('Reels fetch error');
         }
@@ -72,6 +57,6 @@ class ReelsData extends AbstractDataFeed
             throw new InstagramFetchException('Reels fetch error (invalid JSON)');
         }
 
-        return $data;
+        return $data->user;
     }
 }
