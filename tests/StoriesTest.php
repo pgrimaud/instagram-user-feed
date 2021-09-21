@@ -103,4 +103,31 @@ class StoriesTest extends TestCase
 
         $api->logout('username');
     }
+
+    public function testHighlightsStoriesByIdFetch()
+    {
+        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/highlights-stories.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api($cachePool, $client);
+
+        // clear cache
+        $api->logout('username');
+
+        $api->login('username', 'password');
+
+        $storyFolder = $api->getStoriesOfHighlightsFolderById(12345);
+
+        $this->assertCount(33, $storyFolder->getStories(false));
+
+        $api->logout('username');
+    }
 }

@@ -713,4 +713,20 @@ class Api
         $request = new CommentPost($this->client, $this->session);
         return $request->comment($postId, $message);
     }
+
+    /**
+     * @param int $folderId
+     *
+     * @return StoryHighlightsFolder
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function getStoriesOfHighlightsFolderById(int $folderId): StoryHighlightsFolder
+    {
+        $storyFolder = new StoryHighlightsFolder();
+        $storyFolder->setId($folderId);
+
+        return $this->getStoriesOfHighlightsFolder($storyFolder);
+    }
 }

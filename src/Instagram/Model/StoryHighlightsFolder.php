@@ -100,9 +100,13 @@ class StoryHighlightsFolder
     /**
      * @return StoryMedia[]
      */
-    public function getStories(): array
+    public function getStories(bool $oldestInFirst = true): array
     {
-        return array_reverse($this->stories);
+        if ($oldestInFirst) {
+            return array_reverse($this->stories);
+        } else {
+            return $this->stories;
+        }
     }
 
     public function orderStories(): void
