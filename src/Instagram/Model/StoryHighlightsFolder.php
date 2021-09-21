@@ -12,6 +12,11 @@ class StoryHighlightsFolder
     private $id;
 
     /**
+     * @var int
+     */
+    private $userId;
+
+    /**
      * @var string
      */
     private $name;
@@ -25,6 +30,11 @@ class StoryHighlightsFolder
      * @var string
      */
     private $url;
+
+    /**
+     * @var string
+     */
+    private $sharableUrl;
 
     /**
      * @var array
@@ -114,5 +124,37 @@ class StoryHighlightsFolder
     public function setUrl(string $url): void
     {
         $this->url = $url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSharableUrl(): string
+    {
+        return $this->sharableUrl;
+    }
+
+    /**
+     * @param string $sharableUrl
+     */
+    public function setSharableUrl(string $sharableUrl): void
+    {
+        $this->sharableUrl = $sharableUrl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
     }
 }

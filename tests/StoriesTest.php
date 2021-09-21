@@ -94,10 +94,12 @@ class StoriesTest extends TestCase
         $folder = $api->getStoriesOfHighlightsFolder($storyHighlights->getFolders()[0]);
 
         $this->assertSame(18137590444014024, $folder->getId());
+        $this->assertSame(5670185369, $folder->getUserId());
         $this->assertSame('STORY', $folder->getName());
         $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-15/s150x150/94263786_546583649377430_3277795491247917640_n.jpg?_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_ohc=D6Img4muLocAX_bsIlI&oh=eeeec52698961ee00a070d3e210f532d&oe=5EF1ACCB', $folder->getCover());
         $this->assertCount(33, $folder->getStories());
         $this->assertSame('https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MTM3NTkwNDQ0MDE0MDI0', $folder->getUrl());
+        $this->assertSame('https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MTM3NTkwNDQ0MDE0MDI0?story_media_id=18137590444014024_5670185369&utm_medium=copy_link', $folder->getSharableUrl());
 
         $api->logout('username');
     }
