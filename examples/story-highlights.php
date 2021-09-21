@@ -23,6 +23,7 @@ try {
 
     $storyHighlights = $api->getStoryHighlightsFolder($profile->getId());
     sleep(1);
+    dump($storyHighlights);
 
     foreach ($storyHighlights->getFolders() as $folder) {
         $folder = $api->getStoriesOfHighlightsFolder($folder);

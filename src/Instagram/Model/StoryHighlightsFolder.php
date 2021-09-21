@@ -22,6 +22,11 @@ class StoryHighlightsFolder
     private $cover;
 
     /**
+     * @var string
+     */
+    private $url;
+
+    /**
      * @var array
      */
     private $stories = [];
@@ -93,5 +98,21 @@ class StoryHighlightsFolder
     public function orderStories(): void
     {
         $this->stories = array_reverse($this->stories);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl(string $url): void
+    {
+        $this->url = $url;
     }
 }

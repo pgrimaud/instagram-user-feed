@@ -35,9 +35,10 @@ class StoryHighlightsHydrator extends AbstractStoryHydrator
         foreach ($data->edges as $highLight) {
             $folder = new StoryHighlightsFolder();
 
-            $folder->setId((int)$highLight->node->id);
+            $folder->setId((int) $highLight->node->id);
             $folder->setName($highLight->node->title);
             $folder->setCover($highLight->node->cover_media_cropped_thumbnail->url);
+            $folder->setUrl('https://www.instagram.com/s/' . base64_encode('highlight:' . $highLight->node->id));
 
             $this->highlights->addFolder($folder);
         }
