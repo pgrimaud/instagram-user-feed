@@ -147,7 +147,7 @@ class MediaHydrator
                 $scItem->setId((int) $item->node->id);
                 $scItem->setShortCode($item->node->shortcode);
                 $scItem->setHeight($item->node->dimensions->height);
-                $scItem->setWidth($item->node->dimensions->height);
+                $scItem->setWidth($item->node->dimensions->width);
                 $scItem->setTypeName($item->node->__typename);
                 $scItem->setDisplayResources($item->node->display_resources);
 
