@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  tests:
+  Tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -28,12 +28,12 @@ jobs:
       - name: "Tests"
         run: php vendor/bin/phpunit tests --whitelist src --coverage-clover ./build/logs/clover.xml
 
-  finish:
-    needs: tests
+  Coveralls:
+    needs: Tests
     runs-on: ubuntu-latest
     steps:
       - name: "Coveralls"
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
+          path-to-lcov: ./build/logs/clover.xml
