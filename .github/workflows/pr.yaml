@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  push:
+  pull_request:
 
 jobs:
   Tests:
@@ -28,7 +28,3 @@ jobs:
       - name: "Tests"
         run: php vendor/bin/phpunit tests --whitelist src --coverage-clover ./build/logs/clover.xml
 
-      - name: "Coveralls"
-        run: php vendor/bin/php-coveralls -v
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
