@@ -1,5 +1,5 @@
 # Instagram user feed PHP
-[![Build Status](https://github.com/pgrimaud/instagram-user-feed/actions/workflows/main/badge.svg)](https://github.com/pgrimaud/instagram-user-feed/actions)
+[![Build Status](https://github.com/pgrimaud/instagram-user-feed/actions/workflows/main.yaml/badge.svg)](https://github.com/pgrimaud/instagram-user-feed/actions)
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Coverage Status](https://coveralls.io/repos/github/pgrimaud/instagram-user-feed/badge.svg?branch=master)](https://coveralls.io/github/pgrimaud/instagram-user-feed?branch=master)
 
