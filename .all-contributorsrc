@@ -158,6 +158,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "n-richaud",
+      "name": "n-richaud",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10332682?v=4",
+      "profile": "https://github.com/n-richaud",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
