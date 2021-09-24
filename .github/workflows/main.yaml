@@ -28,4 +28,13 @@ jobs:
       - name: "Tests"
         run: php vendor/bin/phpunit tests --whitelist src --coverage-clover ./build/logs/clover.xml
 
+  finish:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Coveralls"
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
 
