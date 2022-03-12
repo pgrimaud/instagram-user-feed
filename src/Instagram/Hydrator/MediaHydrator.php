@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Hydrator;
 
+use Instagram\Exception\InstagramFetchException;
 use Instagram\Model\{Media, MediaDetailed, TaggedMediasFeed};
 use Instagram\Utils\InstagramHelper;
 
@@ -24,13 +25,16 @@ class MediaHydrator
      * @param \StdClass $node
      *
      * @return MediaDetailed
+     * @throws InstagramFetchException
      */
     public function hydrateMediaDetailed(\StdClass $node): MediaDetailed
     {
         $media = new MediaDetailed();
-        $media = $this->mediaBaseHydrator($media, $node);
+        $media = $this->mediaBaseHydratorV2($media, $node);
 
-        return $this->mediaDetailedHydrator($media, $node);
+        return $this->isCarusel($node)
+            ? $this->mediaDetailedCarouselHydrator($media, $node)
+            : $this->mediaDetailedHydrator($media, $node);
     }
 
     /**
@@ -113,6 +117,76 @@ class MediaHydrator
     }
 
     /**
+     * @param Media     $media
+     * @param \StdClass $node
+     *
+     * @return Media|MediaDetailed
+     */
+    private function mediaBaseHydratorV2(Media $media, \StdClass $node): Media
+    {
+        $media->setId((int) $node->pk);
+        $media->setShortCode($node->code);
+
+        $media->setTypeName($this->getTypeName($node->media_type));
+
+        if ($node->caption) {
+            $media->setCaption($node->caption->text);
+            $media->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
+        }
+
+        $thumbnailSrc = $displaySrc = '';
+        if (property_exists($node, 'image_versions2')) {
+            foreach ($node->image_versions2->candidates as $img) {
+                if ($img->width == 640)
+                    $thumbnailSrc = $img->url;
+
+                if ($img->width == $node->original_width)
+                    $displaySrc = $img->url;
+            }
+        }
+
+        $media->setThumbnailSrc($thumbnailSrc);
+        $media->setDisplaySrc($displaySrc);
+
+        $date = new \DateTime();
+        $date->setTimestamp($node->caption->created_at);
+
+        $media->setDate($date);
+
+        $media->setComments($node->comment_count);
+        $media->setLikes($node->like_count);
+
+        $media->setLink(InstagramHelper::URL_BASE . "p/{$node->code}/");
+
+        if (isset($node->location)) {
+            $media->setLocation($node->location);
+        }
+
+        $media->setVideo($this->isVideo($node));
+
+        if (property_exists($node, 'video_versions')) {
+            foreach ($node->video_versions as $video) {
+                if ($video->type == 101) {
+                    $videoSrc = $video->url;
+                }
+            }
+            $media->setVideoUrl($videoSrc ?? null);
+        }
+
+        if (property_exists($node, 'view_count')) {
+            $media->setVideoViewCount((int) $node->view_count);
+        }
+
+        if (property_exists($node, 'product_type')) {
+            $media->setIgtv($node->product_type === 'igtv');
+        }
+
+        $media->setOwnerId((int) $node->caption->user_id);
+
+        return $media;
+    }
+
+    /**
      * @param MediaDetailed $media
      * @param \StdClass     $node
      *
@@ -120,55 +194,64 @@ class MediaHydrator
      */
     private function mediaDetailedHydrator(MediaDetailed $media, \StdClass $node): Media
     {
-        $media->setDisplayResources($node->display_resources);
+        $media->setDisplayResources($node->image_versions2->candidates);
 
-        if (property_exists($node, 'video_url')) {
-            $media->setVideoUrl($node->video_url);
+        $media->setHeight($node->original_height);
+        $media->setWidth($node->original_width);
+
+        if ($this->isVideo($node)) {
             $media->setHasAudio($node->has_audio);
         }
 
-        $taggedUsers = [];
-        foreach ($node->edge_media_to_tagged_user->edges as $user) {
-            $taggedUsers[] = $user->node->user;
-        }
-
-        $media->setTaggedUsers($taggedUsers);
-
-        if (property_exists($node, 'owner')) {
-            $hydrator = new ProfileHydrator();
-            $hydrator->hydrateProfile($node->owner);
-            $media->setProfile($hydrator->getProfile());
-        }
-
-        if ($node->__typename === 'GraphSidecar') {
-            $scItems = [];
-            foreach ($node->edge_sidecar_to_children->edges as $item) {
-                $scItem = new MediaDetailed();
-                $scItem->setId((int) $item->node->id);
-                $scItem->setShortCode($item->node->shortcode);
-                $scItem->setHeight($item->node->dimensions->height);
-                $scItem->setWidth($item->node->dimensions->width);
-                $scItem->setTypeName($item->node->__typename);
-                $scItem->setDisplayResources($item->node->display_resources);
-
-                $scItem->setVideo((bool) $item->node->is_video);
-
-                if (property_exists($item->node, 'video_view_count')) {
-                    $scItem->setVideoViewCount((int) $item->node->video_view_count);
-                }
-                if (property_exists($item->node, 'video_url')) {
-                    $scItem->setVideoUrl($item->node->video_url);
-                    $scItem->setHasAudio($item->node->has_audio);
-                }
-
-                $scItem->setAccessibilityCaption($item->node->accessibility_caption);
-
-                $scItems[] = $scItem;
+        if (property_exists($node, 'usertags')) {
+            $taggedUsers = [];
+            foreach ($node->usertags->in as $user) {
+                $taggedUsers[] = $user->user;
             }
 
-            $media->setSideCarItems($scItems);
-
+            $media->setTaggedUsers($taggedUsers);
         }
+
+        return $media;
+    }
+
+    /**
+     * @param MediaDetailed $media
+     * @param \StdClass $node
+     *
+     * @return MediaDetailed
+     * @throws InstagramFetchException
+     */
+    private function mediaDetailedCarouselHydrator(MediaDetailed $media, \StdClass $node): Media
+    {
+        $scItems = [];
+        foreach ($node->carousel_media as $key => $item) {
+            $scItem = new MediaDetailed();
+            $scItem->setId((int) $item->pk);
+            $scItem->setShortCode($node->code);
+            $scItem->setHeight($item->original_height);
+            $scItem->setWidth($item->original_width);
+            $scItem->setTypeName($this->getTypeName($item->media_type));
+            $scItem->setDisplayResources($item->image_versions2->candidates);
+
+            $scItem->setVideo($this->isVideo($node));
+
+            if (property_exists($item, 'video_versions')) {
+                foreach ($item->video_versions as $video) {
+                    if ($video->type == 101) {
+                        $videoSrc = $video->url;
+                    }
+                }
+                $scItem->setVideoUrl($videoSrc ?? null);
+            }
+
+            $scItems[] = $scItem;
+
+            if ($key == 0)
+                $media->setDisplayResources($item->image_versions2->candidates);
+        }
+
+        $media->setSideCarItems($scItems);
 
         return $media;
     }
@@ -192,4 +275,45 @@ class MediaHydrator
         return $feed;
     }
 
+    /**
+     * @param int $media_type
+     * @return string
+     * @throws InstagramFetchException
+     */
+    private function getTypeName(int $media_type): string
+    {
+        switch ($media_type) {
+            case Media::MEDIA_TYPE_IMAGE:
+                $type = Media::TYPE_IMAGE;
+                break;
+            case Media::MEDIA_TYPE_VIDEO:
+                $type = Media::TYPE_VIDEO;
+                break;
+            case Media::MEDIA_TYPE_CAROUSEL:
+                $type = Media::TYPE_CAROUSEL;
+                break;
+            default:
+                throw new InstagramFetchException('Media type ' . $media_type . ' not found');
+        }
+
+        return $type;
+    }
+
+    /**
+     * @param \StdClass $node
+     * @return bool
+     */
+    private function isCarusel(\StdClass $node): bool
+    {
+        return $node->media_type === Media::MEDIA_TYPE_CAROUSEL;
+    }
+
+    /**
+     * @param \StdClass $node
+     * @return bool
+     */
+    private function isVideo(\StdClass $node): bool
+    {
+        return $node->media_type === Media::MEDIA_TYPE_VIDEO;
+    }
 }

@@ -260,17 +260,17 @@ class ProfileTest extends TestCase
         $this->assertNull($mediaDetailed->getVideoUrl());
         $this->assertCount(0, $mediaDetailed->getTaggedUsers());
         $this->assertCount(3, $mediaDetailed->getSideCarItems());
-        $this->assertCount(3, $mediaDetailed->getDisplayResources());
+        $this->assertCount(14, $mediaDetailed->getDisplayResources());
 
-        $media->setLink('https://www.instagram.com/p/CAnqPB-Jzcj/');
+        $media->setLink('https://www.instagram.com/p/CAG3E8-A3wf/');
 
         $mediaDetailed = $api->getMediaDetailed($media);
 
         $this->assertTrue($mediaDetailed->hasAudio());
-        $this->assertSame('https://scontent-cdg2-1.cdninstagram.com/v/t50.2886-16/97784581_115199903279540_8370161409519117911_n.mp4?_nc_ht=scontent-cdg2-1.cdninstagram.com&_nc_cat=108&_nc_ohc=gOgqaQBnBEEAX9xddWo&oe=5ED69D0B&oh=edbbe40e7747f95edda907926a9e6af6', $mediaDetailed->getVideoUrl());
+        $this->assertSame('https://scontent-arn2-1.cdninstagram.com/v/t50.2886-16/97123416_266521251063435_4033037212785927152_n.mp4?efg=eyJ2ZW5jb2RlX3RhZyI6InZ0c192b2RfdXJsZ2VuLjcyMC5mZWVkLmRlZmF1bHQiLCJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSJ9&_nc_ht=scontent-arn2-1.cdninstagram.com&_nc_cat=103&_nc_ohc=Qrb1mQxsWqQAX8p4YGF&edm=AABBvjUBAAAA&vs=17845745546134702_3610077759&_nc_vs=HBksFQAYJEdGajh5UVdMcG41UVp2SUFBUEJqQ1NMNk9mZzNia1lMQUFBRhUAAsgBABUAGCRHR1hQeEFWUlZQeUx6amdEQU5aa2tvTVdESzh3YmtZTEFBQUYVAgLIAQAoABgAGwGIB3VzZV9vaWwBMBUAACbcq87WjKezPxUCKAJDMywXQDBEGJN0vGoYEmRhc2hfYmFzZWxpbmVfMV92MREAdeoHAA%3D%3D&_nc_rid=a997aa2dad&ccb=7-4&oe=622EC877&oh=00_AT_lfy7tuGTWv80Ru8Ha9dZk7TBAToiCCJwCmHmac5_pLQ&_nc_sid=83d603', $mediaDetailed->getVideoUrl());
         $this->assertCount(2, $mediaDetailed->getTaggedUsers());
         $this->assertCount(0, $mediaDetailed->getSideCarItems());
-        $this->assertCount(3, $mediaDetailed->getDisplayResources());
+        $this->assertCount(12, $mediaDetailed->getDisplayResources());
 
         $media->setLink('https://www.instagram.com/p/B-NYjoGpQqC/');
 
@@ -279,9 +279,7 @@ class ProfileTest extends TestCase
         $this->assertFalse($mediaDetailed->hasAudio());
         $this->assertCount(0, $mediaDetailed->getTaggedUsers());
         $this->assertCount(4, $mediaDetailed->getSideCarItems());
-        $this->assertCount(3, $mediaDetailed->getDisplayResources());
-
-        $this->assertInstanceOf(Profile::class, $mediaDetailed->getProfile());
+        $this->assertCount(10, $mediaDetailed->getDisplayResources());
 
         $api->logout('username');
     }

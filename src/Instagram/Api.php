@@ -381,7 +381,7 @@ class Api
         $data = $feed->fetchData($media);
 
         $hydrator = new MediaHydrator();
-        $media    = $hydrator->hydrateMediaDetailed($data->shortcode_media);
+        $media    = $hydrator->hydrateMediaDetailed($data);
 
         return $media;
     }
@@ -400,7 +400,7 @@ class Api
         $data = $feed->fetchData($media);
 
         $hydrator = new MediaHydrator();
-        $media    = $hydrator->hydrateMediaDetailed($data->shortcode_media);
+        $media    = $hydrator->hydrateMediaDetailed($data);
 
         return $media;
     }
