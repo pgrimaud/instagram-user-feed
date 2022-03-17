@@ -21,6 +21,6 @@ class JsonMediaDetailedByShortCodeDataFeed extends AbstractDataFeed
     {
         $data = $this->fetchJsonDataFeed(InstagramHelper::URL_MEDIA_DETAILED . $media->getShortCode() . '/?__a=1');
 
-        return $data->graphql;
+        return current($data->items);
     }
 }

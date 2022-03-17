@@ -109,7 +109,7 @@ class MediaDetailed extends Media
     }
 
     /**
-     * @param Instagram\Model\Profile
+     * @param Profile $profile
      */
     public function setProfile(Profile $profile)
     {

@@ -20,6 +20,6 @@ class JsonMediaDetailedDataFeed extends AbstractDataFeed
     {
         $data = $this->fetchJsonDataFeed($media->getLink() . '?__a=1');
 
-        return $data->graphql;
+        return current($data->items);
     }
 }
