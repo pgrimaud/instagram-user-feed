@@ -29,10 +29,10 @@ class ProfileAlternativeHydrator
         $this->profile->setId($data->pk);
         $this->profile->setUserName($data->username);
         $this->profile->setFullName($data->full_name);
-        $this->profile->setFollowers($data->follower_count);
+        $this->profile->setFollowers($data->follower_count ?? 0);
         $this->profile->setPrivate($data->is_private);
         $this->profile->setVerified($data->is_verified);
-        $this->profile->setMediaCount($data->media_count);
+        $this->profile->setMediaCount($data->media_count ?? 0);
 
         if (property_exists($data, 'biography')) {
             $this->profile->setBiography($data->biography);
