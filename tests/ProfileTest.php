@@ -417,6 +417,8 @@ class ProfileTest extends TestCase
 
         $mediaDetailed = $api->getMediaDetailedByShortCode($media);
         $this->assertSame(2317006284167526179, $mediaDetailed->getId());
+        
+        $this->assertNotNull($mediaDetailed->getProfile());
 
         $api->logout('username');
     }
