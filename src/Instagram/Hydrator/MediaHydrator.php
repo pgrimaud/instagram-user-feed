@@ -17,10 +17,15 @@ class MediaHydrator
      * @var MediaDetailedHydrator
      */
     private $hydrateDetailed;
+    /**
+     * @var ProfileAlternativeHydrator
+     */
+    private $hydrateAlternateProfile;
 
     public function __construct()
     {
         $this->hydrateProfile = new MediaProfileHydrator();
+        $this->hydrateAlternateProfile = new ProfileAlternativeHydrator();
         $this->hydrateDetailed = new MediaDetailedHydrator();
     }
 
@@ -45,6 +50,9 @@ class MediaHydrator
     {
         $media = new MediaDetailed();
         $media = $this->hydrateDetailed->mediaBaseHydrator($media, $node);
+
+        $this->hydrateAlternateProfile->hydrateProfile($node->user);
+        $media->setProfile($this->hydrateAlternateProfile->getProfile());
 
         return $this->hydrateDetailed->mediaDetailedHydrator($media, $node);
     }
