@@ -13,7 +13,7 @@ use Instagram\Hydrator\{LocationHydrator,
     MediaHydrator,
     MediaCommentsHydrator,
     ProfileAlternativeHydrator,
-    ReelsHydrator,
+    ReelsFeedHydrator,
     StoriesHydrator,
     StoryHighlightsHydrator,
     ProfileHydrator,
@@ -636,8 +636,8 @@ class Api
         $feed = new ReelsDataFeed($this->client, $this->session);
         $data = $feed->fetchData($userId, $maxId);
 
-        $hydrator = new ReelsHydrator();
-        $hydrator->hydrateReels($data);
+        $hydrator = new ReelsFeedHydrator();
+        $hydrator->hydrateReelsFeed($data);
 
         return $hydrator->getReelsFeed();
     }
