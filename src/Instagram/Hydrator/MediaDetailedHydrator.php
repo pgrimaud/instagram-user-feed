@@ -40,6 +40,17 @@ class MediaDetailedHydrator
         if ($node->caption) {
             $media->setCaption($node->caption->text);
             $media->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
+
+            $date = new \DateTime();
+            $date->setTimestamp($node->caption->created_at);
+
+            $media->setDate($date);
+        } else {
+            if ($node->taken_at) {
+                $date = new \DateTime();
+                $date->setTimestamp($node->taken_at);
+                $media->setDate($date);
+            }
         }
 
         $thumbnailSrc = $displaySrc = '';
@@ -55,11 +66,6 @@ class MediaDetailedHydrator
 
         $media->setThumbnailSrc($thumbnailSrc);
         $media->setDisplaySrc($displaySrc);
-
-        $date = new \DateTime();
-        $date->setTimestamp($node->caption->created_at);
-
-        $media->setDate($date);
 
         $media->setComments($node->comment_count);
         $media->setLikes($node->like_count);
@@ -89,7 +95,7 @@ class MediaDetailedHydrator
             $media->setIgtv($node->product_type === 'igtv');
         }
 
-        $media->setOwnerId((int) $node->caption->user_id);
+        $media->setOwnerId((int) $node->user->pk);
 
         return $media;
     }
