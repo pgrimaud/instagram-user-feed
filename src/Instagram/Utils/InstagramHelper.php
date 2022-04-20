@@ -36,7 +36,7 @@ class InstagramHelper
     static function buildHashtags(?string $caption): array
     {
         if ($caption) {
-            preg_match_all('/(?<!\w)#\w+/', $caption, $allMatches);
+            preg_match_all('/(?<!\w)#\w+/u', $caption, $allMatches);
 
             return reset($allMatches);
         } else {
