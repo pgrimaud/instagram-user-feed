@@ -24,6 +24,7 @@ try {
     $mediaDetailed = $api->getMediaDetailedByShortCode($media);
 
     print_r($mediaDetailed);
+    print_r($mediaDetailed->getProfile());
 } catch (InstagramException $e) {
     print_r($e->getMessage());
 } catch (CacheException $e) {
