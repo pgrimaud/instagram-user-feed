@@ -185,6 +185,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "nsmle",
+      "name": "Fiki Pratama",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55952660?v=4",
+      "profile": "http://nsmle.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
