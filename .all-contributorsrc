@@ -194,6 +194,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jigexiansen",
+      "name": "Carl",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48269019?v=4",
+      "profile": "https://github.com/jigexiansen",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
