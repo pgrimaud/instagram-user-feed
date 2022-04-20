@@ -176,6 +176,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "andreifiroiu",
+      "name": "Andrei Firoiu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4728003?v=4",
+      "profile": "http://about.me/andreifiroiu",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
