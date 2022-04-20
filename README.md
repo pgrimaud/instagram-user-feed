@@ -9,7 +9,7 @@
 [![Visitor badge](https://visitor-badge.glitch.me/badge?page_id=pgrimaud.instagram-user-feed)](https://github.com/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-19-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
@@ -370,6 +370,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.nispeon.tk"><img src="https://avatars.githubusercontent.com/u/37938250?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Julien Cousin-Alliot</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=Nispeon" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/n-richaud"><img src="https://avatars.githubusercontent.com/u/10332682?v=4?s=100" width="100px;" alt=""/><br /><sub><b>n-richaud</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3An-richaud" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/Afonin"><img src="https://avatars.githubusercontent.com/u/3139269?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dmitry Afonin</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=Afonin" title="Code">💻</a></td>
+    <td align="center"><a href="http://about.me/andreifiroiu"><img src="https://avatars.githubusercontent.com/u/4728003?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrei Firoiu</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Aandreifiroiu" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
