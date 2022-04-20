@@ -5,67 +5,39 @@ declare(strict_types=1);
 namespace Instagram\Hydrator;
 
 use Instagram\Model\Reels;
-use Instagram\Model\ReelsFeed;
 
 class ReelsHydrator
 {
     /**
-     * @var ReelsFeed
-     */
-    private $reelsFeed;
-
-    /**
-     * Hydration is made manually to avoid shitty Instagram variable names
-     */
-    public function __construct()
-    {
-        $this->reelsFeed = new ReelsFeed();
-    }
-
-    /**
-     * @param \StdClass $feed
+     * @param \StdClass $item
      *
-     * @return void
+     * @return Reels
      */
-    public function hydrateReels(\StdClass $feed): void
+    public function hydrateReels(\StdClass $item): Reels
     {
-        // get paginate cursor
-        if ($feed->paging_info->more_available) {
-            $this->reelsFeed->setMaxId($feed->paging_info->max_id);
+        $reels = new Reels();
+
+        $reels->setId($item->id);
+        $reels->setShortCode($item->code);
+
+        if (property_exists($item, 'caption')) {
+            $reels->setCaption($item->caption->text);
         }
 
-        foreach ($feed->items as $item) {
-            $reels = new Reels();
-            $reels->setId($item->media->id);
-            $reels->setShortCode($item->media->code);
+        $reels->setLikes($item->like_count);
+        $reels->setVideoDuration((float) $item->video_duration);
+        $reels->setViewCount($item->view_count);
+        $reels->setPlayCount($item->play_count);
+        $reels->setDate(\DateTime::createFromFormat('U', (string) $item->taken_at));
 
-            if (property_exists($item->media, 'caption')) {
-                $reels->setCaption($item->media->caption->text);
-            }
+        $reels->setImageVersions(array_map(function ($item) {
+            return (array) $item;
+        }, $item->image_versions2->candidates));
 
-            $reels->setLikes($item->media->like_count);
-            $reels->setVideoDuration((float) $item->media->video_duration);
-            $reels->setViewCount($item->media->view_count);
-            $reels->setPlayCount($item->media->play_count);
-            $reels->setDate(\DateTime::createFromFormat('U', (string) $item->media->taken_at));
+        $reels->setVideoVersions(array_map(function ($item) {
+            return (array) $item;
+        }, $item->video_versions));
 
-            $reels->setImageVersions(array_map(function ($item) {
-                return (array) $item;
-            }, $item->media->image_versions2->candidates));
-
-            $reels->setVideoVersions(array_map(function ($item) {
-                return (array) $item;
-            }, $item->media->video_versions));
-
-            $this->reelsFeed->addReels($reels);
-        }
-    }
-
-    /**
-     * @return ReelsFeed
-     */
-    public function getReelsFeed(): ReelsFeed
-    {
-        return $this->reelsFeed;
+        return $reels;
     }
 }
