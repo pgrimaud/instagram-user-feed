@@ -44,7 +44,7 @@ function printReels(ReelsFeed $reelsFeed)
         echo 'ID        : ' . $reels->getId() . "\n";
         echo 'Code      : ' . $reels->getShortCode() . "\n";
         echo 'Caption   : ' . $reels->getCaption() . "\n";
-        echo 'Link      : ' . $reels->getVideoVersions()[0]['url'] . "\n";
+        echo 'Link      : ' . $reels->getVideos()[0]->url . "\n";
         echo 'Likes     : ' . $reels->getLikes() . "\n";
         echo 'Date      : ' . $reels->getDate()->format('Y-m-d h:i:s') . "\n\n";
     }

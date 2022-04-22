@@ -41,7 +41,7 @@ class ReelsFeedHydrator
         }
 
         foreach ($feed->items as $item) {
-            $reels = $this->reelsHydrator->hydrateReels($item->media);
+            $reels = $this->reelsHydrator->reelsBaseHydrator($item->media);
             $this->reelsFeed->addReels($reels);
         }
     }

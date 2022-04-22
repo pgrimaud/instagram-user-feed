@@ -17,34 +17,74 @@ class Reels
     private $shortCode;
 
     /**
+     * @var string
+     */
+    private $link;
+
+    /**
      * @var int
      */
     private $likes;
 
     /**
+     * @var boolean
+     */
+    private $isLiked = false;
+
+    /**
+     * @var int
+     */
+    private $comments;
+
+    /**
+     * @var int
+     */
+    private $views;
+
+    /**
+     * @var int
+     */
+    private $plays;
+
+    /**
      * @var float
      */
-    private $videoDuration;
+    private $duration;
 
     /**
      * @var int
      */
-    private $viewCount;
+    private $height;
 
     /**
      * @var int
      */
-    private $playCount;
+    private $width;
+
+    /**
+     * @var boolean
+     */
+    private $hasAudio;
 
     /**
      * @var array
      */
-    private $imageVersions = [];
+    private $images = [];
 
     /**
      * @var array
      */
-    private $videoVersions = [];
+    private $videos = [];
+
+    /**
+     * @var string
+     */
+    private $caption;
+
+    /**
+     * @var mixed
+     */
+    private $location;
 
     /**
      * @var \DateTime
@@ -52,9 +92,19 @@ class Reels
     private $date;
 
     /**
-     * @var string
+     * @var array
      */
-    private $caption;
+    private $hashtags = [];
+
+    /**
+     * @var array
+     */
+    private $userTags = [];
+
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * @return string
@@ -89,6 +139,22 @@ class Reels
     }
 
     /**
+     * @return string
+     */
+    public function getLink(): string
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink(string $link): void
+    {
+        $this->link = $link;
+    }
+
+    /**
      * @return int
      */
     public function getLikes(): int
@@ -105,83 +171,195 @@ class Reels
     }
 
     /**
+     * @return bool
+     */
+    public function isLiked(): bool
+    {
+        return $this->isLiked;
+    }
+
+    /**
+     * @param bool $isLiked
+     */
+    public function setIsLiked(bool $isLiked): void
+    {
+        $this->isLiked = $isLiked;
+    }
+
+    /**
+     * @return int
+     */
+    public function getComments(): int
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param int $comments
+     */
+    public function setComments(int $comments): void
+    {
+        $this->comments = $comments;
+    }
+
+    /**
+     * @return int
+     */
+    public function getViews(): int
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     */
+    public function setViews(int $views): void
+    {
+        $this->views = $views;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlays(): int
+    {
+        return $this->plays;
+    }
+
+    /**
+     * @param int $plays
+     */
+    public function setPlays(int $plays): void
+    {
+        $this->plays = $plays;
+    }
+
+    /**
      * @return float
      */
-    public function getVideoDuration(): float
+    public function getDuration(): float
     {
-        return $this->videoDuration;
+        return $this->duration;
     }
 
     /**
-     * @param float $videoDuration
+     * @param float $duration
      */
-    public function setVideoDuration(float $videoDuration): void
+    public function setDuration(float $duration): void
     {
-        $this->videoDuration = $videoDuration;
-    }
-
-    /**
-     * @return int
-     */
-    public function getViewCount(): int
-    {
-        return $this->viewCount;
-    }
-
-    /**
-     * @param int $viewCount
-     */
-    public function setViewCount(int $viewCount): void
-    {
-        $this->viewCount = $viewCount;
+        $this->duration = $duration;
     }
 
     /**
      * @return int
      */
-    public function getPlayCount(): int
+    public function getHeight(): int
     {
-        return $this->playCount;
+        return $this->height;
     }
 
     /**
-     * @param int $playCount
+     * @param int $height
      */
-    public function setPlayCount(int $playCount): void
+    public function setHeight(int $height): void
     {
-        $this->playCount = $playCount;
+        $this->height = $height;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth(): int
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $width
+     */
+    public function setWidth(int $width): void
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasAudio(): bool
+    {
+        return $this->hasAudio;
+    }
+
+    /**
+     * @param bool $width
+     */
+    public function setHasAudio(bool $hasAudio): void
+    {
+        $this->hasAudio = $hasAudio;
     }
 
     /**
      * @return array
      */
-    public function getImageVersions(): array
+    public function getImages(): array
     {
-        return $this->imageVersions;
+        return $this->images;
     }
 
     /**
-     * @param array $imageVersions
+     * @param array $images
      */
-    public function setImageVersions(array $imageVersions): void
+    public function setImages(array $images): void
     {
-        $this->imageVersions = $imageVersions;
+        $this->images = $images;
     }
 
     /**
      * @return array
      */
-    public function getVideoVersions(): array
+    public function getVideos(): array
     {
-        return $this->videoVersions;
+        return $this->videos;
     }
 
     /**
-     * @param array $videoVersions
+     * @param array $video
      */
-    public function setVideoVersions(array $videoVersions): void
+    public function setVideos(array $videos): void
     {
-        $this->videoVersions = $videoVersions;
+        $this->videos = $videos;
+    }
+
+    /**
+     * @param string $caption
+     */
+    public function setCaption(?string $caption): void
+    {
+        $this->caption = $caption;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCaption(): ?string
+    {
+        return $this->caption;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param \StdClass $location
+     */
+    public function setLocation(\StdClass $location): void
+    {
+        $this->location = $location;
     }
 
     /**
@@ -201,18 +379,50 @@ class Reels
     }
 
     /**
-     * @param string $caption
+     * @return array
      */
-    public function setCaption(?string $caption): void
+    public function getHashtags(): array
     {
-        $this->caption = $caption;
+        return $this->hashtags;
     }
 
     /**
-     * @return string
+     * @param array $hashtags
      */
-    public function getCaption(): ?string
+    public function setHashtags(array $hashtags): void
     {
-        return $this->caption;
+        $this->hashtags = $hashtags;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUserTags(): array
+    {
+        return $this->userTags;
+    }
+
+    /**
+     * @param array $userTags
+     */
+    public function setUserTags(array $userTags): void
+    {
+        $this->userTags = $userTags;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
     }
 }
