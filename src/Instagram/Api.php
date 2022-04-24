@@ -20,7 +20,8 @@ use Instagram\Hydrator\{LocationHydrator,
     HashtagHydrator,
     FollowerHydrator,
     FollowingHydrator,
-    LiveHydrator
+    LiveHydrator,
+    TimelineFeedHydrator
 };
 use Instagram\Model\{Location,
     Media,
@@ -35,7 +36,8 @@ use Instagram\Model\{Location,
     FollowerFeed,
     FollowingFeed,
     Live,
-    TaggedMediasFeed
+    TaggedMediasFeed,
+    TimelineFeed
 };
 use Instagram\Transport\{CommentPost,
     HtmlProfileDataFeed,
@@ -56,7 +58,8 @@ use Instagram\Transport\{CommentPost,
     LikeUnlike,
     LocationData,
     LiveData,
-    ReelsDataFeed
+    ReelsDataFeed,
+    TimelineDataFeed
 };
 use Psr\Cache\CacheItemPoolInterface;
 use Instagram\Utils\InstagramHelper;
@@ -728,5 +731,25 @@ class Api
         $storyFolder->setId($folderId);
 
         return $this->getStoriesOfHighlightsFolder($storyFolder);
+    }
+
+    /**
+     * @param string|null $maxId
+     *
+     * @return TimelineFeed
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getTimeline(string $maxId = null): TimelineFeed
+    {
+        $feed = new TimelineDataFeed($this->client, $this->session);
+        $data = $feed->fetchData($maxId);
+
+        $hydrator = new TimelineFeedHydrator();
+        $hydrator->hydrateTimelineFeed($data);
+
+        return $hydrator->getTimelineFeed();
     }
 }

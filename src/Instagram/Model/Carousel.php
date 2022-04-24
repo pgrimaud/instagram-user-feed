@@ -148,7 +148,7 @@ class Carousel
     /**
      * @return bool
      */
-    public function getIsLiked(): bool
+    public function isLiked(): bool
     {
         return $this->isLiked;
     }
@@ -278,7 +278,7 @@ class Carousel
      */
     public function getHashtags(): array
     {
-        return InstagramHelper::buildHashtags($this->caption);
+        return $this->hashtags;
     }
 
     /**

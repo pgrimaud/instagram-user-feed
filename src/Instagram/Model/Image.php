@@ -298,7 +298,7 @@ class Image
      */
     public function getHashtags(): array
     {
-        return InstagramHelper::buildHashtags($this->caption);
+        return $this->hashtags;
     }
 
     /**
