@@ -24,7 +24,7 @@ class Timeline
     private $type;
 
     /**
-     * @var Image|Carousel|Video|Reels|Igtv
+     * @var mixed Image|Carousel|Video|Reels|Igtv
      */
     private $content;
 
@@ -50,17 +50,17 @@ class Timeline
     }
 
     /**
-     * @return Image|Carousel|Video|Reels|Igtv
+     * @return mixed Image|Carousel|Video|Reels|Igtv
      */
-    public function getContent(): Image|Carousel|Video|Reels|Igtv
+    public function getContent()
     {
         return $this->content;
     }
 
     /**
-     * @param Image|Carousel|Video|Reels|Igtv $content
+     * @param mixed Image|Carousel|Video|Reels|Igtv $content
      */
-    public function setContent(Image|Carousel|Video|Reels|Igtv $content): void
+    public function setContent($content): void
     {
         $this->content = $content;
     }

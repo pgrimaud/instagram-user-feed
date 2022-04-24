@@ -38,9 +38,9 @@ class TimelineHydrator
     /**
      * @param string $mediaType
      * 
-     * @return Image|Carousel|Video|Reels|Igtv
+     * @return mixed Image|Carousel|Video|Reels|Igtv
      */
-    public function hydrateTimelineMedia(string $mediaType, \StdClass $node): Image|Carousel|Video|Reels|Igtv
+    public function hydrateTimelineMedia(string $mediaType, \StdClass $node)
     {
         $timeline;
 

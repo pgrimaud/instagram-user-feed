@@ -95,17 +95,8 @@ class CarouselHydrator
                     $carouselMedia['video'] = $carouselItem->video_versions;
                 }
 
-                if (property_exists($carouselItem, 'image_versions2')) {
+                if (property_exists($carouselItem, 'accessibility_caption')) {
                     $carouselMedia['accessibilityCaption'] = $carouselItem->accessibility_caption;
-                }
-
-                if (property_exists($carouselItem, 'usertags')) {
-                    $userTags = [];
-                    foreach ($node->usertags->in as $user) {
-                        $userTags[] = $this->hydrateUser->userBaseHydrator($user->user);
-                    }
-
-                    $carouselMedia['userTags'] = $userTags;
                 }
             }
 
