@@ -203,6 +203,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "peachesontour",
+      "name": "Peter Kampjes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/67612358?v=4",
+      "profile": "https://github.com/peachesontour",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
