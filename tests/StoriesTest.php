@@ -70,7 +70,7 @@ class StoriesTest extends TestCase
         $mock = new MockHandler([
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/highlights-folders.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/highlights-stories.json')),
         ]);

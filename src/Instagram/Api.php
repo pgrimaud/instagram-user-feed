@@ -38,7 +38,6 @@ use Instagram\Model\{Location,
     TaggedMediasFeed
 };
 use Instagram\Transport\{CommentPost,
-    HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
     JsonMediaCommentsFeed,

@@ -20,9 +20,13 @@ class JsonProfileDataFeedV2 extends AbstractDataFeed
     {
         $endpoint = InstagramHelper::URL_API_BASE . 'api/v1/users/web_profile_info/?username=' . $username;
 
-        $data = $this->fetchJsonDataFeed($endpoint, [
-            'x-ig-app-id' => 936619743392459,
-        ]);
+        try {
+            $data = $this->fetchJsonDataFeed($endpoint, [
+                'x-ig-app-id' => 936619743392459,
+            ]);
+        } catch (\Exception $e) {
+            throw new InstagramFetchException('Error: ' . $e->getMessage());
+        }
 
         if (!$data->data->user) {
             throw new InstagramFetchException('Instagram id ' . $username . ' does not exist.');
