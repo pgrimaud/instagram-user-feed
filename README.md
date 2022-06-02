@@ -37,7 +37,7 @@ If you like or use this package, please share your love by starring this reposit
 - **NEW : Fetch HD profile picture 🎉**
 - **NEW : Post a message to a media 🎉**
 
-This version can retrieve **ANY** Instagram feed using **web scrapping**.
+This version can retrieve **ANY** Instagram feed using **web scraping**.
 
 - [Installation](#installation)
 - [Usage](#usage)
