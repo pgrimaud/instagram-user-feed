@@ -12,8 +12,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-> **⚠️ Warning ⚠️**
-> **2022-06-01** - Instagram changed his DOM content and profile data loading. Please update to this version 6.15.0 
+> **Warning**
+> 2022-06-01 - Instagram changed his DOM content and profile data loading. Please update to this version 6.15.0
 
 ## Information
 Easily fetch any Instagram feed and more without OAuth for PHP.
