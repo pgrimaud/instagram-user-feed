@@ -9,7 +9,7 @@
 [![Visitor badge](https://visitor-badge.glitch.me/badge?page_id=pgrimaud.instagram-user-feed)](https://github.com/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-23-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Information
@@ -376,6 +376,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/jigexiansen"><img src="https://avatars.githubusercontent.com/u/48269019?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Carl</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Ajigexiansen" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/peachesontour"><img src="https://avatars.githubusercontent.com/u/67612358?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Peter Kampjes</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=peachesontour" title="Code">💻</a></td>
+    <td align="center"><a href="https://turboweb.co.nz/"><img src="https://avatars.githubusercontent.com/u/2483482?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bob Brown</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=gurubobnz" title="Documentation">📖</a></td>
   </tr>
 </table>
 
