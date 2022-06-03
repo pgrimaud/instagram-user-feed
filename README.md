@@ -9,8 +9,11 @@
 [![Visitor badge](https://visitor-badge.glitch.me/badge?page_id=pgrimaud.instagram-user-feed)](https://github.com/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+> **Warning**
+> 2022-06-01 - Instagram changed his DOM content and profile data loading. Please update to this version 6.15.0
 
 ## Information
 Easily fetch any Instagram feed and more without OAuth for PHP.
@@ -37,7 +40,7 @@ If you like or use this package, please share your love by starring this reposit
 - **NEW : Fetch HD profile picture 🎉**
 - **NEW : Post a message to a media 🎉**
 
-This version can retrieve **ANY** Instagram feed using **web scrapping**.
+This version can retrieve **ANY** Instagram feed using **web scraping**.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -54,6 +57,11 @@ composer require pgrimaud/instagram-user-feed
 ```
 
 # Changelog
+
+**v6.14** - 2022-06-02:
+
+- ⚠️ ⚠️ Fix profile endpoint. Please update to this last version!
+
 
 **v6.12** - 2021-09-20:
 
@@ -375,6 +383,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/jigexiansen"><img src="https://avatars.githubusercontent.com/u/48269019?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Carl</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/issues?q=author%3Ajigexiansen" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/peachesontour"><img src="https://avatars.githubusercontent.com/u/67612358?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Peter Kampjes</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=peachesontour" title="Code">💻</a></td>
+    <td align="center"><a href="https://turboweb.co.nz/"><img src="https://avatars.githubusercontent.com/u/2483482?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bob Brown</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=gurubobnz" title="Documentation">📖</a></td>
   </tr>
 </table>
 

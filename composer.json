@@ -1,7 +1,7 @@
 {
   "name": "pgrimaud/instagram-user-feed",
   "type": "library",
-  "description": "This is a scrapper to easily fetch any feed and interact with Instagram (like, follow, etc.) without OAuth for PHP.",
+  "description": "This is a scraper to easily fetch any feed and interact with Instagram (like, follow, etc.) without OAuth for PHP.",
   "keywords": [
     "instagram",
     "api",
@@ -40,7 +40,7 @@
     "php": ">=7.2.5",
     "ext-curl": "*",
     "ext-json": "*",
-    "symfony/cache": "^3.4|^4.3|^5.0",
+    "symfony/cache": "^3.4|^4.3|^5.0|^6.0",
     "guzzlehttp/guzzle": "^6.0|^7.0"
   },
   "require-dev": {

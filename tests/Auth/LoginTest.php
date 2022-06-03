@@ -120,8 +120,9 @@ class LoginTest extends TestCase
         $mock = new MockHandler([
             new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/login-success.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.json')),
         ]);
+
 
         $handlerStack = HandlerStack::create($mock);
         $client       = new Client(['handler' => $handlerStack]);
@@ -156,7 +157,7 @@ class LoginTest extends TestCase
         $cachePool->save($cacheItem);
 
         $mock = new MockHandler([
-            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);

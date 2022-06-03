@@ -40,13 +40,13 @@ use Instagram\Model\{Location,
     TimelineFeed
 };
 use Instagram\Transport\{CommentPost,
-    HtmlProfileDataFeed,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
     JsonMediaCommentsFeed,
     JsonHashtagDataFeed,
     JsonProfileAlternativeDataFeed,
     JsonProfileDataFeed,
+    JsonProfileDataFeedV2,
     JsonStoriesDataFeed,
     JsonStoryHighlightsFoldersDataFeed,
     JsonStoryHighlightsStoriesDataFeed,
@@ -88,19 +88,19 @@ class Api
 
     /**
      * @param CacheItemPoolInterface $cachePool
-     * @param ClientInterface|null   $client
-     * @param int|null               $challengeDelay
+     * @param ClientInterface|null $client
+     * @param int|null $challengeDelay
      */
     public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null, ?int $challengeDelay = 3)
     {
-        $this->cachePool      = $cachePool;
-        $this->client         = $client ?: new Client();
+        $this->cachePool = $cachePool;
+        $this->client = $client ?: new Client();
         $this->challengeDelay = $challengeDelay;
     }
 
     /**
-     * @param string          $username
-     * @param string          $password
+     * @param string $username
+     * @param string $password
      * @param ImapClient|null $imapClient
      *
      * @throws Exception\InstagramAuthException
@@ -113,7 +113,7 @@ class Api
 
         // fetch previous session and re-use it
         $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($username));
-        $cookies     = $sessionData->get();
+        $cookies = $sessionData->get();
 
         if ($cookies instanceof CookieJar) {
             /** @var SetCookie */
@@ -147,28 +147,8 @@ class Api
     }
 
     /**
-     * @param string $user
-     *
-     * @return Profile
-     *
-     * @throws InstagramException
-     */
-    public function getProfile(string $user): Profile
-    {
-        $feed = new HtmlProfileDataFeed($this->client, $this->session);
-        $data = $feed->fetchData($user);
-
-        $hydrator = new ProfileHydrator();
-        $hydrator->hydrateProfile($data);
-        $hydrator->hydrateMedias($data);
-        $hydrator->hydrateIgtvs($data);
-
-        return $hydrator->getProfile();
-    }
-
-    /**
      * @param Profile $instagramProfile
-     * @param int     $limit
+     * @param int $limit
      *
      * @return Profile
      *
@@ -225,9 +205,9 @@ class Api
     }
 
     /**
-     * @param int    $userId
+     * @param int $userId
      * @param string $endCursor
-     * @param int    $limit
+     * @param int $limit
      *
      * @return Profile
      *
@@ -260,7 +240,7 @@ class Api
 
     /**
      * @param string $mediaCode
-     * @param int    $limit
+     * @param int $limit
      *
      * @return MediaComments
      *
@@ -300,7 +280,7 @@ class Api
 
     /**
      * @param string $mediaId
-     * @param int    $limit
+     * @param int $limit
      *
      * @return MediaComments
      *
@@ -384,7 +364,7 @@ class Api
         $data = $feed->fetchData($media);
 
         $hydrator = new MediaHydrator();
-        $media    = $hydrator->hydrateMediaDetailed($data);
+        $media = $hydrator->hydrateMediaDetailed($data);
 
         return $media;
     }
@@ -403,7 +383,7 @@ class Api
         $data = $feed->fetchData($media);
 
         $hydrator = new MediaHydrator();
-        $media    = $hydrator->hydrateMediaDetailed($data);
+        $media = $hydrator->hydrateMediaDetailed($data);
 
         return $media;
     }
@@ -419,7 +399,7 @@ class Api
      */
     public function getProfileById(int $id): Profile
     {
-        $feed     = new JsonProfileDataFeed($this->client, $this->session);
+        $feed = new JsonProfileDataFeed($this->client, $this->session);
         $userName = $feed->fetchData($id);
 
         return $this->getProfile($userName);
@@ -446,7 +426,7 @@ class Api
     }
 
     /**
-     * @param int    $id
+     * @param int $id
      * @param string $endCursor
      *
      * @return FollowerFeed
@@ -487,7 +467,7 @@ class Api
     }
 
     /**
-     * @param int    $id
+     * @param int $id
      * @param string $endCursor
      *
      * @return FollowingFeed
@@ -585,7 +565,7 @@ class Api
     }
 
     /**
-     * @param int    $locationId
+     * @param int $locationId
      * @param string $endCursor
      *
      * @return Location
@@ -625,7 +605,7 @@ class Api
     }
 
     /**
-     * @param int         $userId
+     * @param int $userId
      * @param string|null $maxId
      *
      * @return ReelsFeed
@@ -647,7 +627,7 @@ class Api
 
     /**
      * @param Profile $instagramProfile
-     * @param int     $limit
+     * @param int $limit
      *
      * @return Profile
      *
@@ -665,7 +645,7 @@ class Api
     }
 
     /**
-     * @param int         $userId
+     * @param int $userId
      * @param string|null $maxId
      *
      * @return ReelsFeed
@@ -703,7 +683,7 @@ class Api
     }
 
     /**
-     * @param int    $postId
+     * @param int $postId
      * @param string $message
      *
      * @return string
@@ -751,5 +731,25 @@ class Api
         $hydrator->hydrateTimelineFeed($data);
 
         return $hydrator->getTimelineFeed();
+    }
+      
+    /**
+     * @param string $user
+     *
+     * @return Profile
+     *
+     * @throws InstagramException
+     */
+    public function getProfile(string $user): Profile
+    {
+        $feed = new JsonProfileDataFeedV2($this->client, $this->session);
+        $data = $feed->fetchData($user);
+
+        $hydrator = new ProfileHydrator();
+        $hydrator->hydrateProfile($data);
+        $hydrator->hydrateMedias($data);
+        $hydrator->hydrateIgtvs($data);
+
+        return $hydrator->getProfile();
     }
 }

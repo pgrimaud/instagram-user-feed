@@ -203,6 +203,24 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "peachesontour",
+      "name": "Peter Kampjes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/67612358?v=4",
+      "profile": "https://github.com/peachesontour",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "gurubobnz",
+      "name": "Bob Brown",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2483482?v=4",
+      "profile": "https://turboweb.co.nz/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

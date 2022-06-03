@@ -23,13 +23,13 @@ abstract class AbstractDataFeed
 
     /**
      * @param ClientInterface $client
-     * @param Session|null    $session
+     * @param Session|null $session
      *
      * @throws InstagramAuthException
      */
     public function __construct(ClientInterface $client, ?Session $session)
     {
-        $this->client  = $client;
+        $this->client = $client;
         $this->session = $session;
     }
 
@@ -39,13 +39,13 @@ abstract class AbstractDataFeed
      *
      * @throws InstagramFetchException
      */
-    protected function fetchJsonDataFeed(string $endpoint): \StdClass
+    protected function fetchJsonDataFeed(string $endpoint, array $headers = []): \StdClass
     {
         $headers = [
-            'headers' => [
-                'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
+            'headers' => array_merge([
+                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
                 'x-requested-with' => 'XMLHttpRequest',
-            ],
+            ], $headers),
         ];
 
         if (!empty($this->session)) {
@@ -54,7 +54,7 @@ abstract class AbstractDataFeed
 
         $res = $this->client->request('GET', $endpoint, $headers);
 
-        $data = (string) $res->getBody();
+        $data = (string)$res->getBody();
         $data = json_decode($data);
 
         if ($data === null) {
@@ -73,10 +73,10 @@ abstract class AbstractDataFeed
     {
         $options = [
             'headers' => [
-                'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
                 'x-requested-with' => 'XMLHttpRequest',
                 'x-instagram-ajax' => $this->getRolloutHash(),
-                'x-csrftoken'      => $this->session->getCookies()->getCookieByName('csrftoken')->getValue(),
+                'x-csrftoken' => $this->session->getCookies()->getCookieByName('csrftoken')->getValue(),
             ],
             'cookies' => $this->session->getCookies(),
         ];
@@ -89,7 +89,7 @@ abstract class AbstractDataFeed
 
         $res = $this->client->request('POST', $endpoint, $options);
 
-        $data = (string) $res->getBody();
+        $data = (string)$res->getBody();
         $data = json_decode($data);
 
         if ($data === null) {
@@ -114,7 +114,7 @@ abstract class AbstractDataFeed
                 ],
             ]);
 
-            $html = (string) $baseRequest->getBody();
+            $html = (string)$baseRequest->getBody();
 
             preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
 

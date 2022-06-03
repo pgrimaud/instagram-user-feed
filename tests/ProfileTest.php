@@ -24,7 +24,7 @@ class ProfileTest extends TestCase
         $mock = new MockHandler([
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/medias.json')),
         ]);
 
@@ -43,29 +43,29 @@ class ProfileTest extends TestCase
         $this->assertSame('1518284433', $profile->getId32Bit());
         $this->assertSame('robertdowneyjr', $profile->getUserName());
         $this->assertSame('Robert Downey Jr. Official', $profile->getFullName());
-        $this->assertSame('@officialfootprintcoalition @coreresponse', $profile->getBiography());
-        $this->assertSame(46383825, $profile->getFollowers());
-        $this->assertSame(50, $profile->getFollowing());
-        $this->assertSame('https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/s320x320/72702032_542075739927421_3928117925747097600_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=h2zGWoshNjUAX90AcTx&oh=ec27e20298c8765eccdfeb9c1b655f76&oe=5EEEC338', $profile->getProfilePicture());
-        $this->assertSame('http://coreresponse.org/covid19', $profile->getExternalUrl());
+        $this->assertSame('Get involved: @officialfootprintcoalition 🌎🙏', $profile->getBiography());
+        $this->assertSame(52979346, $profile->getFollowers());
+        $this->assertSame(5, $profile->getFollowing());
+        $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-19/143237481_227994098925572_6634984787450078090_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_cat=1&_nc_ohc=6QVB3trbfacAX9Ha8m4&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AT8_gOYMGLxeiLssqUOIgQQKIvlD87hJsHYVGAS7gJc_Mg&oe=629FFA81&_nc_sid=8fd12b', $profile->getProfilePicture());
+        $this->assertSame(null, $profile->getExternalUrl());
         $this->assertFalse($profile->isPrivate());
         $this->assertTrue($profile->isVerified());
-        $this->assertSame(453, $profile->getMediaCount());
+        $this->assertSame(419, $profile->getMediaCount());
         $this->assertTrue($profile->hasMoreMedias());
         $this->assertCount(12, $profile->getMedias());
-        $this->assertSame('Photo shared by Robert Downey Jr. Official on May 12, 2020 tagging @netflix, @jefflemire, and @nxonnetflix. Image may contain: text', $profile->getMedias()[0]->getAccessibilityCaption());
+        $this->assertSame(null, $profile->getMedias()[0]->getAccessibilityCaption());
 
         $this->assertSame(1518284433, $profile->__serialize()['id']);
         $this->assertSame('robertdowneyjr', $profile->__serialize()['userName']);
         $this->assertSame('Robert Downey Jr. Official', $profile->__serialize()['fullName']);
-        $this->assertSame('@officialfootprintcoalition @coreresponse', $profile->__serialize()['biography']);
-        $this->assertSame(46383825, $profile->__serialize()['followers']);
-        $this->assertSame(50, $profile->__serialize()['following']);
-        $this->assertSame('https://scontent-frt3-2.cdninstagram.com/v/t51.2885-19/s320x320/72702032_542075739927421_3928117925747097600_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_ohc=h2zGWoshNjUAX90AcTx&oh=ec27e20298c8765eccdfeb9c1b655f76&oe=5EEEC338', $profile->__serialize()['profilePicture']);
-        $this->assertSame('http://coreresponse.org/covid19', $profile->__serialize()['externalUrl']);
+        $this->assertSame('Get involved: @officialfootprintcoalition 🌎🙏', $profile->__serialize()['biography']);
+        $this->assertSame(52979346, $profile->__serialize()['followers']);
+        $this->assertSame(5, $profile->__serialize()['following']);
+        $this->assertSame('https://scontent-cdt1-1.cdninstagram.com/v/t51.2885-19/143237481_227994098925572_6634984787450078090_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-cdt1-1.cdninstagram.com&_nc_cat=1&_nc_ohc=6QVB3trbfacAX9Ha8m4&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AT8_gOYMGLxeiLssqUOIgQQKIvlD87hJsHYVGAS7gJc_Mg&oe=629FFA81&_nc_sid=8fd12b', $profile->__serialize()['profilePicture']);
+        $this->assertSame(null, $profile->__serialize()['externalUrl']);
         $this->assertFalse($profile->__serialize()['private']);
         $this->assertTrue($profile->__serialize()['verified']);
-        $this->assertSame(453, $profile->__serialize()['mediaCount']);
+        $this->assertSame(419, $profile->__serialize()['mediaCount']);
         $this->assertTrue($profile->__serialize()['hasMoreMedias']);
         $this->assertCount(12, $profile->__serialize()['medias']);
 
@@ -123,7 +123,7 @@ class ProfileTest extends TestCase
         $mock = new MockHandler([
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/medias-error.json')),
         ]);
 
@@ -284,32 +284,6 @@ class ProfileTest extends TestCase
         $api->logout('username');
     }
 
-    public function testProfileFetchWithContentInAdditionalData()
-    {
-        $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/cache');
-
-        $mock = new MockHandler([
-            new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile-additional-data.html')),
-        ]);
-
-        $handlerStack = HandlerStack::create($mock);
-        $client       = new Client(['handler' => $handlerStack]);
-
-        $api = new Api($cachePool, $client);
-
-        // clear cache
-        $api->logout('username');
-
-        $api->login('username', 'password');
-        $profile = $api->getProfile('robertdowneyjr');
-
-        $this->assertSame('robertdowneyjr', $profile->getUserName());
-
-        $api->logout('username');
-    }
-
     public function testProfileFetchWithNoContentInAdditionalData()
     {
         $this->expectException(InstagramFetchException::class);
@@ -346,7 +320,7 @@ class ProfileTest extends TestCase
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile-id.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -375,7 +349,7 @@ class ProfileTest extends TestCase
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile-id-invalid.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -432,7 +406,7 @@ class ProfileTest extends TestCase
         $mock = new MockHandler([
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
-            new Response(404, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+            new Response(404, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -458,7 +432,7 @@ class ProfileTest extends TestCase
         $mock = new MockHandler([
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
-            new Response(429, [], file_get_contents(__DIR__ . '/fixtures/profile.html')),
+            new Response(429, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -508,7 +482,7 @@ class ProfileTest extends TestCase
         $mock = new MockHandler([
             new Response(200, ['Set-Cookie' => 'cookie'], file_get_contents(__DIR__ . '/fixtures/home.html')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
-            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/igtv.html')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/igtv.json')),
         ]);
 
