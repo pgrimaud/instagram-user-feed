@@ -59,7 +59,7 @@ use Instagram\Transport\{CommentPost,
     ReelsDataFeed
 };
 use Psr\Cache\CacheItemPoolInterface;
-use Instagram\Utils\InstagramHelper;
+use Instagram\Utils\{InstagramHelper, OptionHelper};
 
 class Api
 {
@@ -93,6 +93,22 @@ class Api
         $this->cachePool = $cachePool;
         $this->client = $client ?: new Client();
         $this->challengeDelay = $challengeDelay;
+    }
+
+    /**
+     * @param string $userAgent
+     */
+    public function setUserAgent(string $userAgent): void
+    {
+        OptionHelper::$USER_AGENT  = $userAgent;
+    }
+
+    /**
+     * @param string $language
+     */
+    public function setLanguage(string $language): void
+    {
+        OptionHelper::$LOCALE  = $language;
     }
 
     /**

@@ -8,7 +8,7 @@ use GuzzleHttp\{ClientInterface, Cookie\CookieJar};
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Auth\Checkpoint\{Challenge, ImapClient};
 use Instagram\Exception\InstagramAuthException;
-use Instagram\Utils\{InstagramHelper, UserAgentHelper};
+use Instagram\Utils\{InstagramHelper, OptionHelper};
 
 class Login
 {
@@ -63,7 +63,7 @@ class Login
     {
         $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent' => OptionHelper::$USER_AGENT,
             ],
         ]);
 
@@ -86,10 +86,11 @@ class Login
                     'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $this->password,
                 ],
                 'headers'     => [
-                    'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
-                    'referer'     => InstagramHelper::URL_BASE,
-                    'x-csrftoken' => $data->config->csrf_token,
-                    'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
+                    'cookie'           => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
+                    'referer'          => InstagramHelper::URL_BASE,
+                    'x-csrftoken'      => $data->config->csrf_token,
+                    'user-agent'       => OptionHelper::$USER_AGENT,
+                    'accept-language'  => OptionHelper::$LOCALE,
                 ],
                 'cookies'     => $cookieJar,
             ]);

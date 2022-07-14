@@ -8,7 +8,7 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\Endpoints;
-use Instagram\Utils\UserAgentHelper;
+use Instagram\Utils\OptionHelper;
 
 class ReelsDataFeed extends AbstractDataFeed
 {
@@ -39,9 +39,10 @@ class ReelsDataFeed extends AbstractDataFeed
 
         $options = [
             'headers' => [
-                'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
-                'x-csrftoken' => $csrfToken,
-                'x-ig-app-id' => self::IG_APP_ID,
+                'user-agent'       => OptionHelper::$USER_AGENT,
+                'accept-language'  => OptionHelper::$LOCALE,
+                'x-csrftoken'      => $csrfToken,
+                'x-ig-app-id'      => self::IG_APP_ID,
             ],
             'cookies' => $this->session->getCookies(),
         ];

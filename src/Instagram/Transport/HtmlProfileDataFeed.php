@@ -6,7 +6,7 @@ namespace Instagram\Transport;
 
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
-use Instagram\Utils\{InstagramHelper, UserAgentHelper};
+use Instagram\Utils\{InstagramHelper, OptionHelper};
 
 class HtmlProfileDataFeed extends AbstractDataFeed
 {
@@ -22,7 +22,8 @@ class HtmlProfileDataFeed extends AbstractDataFeed
 
         $headers = [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent'      => OptionHelper::$USER_AGENT,
+                'accept-language' => OptionHelper::$LOCALE,
             ],
         ];
         

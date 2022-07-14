@@ -7,7 +7,7 @@ namespace Instagram\Transport;
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\Endpoints;
-use Instagram\Utils\UserAgentHelper;
+use Instagram\Utils\OptionHelper;
 
 class LiveData extends AbstractDataFeed
 {
@@ -25,7 +25,8 @@ class LiveData extends AbstractDataFeed
 
         $headers = [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent'      => OptionHelper::$USER_AGENT,
+                'accept-language' => OptionHelper::$LOCALE,
             ],
             'cookies' => $this->session->getCookies(),
         ];
