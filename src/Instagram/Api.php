@@ -8,7 +8,7 @@ use GuzzleHttp\{Client, ClientInterface};
 use Instagram\Utils\CacheHelper;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
-use Instagram\Exception\InstagramException;
+use Instagram\Exception\{InstagramException, InstagramAuthException};
 use Instagram\Hydrator\{LocationHydrator,
     MediaHydrator,
     MediaCommentsHydrator,
@@ -88,7 +88,7 @@ class Api
      * @param ClientInterface|null $client
      * @param int|null $challengeDelay
      */
-    public function __construct(CacheItemPoolInterface $cachePool, ClientInterface $client = null, ?int $challengeDelay = 3)
+    public function __construct(CacheItemPoolInterface $cachePool = null, ClientInterface $client = null, ?int $challengeDelay = 3)
     {
         $this->cachePool = $cachePool;
         $this->client = $client ?: new Client();
@@ -112,6 +112,24 @@ class Api
     }
 
     /**
+     * @param \GuzzleHttp\Cookie\CookieJar $cookies
+     *
+     * @throws Exception\InstagramAuthException
+     */
+    public function loginWithCookies(CookieJar $cookies): void
+    {
+        /** @var SetCookie */
+        $session = $cookies->getCookieByName('sessionId');
+
+        // Session expired (should never happened, Instagram TTL is ~ 1 year)
+        if ($session->getExpires() < time()) {
+            throw new InstagramAuthException('Session expired, Please login with instagram credentials.');
+        }
+
+        $this->session = new Session($cookies);
+    }
+
+    /**
      * @param string $username
      * @param string $password
      * @param ImapClient|null $imapClient
@@ -123,6 +141,10 @@ class Api
     public function login(string $username, string $password, ?ImapClient $imapClient = null): void
     {
         $login = new Login($this->client, $username, $password, $imapClient, $this->challengeDelay);
+
+        if ( !($this->cachePool instanceof CacheItemPoolInterface) ) {
+            throw new InstagramAuthException('You must set cachePool / login with cookies, example: \n$cachePool = new \Symfony\Component\Cache\Adapter\FilesystemAdapter("Instagram", 0, __DIR__ . "/../cache"); \n$api = new \Instagram\Api($cachePool);');
+        }
 
         // fetch previous session and re-use it
         $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($username));

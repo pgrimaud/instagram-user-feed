@@ -173,4 +173,27 @@ class LoginTest extends TestCase
 
         $api->logout('username');
     }
+
+    public function testLoginWithErrorCachePoolEmpty()
+    {
+        //$this->expectException(InstagramAuthException::class);
+        $this->expectExceptionMessage('You must set cachePool / login with cookies, example: \n$cachePool = new \Symfony\Component\Cache\Adapter\FilesystemAdapter("Instagram", 0, __DIR__ . "/../cache"); \n$api = new \Instagram\Api($cachePool);');
+        
+        $mock = new MockHandler([
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/profile.json')),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client       = new Client(['handler' => $handlerStack]);
+
+        $api = new Api(null, $client);
+
+        $api->login('username', 'password');
+
+        $profile = $api->getProfile('robertdowneyjr');
+
+        $this->assertSame(1518284433, $profile->getId());
+
+        $api->logout('username');
+    }
 }
