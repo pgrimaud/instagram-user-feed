@@ -18,7 +18,7 @@ class JsonMediaDetailedDataFeed extends AbstractDataFeed
      */
     public function fetchData(Media $media): \StdClass
     {
-        $data = $this->fetchJsonDataFeed($media->getLink() . '?__a=1');
+        $data = $this->fetchJsonDataFeed($media->getLink() . '?__a=1&__d=dis');
 
         return current($data->items);
     }
