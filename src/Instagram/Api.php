@@ -118,6 +118,8 @@ class Api
      */
     public function loginWithCookies(CookieJar $cookies): void
     {
+        $login = new Login($this->client, '', '', null, $this->challengeDelay);
+
         /** @var SetCookie */
         $session = $cookies->getCookieByName('sessionId');
 
@@ -125,6 +127,9 @@ class Api
         if ($session->getExpires() < time()) {
             throw new InstagramAuthException('Session expired, Please login with instagram credentials.');
         }
+
+        // Get New Cookies
+        $cookies = $login->withCookies($session->toArray());
 
         $this->session = new Session($cookies);
     }
