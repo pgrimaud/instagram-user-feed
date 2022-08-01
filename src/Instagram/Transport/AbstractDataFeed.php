@@ -7,7 +7,7 @@ namespace Instagram\Transport;
 use GuzzleHttp\ClientInterface;
 use Instagram\Auth\Session;
 use Instagram\Exception\{InstagramAuthException, InstagramFetchException};
-use Instagram\Utils\{OptionHelper, InstagramHelper};
+use Instagram\Utils\{OptionHelper, InstagramHelper, CacheResponse};
 
 abstract class AbstractDataFeed
 {
@@ -54,6 +54,7 @@ abstract class AbstractDataFeed
         }
 
         $res = $this->client->request('GET', $endpoint, $headers);
+        CacheResponse::setResponse($res);
 
         $data = (string)$res->getBody();
         $data = json_decode($data);
@@ -90,6 +91,7 @@ abstract class AbstractDataFeed
         }
 
         $res = $this->client->request('POST', $endpoint, $options);
+        CacheResponse::setResponse($res);
 
         $data = (string)$res->getBody();
         $data = json_decode($data);
@@ -116,6 +118,7 @@ abstract class AbstractDataFeed
                     'accept-language' => OptionHelper::$LOCALE,
                 ],
             ]);
+            CacheResponse::setResponse($baseRequest);
 
             $html = (string)$baseRequest->getBody();
 

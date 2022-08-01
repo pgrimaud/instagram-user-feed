@@ -7,8 +7,7 @@ namespace Instagram\Transport;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
-use Instagram\Utils\Endpoints;
-use Instagram\Utils\OptionHelper;
+use Instagram\Utils\{Endpoints, OptionHelper, CacheResponse};
 
 class ReelsDataFeed extends AbstractDataFeed
 {
@@ -63,8 +62,11 @@ class ReelsDataFeed extends AbstractDataFeed
         try {
             $res = $this->client->request('POST', $endpoint, $options);
         } catch (ClientException $exception) {
+            CacheResponse::setResponse($exception->getResponse());
             throw new InstagramFetchException('Reels fetch error');
         }
+
+        CacheResponse::setResponse($res);
 
         $data = (string) $res->getBody();
         $data = json_decode($data);

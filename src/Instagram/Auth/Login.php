@@ -8,7 +8,7 @@ use GuzzleHttp\{ClientInterface, Cookie\SetCookie, Cookie\CookieJar};
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Auth\Checkpoint\{Challenge, ImapClient};
 use Instagram\Exception\InstagramAuthException;
-use Instagram\Utils\{InstagramHelper, OptionHelper};
+use Instagram\Utils\{InstagramHelper, OptionHelper, CacheResponse};
 
 class Login
 {
@@ -66,6 +66,7 @@ class Login
                 'user-agent' => OptionHelper::$USER_AGENT,
             ],
         ]);
+        CacheResponse::setResponse($baseRequest);
 
         $html = (string) $baseRequest->getBody();
 
@@ -95,6 +96,8 @@ class Login
                 'cookies'     => $cookieJar,
             ]);
         } catch (ClientException $exception) {
+            CacheResponse::setResponse($exception->getResponse());
+
             $data = json_decode((string) $exception->getResponse()->getBody());
 
             if ($data && $data->message === 'checkpoint_required') {
@@ -105,6 +108,8 @@ class Login
                 throw new InstagramAuthException('Unknown error, please report it with a GitHub issue. ' . $exception->getMessage());
             }
         }
+
+        CacheResponse::setResponse($query);
 
         $response = json_decode((string) $query->getBody());
 
@@ -135,6 +140,8 @@ class Login
             ],
             'cookies' => $cookies
         ]);
+
+        CacheResponse::setResponse($baseRequest);
 
         $html = (string) $baseRequest->getBody();
 

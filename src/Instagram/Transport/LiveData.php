@@ -6,8 +6,8 @@ namespace Instagram\Transport;
 
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
-use Instagram\Utils\Endpoints;
-use Instagram\Utils\OptionHelper;
+use Instagram\Utils\{Endpoints, OptionHelper, CacheResponse};
+
 
 class LiveData extends AbstractDataFeed
 {
@@ -34,9 +34,12 @@ class LiveData extends AbstractDataFeed
         try {
             $res = $this->client->request('GET', $endpoint, $headers);
         } catch (ClientException $exception) {
+            CacheResponse::setResponse($exception->getResponse());
             // should throw a 404 if live isn't on
             throw new InstagramFetchException('No live streaming found');
         }
+
+        CacheResponse::setResponse($res);
 
         $data = (string)$res->getBody();
         $data = json_decode($data);
