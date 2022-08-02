@@ -21,7 +21,9 @@ class ReelsHydrator
         $reels->setShortCode($item->code);
 
         if (property_exists($item, 'caption')) {
-            $reels->setCaption($item->caption->text);
+            if (property_exists($item->caption, 'text')) {
+                $reels->setCaption($item->caption->text);
+            }
         }
 
         $reels->setLikes($item->like_count);
