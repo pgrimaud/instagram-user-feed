@@ -2,15 +2,11 @@
 
 namespace Instagram\Tests;
 
-use GuzzleHttp\{Client, Cookie\CookieJar, Cookie\SetCookie, Handler\MockHandler, HandlerStack, Psr7\Response};
+use GuzzleHttp\{Client, Handler\MockHandler, HandlerStack, Psr7\Response};
 use Instagram\Api;
 
-use Instagram\Auth\Session;
 use Instagram\Exception\InstagramFetchException;
-use Instagram\Model\Hashtag;
-use Instagram\Model\Media;
-use Instagram\Model\Profile;
-use Instagram\Model\Reels;
+use Instagram\Model\User;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -36,14 +32,12 @@ class TimelineTest extends TestCase
 
         $api->login('username', 'password');
 
-        /** @var TimelineFeed $timelineFeed */
         $timelineFeed = $api->getTimeline();
 
         $this->assertCount(12, $timelineFeed->getTimeline());
         $this->assertTrue($timelineFeed->hasMoreTimeline());
         $this->assertSame('KGEAReU-f8agKifHBbQo8T4qJ4yFuozqEConTT6FHc4VKifY8SaNeHQqJ99NuNQaGConYrO-huzAKicjvhc_PzEqJySfsjT-PionLboxQ5wiKyeuQb8y5Z8qJzZWMDYKFionFsr24sCKYEYCKQQZBCIA', $timelineFeed->getMaxId());
 
-        /** @var Timeline $firstTimeline */
         $firstTimeline = current($timelineFeed->getTimeline());
 
         $this->assertSame("carousel", $firstTimeline->getType());
