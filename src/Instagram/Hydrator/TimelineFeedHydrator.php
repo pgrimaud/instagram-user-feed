@@ -43,7 +43,7 @@ class TimelineFeedHydrator
         }
 
         // get paginate cursor
-        if ($feed->next_max_id) {
+        if (property_exists($feed, 'next_max_id')) {
             $this->timelineFeed->setMaxId($feed->next_max_id);
         }
 
