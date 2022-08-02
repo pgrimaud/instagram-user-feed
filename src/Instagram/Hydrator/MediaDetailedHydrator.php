@@ -67,8 +67,13 @@ class MediaDetailedHydrator
         $media->setThumbnailSrc($thumbnailSrc);
         $media->setDisplaySrc($displaySrc);
 
-        $media->setComments($node->comment_count);
-        $media->setLikes($node->like_count);
+        if (property_exists($node, 'comment_count')) {
+            $media->setComments($node->comment_count);
+        }
+
+        if (property_exists($node, 'like_count')) {
+            $media->setLikes($node->like_count);
+        }
 
         $media->setLink(InstagramHelper::URL_BASE . "p/{$node->code}/");
 

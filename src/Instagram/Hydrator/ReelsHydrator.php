@@ -56,8 +56,10 @@ class ReelsHydrator
             $reels->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
         }
 
-        if (property_exists($node, 'location')) {
-            $reels->setLocation($node->location);
+        if (property_exists($node, 'caption')) {
+            if (property_exists($node->caption, 'text')) {
+                $reels->setCaption($node->caption->text);
+            }
         }
 
         if (property_exists($node, 'usertags')) {
