@@ -7,8 +7,7 @@ namespace Instagram\Transport;
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\Endpoints;
-use Instagram\Utils\UserAgentHelper;
-use Instagram\Utils\InstagramHelper;
+use Instagram\Utils\{OptionHelper, InstagramHelper, CacheResponse};
 
 class LocationData extends AbstractDataFeed
 {
@@ -26,7 +25,8 @@ class LocationData extends AbstractDataFeed
 
         $headers = [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent'      => OptionHelper::$USER_AGENT,
+                'accept-language' => OptionHelper::$LOCALE,
             ],
             'cookies' => $this->session->getCookies(),
         ];
@@ -34,12 +34,16 @@ class LocationData extends AbstractDataFeed
         try {
             $res = $this->client->request('GET', $endpoint, $headers);
         } catch (ClientException $exception) {
+            CacheResponse::setResponse($exception->getResponse());
+
             if ($exception->getCode() === 404) {
                 throw new InstagramFetchException('Location ' . $locationId . ' not found');
             } else {
                 throw new InstagramFetchException('Internal error');
             }
         }
+
+        CacheResponse::setResponse($res);
 
         $html = (string)$res->getBody();
 

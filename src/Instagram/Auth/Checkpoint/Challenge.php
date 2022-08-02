@@ -7,7 +7,7 @@ namespace Instagram\Auth\Checkpoint;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Cookie\CookieJar;
 use Instagram\Exception\InstagramAuthException;
-use Instagram\Utils\{InstagramHelper, UserAgentHelper};
+use Instagram\Utils\{InstagramHelper, OptionHelper};
 
 class Challenge
 {
@@ -59,7 +59,8 @@ class Challenge
     {
         $headers = [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent'      => OptionHelper::$USER_AGENT,
+                'accept-language' => OptionHelper::$LOCALE,
             ],
             'cookies' => $this->cookieJar
         ];
@@ -110,7 +111,8 @@ class Challenge
                 'x-instagram-ajax' => $challengeContent->rollout_hash,
                 'content-type'     => 'application/x-www-form-urlencoded',
                 'accept'           => '*/*',
-                'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent'       => OptionHelper::$USER_AGENT,
+                'accept-language'  => OptionHelper::$LOCALE,
                 'x-requested-with' => 'XMLHttpRequest',
                 'x-csrftoken'      => $challengeContent->config->csrf_token,
                 'x-ig-app-id'      => 123456889,
@@ -175,7 +177,8 @@ class Challenge
                 'x-instagram-ajax' => $challengeContent->rollout_hash,
                 'content-type'     => 'application/x-www-form-urlencoded',
                 'accept'           => '*/*',
-                'user-agent'       => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent'       => OptionHelper::$USER_AGENT,
+                'accept-language'  => OptionHelper::$LOCALE,
                 'x-requested-with' => 'XMLHttpRequest',
                 'x-csrftoken'      => $challengeContent->config->csrf_token,
                 'x-ig-app-id'      => 123456889,

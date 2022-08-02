@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Instagram\Auth;
 
-use GuzzleHttp\{ClientInterface, Cookie\CookieJar};
+use GuzzleHttp\{ClientInterface, Cookie\SetCookie, Cookie\CookieJar};
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Auth\Checkpoint\{Challenge, ImapClient};
 use Instagram\Exception\InstagramAuthException;
-use Instagram\Utils\{InstagramHelper, UserAgentHelper};
+use Instagram\Utils\{InstagramHelper, OptionHelper, CacheResponse};
 
 class Login
 {
@@ -63,9 +63,10 @@ class Login
     {
         $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent' => OptionHelper::$USER_AGENT,
             ],
         ]);
+        CacheResponse::setResponse($baseRequest);
 
         $html = (string) $baseRequest->getBody();
 
@@ -86,14 +87,17 @@ class Login
                     'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $this->password,
                 ],
                 'headers'     => [
-                    'cookie'      => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
-                    'referer'     => InstagramHelper::URL_BASE,
-                    'x-csrftoken' => $data->config->csrf_token,
-                    'user-agent'  => UserAgentHelper::AGENT_DEFAULT,
+                    'cookie'           => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
+                    'referer'          => InstagramHelper::URL_BASE,
+                    'x-csrftoken'      => $data->config->csrf_token,
+                    'user-agent'       => OptionHelper::$USER_AGENT,
+                    'accept-language'  => OptionHelper::$LOCALE,
                 ],
                 'cookies'     => $cookieJar,
             ]);
         } catch (ClientException $exception) {
+            CacheResponse::setResponse($exception->getResponse());
+
             $data = json_decode((string) $exception->getResponse()->getBody());
 
             if ($data && $data->message === 'checkpoint_required') {
@@ -105,6 +109,8 @@ class Login
             }
         }
 
+        CacheResponse::setResponse($query);
+
         $response = json_decode((string) $query->getBody());
 
         if (property_exists($response, 'authenticated') && $response->authenticated == true) {
@@ -114,6 +120,38 @@ class Login
         } else {
             throw new InstagramAuthException('Wrong login / password');
         }
+    }
+
+    /**
+     * @param \array $session
+     * 
+     * @return CookieJar
+     *
+     * @throws InstagramAuthException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withCookies(array $session): CookieJar
+    {
+        $cookies = new CookieJar(true, [$session]);
+
+        $baseRequest = $this->client->request('GET', InstagramHelper::URL_BASE, [
+            'headers' => [
+                'user-agent' => OptionHelper::$USER_AGENT,
+            ],
+            'cookies' => $cookies
+        ]);
+
+        CacheResponse::setResponse($baseRequest);
+
+        $html = (string) $baseRequest->getBody();
+
+        preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
+
+        if (isset($matches[1])) {
+            throw new InstagramAuthException('Please login with instagram credentials.');
+        }
+
+        return $cookies;
     }
 
     /**

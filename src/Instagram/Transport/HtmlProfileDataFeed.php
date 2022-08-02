@@ -6,7 +6,7 @@ namespace Instagram\Transport;
 
 use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
-use Instagram\Utils\{InstagramHelper, UserAgentHelper};
+use Instagram\Utils\{InstagramHelper, OptionHelper, CacheResponse};
 
 class HtmlProfileDataFeed extends AbstractDataFeed
 {
@@ -22,7 +22,8 @@ class HtmlProfileDataFeed extends AbstractDataFeed
 
         $headers = [
             'headers' => [
-                'user-agent' => UserAgentHelper::AGENT_DEFAULT,
+                'user-agent'      => OptionHelper::$USER_AGENT,
+                'accept-language' => OptionHelper::$LOCALE,
             ],
         ];
         
@@ -33,12 +34,16 @@ class HtmlProfileDataFeed extends AbstractDataFeed
         try {
             $res = $this->client->request('GET', $endpoint, $headers);
         } catch (ClientException $exception) {
+            CacheResponse::setResponse($exception->getResponse());
+
             if ($exception->getCode() === 404) {
                 throw new InstagramFetchException('User ' . $userName . ' not found');
             } else {
                 throw new InstagramFetchException('Internal error: ' . $exception->getMessage());
             }
         }
+
+        CacheResponse::setResponse($res);
 
         $html = (string)$res->getBody();
 
