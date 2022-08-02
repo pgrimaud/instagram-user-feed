@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class Reels
+class Image
 {
     /**
      * @var string
@@ -22,11 +22,6 @@ class Reels
     private $link;
 
     /**
-     * @var int
-     */
-    private $likes;
-
-    /**
      * @var boolean
      */
     private $isLiked = false;
@@ -34,22 +29,12 @@ class Reels
     /**
      * @var int
      */
+    private $likes;
+
+    /**
+     * @var int
+     */
     private $comments;
-
-    /**
-     * @var int
-     */
-    private $views;
-
-    /**
-     * @var int
-     */
-    private $plays;
-
-    /**
-     * @var float
-     */
-    private $duration;
 
     /**
      * @var int
@@ -62,24 +47,19 @@ class Reels
     private $width;
 
     /**
-     * @var boolean
-     */
-    private $hasAudio;
-
-    /**
      * @var array
      */
-    private $images = [];
-
-    /**
-     * @var array
-     */
-    private $videos = [];
+    private $image = [];
 
     /**
      * @var string
      */
     private $caption;
+
+    /**
+     * @var string
+     */
+    private $accessibilityCaption;
 
     /**
      * @var mixed
@@ -155,22 +135,6 @@ class Reels
     }
 
     /**
-     * @return int
-     */
-    public function getLikes(): int
-    {
-        return $this->likes;
-    }
-
-    /**
-     * @param int $likes
-     */
-    public function setLikes(int $likes): void
-    {
-        $this->likes = $likes;
-    }
-
-    /**
      * @return bool
      */
     public function isLiked(): bool
@@ -189,6 +153,22 @@ class Reels
     /**
      * @return int
      */
+    public function getLikes(): int
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param int $likes
+     */
+    public function setLikes(int $likes): void
+    {
+        $this->likes = $likes;
+    }
+
+    /**
+     * @return int
+     */
     public function getComments(): int
     {
         return $this->comments;
@@ -200,54 +180,6 @@ class Reels
     public function setComments(int $comments): void
     {
         $this->comments = $comments;
-    }
-
-    /**
-     * @return int
-     */
-    public function getViews(): int
-    {
-        return $this->views;
-    }
-
-    /**
-     * @param int $views
-     */
-    public function setViews(int $views): void
-    {
-        $this->views = $views;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPlays(): int
-    {
-        return $this->plays;
-    }
-
-    /**
-     * @param int $plays
-     */
-    public function setPlays(int $plays): void
-    {
-        $this->plays = $plays;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDuration(): float
-    {
-        return $this->duration;
-    }
-
-    /**
-     * @param float $duration
-     */
-    public function setDuration(float $duration): void
-    {
-        $this->duration = $duration;
     }
 
     /**
@@ -283,51 +215,27 @@ class Reels
     }
 
     /**
-     * @return bool
-     */
-    public function getHasAudio(): bool
-    {
-        return $this->hasAudio;
-    }
-
-    /**
-     * @param bool $width
-     */
-    public function setHasAudio(bool $hasAudio): void
-    {
-        $this->hasAudio = $hasAudio;
-    }
-
-    /**
      * @return array
      */
-    public function getImages(): array
+    public function getImage(): array
     {
-        return $this->images;
+        return $this->image;
     }
 
     /**
-     * @param array $images
+     * @param array $image
      */
-    public function setImages(array $images): void
+    public function setImage(array $image): void
     {
-        $this->images = $images;
+        $this->image = $image;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getVideos(): array
+    public function getCaption(): ?string
     {
-        return $this->videos;
-    }
-
-    /**
-     * @param array $video
-     */
-    public function setVideos(array $videos): void
-    {
-        $this->videos = $videos;
+        return $this->caption;
     }
 
     /**
@@ -339,13 +247,20 @@ class Reels
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCaption(): ?string
+    public function getAccessibilityCaption(): ?string
     {
-        return $this->caption;
+        return $this->accessibilityCaption;
     }
 
+    /**
+     * @param string|null $accessibilityCaption
+     */
+    public function setAccessibilityCaption(?string $accessibilityCaption): void
+    {
+        $this->accessibilityCaption = $accessibilityCaption;
+    }
     /**
      * @return mixed
      */

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class Reels
+class Carousel
 {
     /**
      * @var string
@@ -39,21 +39,6 @@ class Reels
     /**
      * @var int
      */
-    private $views;
-
-    /**
-     * @var int
-     */
-    private $plays;
-
-    /**
-     * @var float
-     */
-    private $duration;
-
-    /**
-     * @var int
-     */
     private $height;
 
     /**
@@ -62,19 +47,9 @@ class Reels
     private $width;
 
     /**
-     * @var boolean
-     */
-    private $hasAudio;
-
-    /**
      * @var array
      */
-    private $images = [];
-
-    /**
-     * @var array
-     */
-    private $videos = [];
+    private $carousel = [];
 
     /**
      * @var string
@@ -205,54 +180,6 @@ class Reels
     /**
      * @return int
      */
-    public function getViews(): int
-    {
-        return $this->views;
-    }
-
-    /**
-     * @param int $views
-     */
-    public function setViews(int $views): void
-    {
-        $this->views = $views;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPlays(): int
-    {
-        return $this->plays;
-    }
-
-    /**
-     * @param int $plays
-     */
-    public function setPlays(int $plays): void
-    {
-        $this->plays = $plays;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDuration(): float
-    {
-        return $this->duration;
-    }
-
-    /**
-     * @param float $duration
-     */
-    public function setDuration(float $duration): void
-    {
-        $this->duration = $duration;
-    }
-
-    /**
-     * @return int
-     */
     public function getHeight(): int
     {
         return $this->height;
@@ -283,51 +210,19 @@ class Reels
     }
 
     /**
-     * @return bool
-     */
-    public function getHasAudio(): bool
-    {
-        return $this->hasAudio;
-    }
-
-    /**
-     * @param bool $width
-     */
-    public function setHasAudio(bool $hasAudio): void
-    {
-        $this->hasAudio = $hasAudio;
-    }
-
-    /**
      * @return array
      */
-    public function getImages(): array
+    public function getCarousel(): array
     {
-        return $this->images;
+        return $this->carousel;
     }
 
     /**
-     * @param array $images
+     * @param array $carousel
      */
-    public function setImages(array $images): void
+    public function setCarousel(array $carousel): void
     {
-        $this->images = $images;
-    }
-
-    /**
-     * @return array
-     */
-    public function getVideos(): array
-    {
-        return $this->videos;
-    }
-
-    /**
-     * @param array $video
-     */
-    public function setVideos(array $videos): void
-    {
-        $this->videos = $videos;
+        $this->carousel = $carousel;
     }
 
     /**

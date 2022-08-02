@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class Reels
+class Igtv
 {
     /**
      * @var string
@@ -42,11 +42,6 @@ class Reels
     private $views;
 
     /**
-     * @var int
-     */
-    private $plays;
-
-    /**
      * @var float
      */
     private $duration;
@@ -64,7 +59,22 @@ class Reels
     /**
      * @var boolean
      */
+    private $isPostLive;
+
+    /**
+     * @var boolean
+     */
     private $hasAudio;
+
+    /**
+     * @var string
+     */
+    private $subtitlesUrl;
+
+    /**
+     * @var \StdClass
+     */
+    private $thumbnails;
 
     /**
      * @var array
@@ -75,6 +85,11 @@ class Reels
      * @var array
      */
     private $videos = [];
+
+    /**
+     * @var string
+     */
+    private $title;
 
     /**
      * @var string
@@ -285,6 +300,22 @@ class Reels
     /**
      * @return bool
      */
+    public function isPostLive(): bool
+    {
+        return $this->isPostLive;
+    }
+
+    /**
+     * @param bool $isPostLive
+     */
+    public function setIsPostLive(bool $isPostLive): void
+    {
+        $this->isPostLive = $isPostLive;
+    }
+
+    /**
+     * @return bool
+     */
     public function getHasAudio(): bool
     {
         return $this->hasAudio;
@@ -296,6 +327,38 @@ class Reels
     public function setHasAudio(bool $hasAudio): void
     {
         $this->hasAudio = $hasAudio;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubtitlesUrl(): string
+    {
+        return $this->subtitlesUrl;
+    }
+
+    /**
+     * @param string $subtitlesUrl
+     */
+    public function setSubtitlesUrl(string $subtitlesUrl): void
+    {
+        $this->subtitlesUrl = $subtitlesUrl;
+    }
+
+    /**
+     * @return \StdClass
+     */
+    public function getThumbnails(): \StdClass
+    {
+        return $this->thumbnails;
+    }
+
+    /**
+     * @param \StdClass $thumbnails
+     */
+    public function setThumbnails(\StdClass $thumbnails): void
+    {
+        $this->thumbnails = $thumbnails;
     }
 
     /**
@@ -331,11 +394,19 @@ class Reels
     }
 
     /**
-     * @param string $caption
+     * @return string
      */
-    public function setCaption(?string $caption): void
+    public function getTitle(): ?string
     {
-        $this->caption = $caption;
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
     }
 
     /**
@@ -344,6 +415,14 @@ class Reels
     public function getCaption(): ?string
     {
         return $this->caption;
+    }
+
+    /**
+     * @param string $caption
+     */
+    public function setCaption(?string $caption): void
+    {
+        $this->caption = $caption;
     }
 
     /**

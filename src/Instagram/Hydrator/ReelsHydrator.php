@@ -4,41 +4,75 @@ declare(strict_types=1);
 
 namespace Instagram\Hydrator;
 
+use Instagram\Hydrator\UserInfoHydrator;
 use Instagram\Model\Reels;
+use Instagram\Utils\InstagramHelper;
 
 class ReelsHydrator
 {
     /**
-     * @param \StdClass $item
+     * @var UserInfoHydrator
+     */
+    private $hydrateUser;
+
+    public function __construct()
+    {
+        $this->hydrateUser = new UserInfoHydrator();
+    }
+
+    /**
+     * @param \StdClass $node
      *
      * @return Reels
      */
-    public function hydrateReels(\StdClass $item): Reels
+    public function reelsBaseHydrator(\StdClass $node): Reels
     {
         $reels = new Reels();
 
-        $reels->setId($item->id);
-        $reels->setShortCode($item->code);
+        $reels->setId($node->pk);
+        $reels->setShortCode($node->code);
+        $reels->setLink(InstagramHelper::URL_BASE . "reel/{$node->code}/");
+        $reels->setDate(\DateTime::createFromFormat('U', (string) $node->taken_at));
+        $reels->setLikes($node->like_count);
+        $reels->setIsLiked($node->has_liked);
+        $reels->setComments($node->comment_count);
+        $reels->setViews($node->view_count);
+        $reels->setPlays($node->play_count);
+        $reels->setDuration($node->video_duration);
+        $reels->setHeight($node->original_height);
+        $reels->setWidth($node->original_width);
+        $reels->setHasAudio($node->has_audio);
 
-        if (property_exists($item, 'caption')) {
-            if (property_exists($item->caption, 'text')) {
-                $reels->setCaption($item->caption->text);
+        $reels->setImages(array_map(function ($node) {
+            return $node;
+        }, $node->image_versions2->candidates));
+
+        $reels->setVideos(array_map(function ($node) {
+            return $node;
+        }, $node->video_versions));
+
+        if (property_exists($node, 'caption')) {
+            $reels->setCaption($node->caption->text);
+            $reels->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
+        }
+
+        if (property_exists($node, 'caption')) {
+            if (property_exists($node->caption, 'text')) {
+                $reels->setCaption($node->caption->text);
             }
         }
 
-        $reels->setLikes($item->like_count);
-        $reels->setVideoDuration((float) $item->video_duration);
-        $reels->setViewCount($item->view_count);
-        $reels->setPlayCount($item->play_count);
-        $reels->setDate(\DateTime::createFromFormat('U', (string) $item->taken_at));
+        if (property_exists($node, 'usertags')) {
+            $userTags = [];
+            foreach ($node->usertags->in as $user) {
+                $userTags[] = $this->hydrateUser->userBaseHydrator($user->user);
+            }
 
-        $reels->setImageVersions(array_map(function ($item) {
-            return (array) $item;
-        }, $item->image_versions2->candidates));
+            $reels->setUserTags($userTags);
+        }
 
-        $reels->setVideoVersions(array_map(function ($item) {
-            return (array) $item;
-        }, $item->video_versions));
+        $user = $this->hydrateUser->userBaseHydrator($node->user);
+        $reels->setUser($user);
 
         return $reels;
     }

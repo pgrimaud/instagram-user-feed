@@ -22,6 +22,8 @@ class Endpoints
 
     const COMMENT_URL = 'https://www.instagram.com/web/comments/{{postId}}/add/';
 
+    const TIMELINE_URL = 'https://i.instagram.com/api/v1/feed/timeline/';
+
     /**
      * @param int $accountId
      *

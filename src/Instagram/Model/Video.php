@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Model;
 
-class Reels
+class Video
 {
     /**
      * @var string
@@ -42,11 +42,6 @@ class Reels
     private $views;
 
     /**
-     * @var int
-     */
-    private $plays;
-
-    /**
      * @var float
      */
     private $duration;
@@ -60,11 +55,15 @@ class Reels
      * @var int
      */
     private $width;
-
     /**
      * @var boolean
      */
     private $hasAudio;
+
+    /**
+     * @var \StdClass
+     */
+    private $thumbnails;
 
     /**
      * @var array
@@ -299,6 +298,22 @@ class Reels
     }
 
     /**
+     * @return \StdClass
+     */
+    public function getThumbnails(): \StdClass
+    {
+        return $this->thumbnails;
+    }
+
+    /**
+     * @param \StdClass $thumbnails
+     */
+    public function setThumbnails(\StdClass $thumbnails): void
+    {
+        $this->thumbnails = $thumbnails;
+    }
+
+    /**
      * @return array
      */
     public function getImages(): array
@@ -331,19 +346,19 @@ class Reels
     }
 
     /**
-     * @param string $caption
-     */
-    public function setCaption(?string $caption): void
-    {
-        $this->caption = $caption;
-    }
-
-    /**
      * @return string
      */
     public function getCaption(): ?string
     {
         return $this->caption;
+    }
+
+    /**
+     * @param string $caption
+     */
+    public function setCaption(?string $caption): void
+    {
+        $this->caption = $caption;
     }
 
     /**
