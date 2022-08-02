@@ -33,12 +33,14 @@ If you like or use this package, please share your love by starring this reposit
 - Like or unlike posts
 - Fetch posts of hashtag
 - Fetch comments of a post
-- **NEW : Fetch live-streaming info**
-- **NEW : Fetch Reels 🎉**
-- **NEW : Fetch IGTV 🎉**
-- **NEW : Fetch medias where a user has been tagged on 🎉**
-- **NEW : Fetch HD profile picture 🎉**
-- **NEW : Post a message to a media 🎉**
+- Fetch live-streaming info
+- Fetch Reels
+- Fetch IGTV
+- Fetch medias where a user has been tagged on
+- Fetch HD profile picture
+- Post a message to a media
+- **NEW: Login with cookies 🎉**
+- **NEW: Fetch connected user timeline 🎉**
 
 This version can retrieve **ANY** Instagram feed using **web scraping**.
 
@@ -58,10 +60,16 @@ composer require pgrimaud/instagram-user-feed
 
 # Changelog
 
-**v6.14** - 2022-06-02:
+**v6.16** - 2022-08-02:
+
+- Login with cookies. Thanks to [nsmle](https://github.com/nsmle) (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/login-with-cookies.php)) 🎉.
+- Fetch connected user timeline. Thanks to [nsmle](https://github.com/nsmle) (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/timeline.php)) 🎉.
+- Add full support for Symfony 6
+- Add checks on missing properties to avoid errors
+
+**v6.15** - 2022-06-02:
 
 - ⚠️ ⚠️ Fix profile endpoint. Please update to this last version!
-
 
 **v6.12** - 2021-09-20:
 
