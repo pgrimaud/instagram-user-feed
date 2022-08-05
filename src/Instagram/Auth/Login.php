@@ -148,7 +148,11 @@ class Login
         preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
 
         if (isset($matches[1])) {
-            throw new InstagramAuthException('Please login with instagram credentials.');
+            $data = json_decode($matches[1]);
+
+            if (!isset($data->config->viewer) && !isset($data->config->viewerId)) {
+                throw new InstagramAuthException('Please login with instagram credentials.');
+            }
         }
 
         return $cookies;
