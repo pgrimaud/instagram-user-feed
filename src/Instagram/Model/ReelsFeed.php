@@ -52,4 +52,26 @@ class ReelsFeed
     {
         return $this->getMaxId() !== null;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            "reels"    => array_map(function ($reels) {
+                return $reels->toArray();
+            }, $this->getReels()),
+            "hasMaxId" => $this->hasMaxId(),
+            "maxId"    => $this->getMaxId(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return $this->toArray();
+    }
 }
