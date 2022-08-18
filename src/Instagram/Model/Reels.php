@@ -425,4 +425,47 @@ class Reels
     {
         return $this->user;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            "id"        => $this->getId(),
+            "shortCode" => $this->getShortCode(),
+            "link"      => $this->getLink(),
+            "likes"     => $this->getLikes(),
+            "isLiked"   => $this->isLiked(),
+            "comments"  => $this->getComments(),
+            "views"     => $this->getViews(),
+            "plays"     => $this->getPlays(),
+            "duration"  => $this->getDuration(),
+            "height"    => $this->getHeight(),
+            "width"     => $this->getWidth(),
+            "hasAudio"  => $this->getHasAudio(),
+            "images"    => array_map(function ($image) {
+                return (array) $image;
+            }, $this->getImages()),
+            "videos"    => array_map(function ($video) {
+                return (array) $video;
+            }, $this->getVideos()),
+            "caption"   => $this->getCaption(),
+            "location"  => $this->getLocation(),
+            "date"      => $this->getDate(),
+            "hashtags"  => $this->getHashtags(),
+            "userTags"  => array_map(function ($user) {
+                return $user->toArray();
+            }, $this->getUserTags()),
+            "user"      => $this->getUser()->toArray()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return $this->toArray();
+    }
 }

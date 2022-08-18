@@ -52,13 +52,9 @@ class ReelsHydrator
         }, $node->video_versions));
 
         if (property_exists($node, 'caption')) {
-            $reels->setCaption($node->caption->text);
-            $reels->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
-        }
-
-        if (property_exists($node, 'caption')) {
-            if (property_exists($node->caption, 'text')) {
+            if (!empty($node->caption)) {
                 $reels->setCaption($node->caption->text);
+                $reels->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
             }
         }
 
