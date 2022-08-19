@@ -40,7 +40,10 @@ class TimelineDataFeed extends AbstractDataFeed
     {
         $endpoint = 'https://i.instagram.com/api/v1/feed/new_feed_posts_exist/';
 
-        $csrfToken = $this->session->getCookies()->getCookieByName("csrftoken")->getValue();
+        $csrfToken = '';
+        if (!empty($this->session->getCookies()->getCookieByName("csrftoken"))) {
+            $csrfToken = $this->session->getCookies()->getCookieByName("csrftoken")->getValue();
+        }
 
         $options = [
             'headers' => [
@@ -80,7 +83,10 @@ class TimelineDataFeed extends AbstractDataFeed
     {
         $endpoint = Endpoints::TIMELINE_URL;
 
-        $csrfToken = $this->session->getCookies()->getCookieByName("csrftoken")->getValue();
+        $csrfToken = '';
+        if (!empty($this->session->getCookies()->getCookieByName("csrftoken"))) {
+            $csrfToken = $this->session->getCookies()->getCookieByName("csrftoken")->getValue();
+        }
 
         $options = [
             'headers' => [
