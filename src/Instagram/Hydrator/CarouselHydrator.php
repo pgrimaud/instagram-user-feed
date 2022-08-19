@@ -6,7 +6,7 @@ namespace Instagram\Hydrator;
 
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Hydrator\UserInfoHydrator;
-use Instagram\Model\{Media, Carousel};
+use Instagram\Model\{Media, Carousel, Image};
 use Instagram\Utils\InstagramHelper;
 
 class CarouselHydrator
@@ -76,28 +76,34 @@ class CarouselHydrator
     {
         $carouselMedias = [];
         foreach ($carouselItems as $carouselItem) {
-            $carouselType = $this->getTypeCarousel($carouselItem->media_type);
+            $carouselType = $this->getCarouselType($carouselItem->media_type);
 
-            if ($carouselType == Media::TYPE_IMAGE) {
-                $carouselMedia = [
-                    'id'                   => $carouselItem->pk,
-                    'parentId'     => $carouselItem->carousel_parent_id,
-                    'type'                 => $carouselType,
-                    'width'                => $carouselItem->original_width,
-                    'height'               => $carouselItem->original_height,
-                ];
+            $carouselMedia = [
+                'id'                   => $carouselItem->pk,
+                'parentId'             => $carouselItem->carousel_parent_id,
+                'type'                 => $carouselType,
+                'width'                => $carouselItem->original_width,
+                'height'               => $carouselItem->original_height,
+            ];
+    
+            if (property_exists($carouselItem, 'image_versions2')) {
+                $carouselMedia['image'] = $carouselItem->image_versions2->candidates;
+            }
 
-                if (property_exists($carouselItem, 'image_versions2')) {
-                    $carouselMedia['image'] = $carouselItem->image_versions2->candidates;
-                }
+            if (property_exists($carouselItem, 'video_versions')) {
+                $carouselMedia['video'] = $carouselItem->video_versions;
+            }
 
-                if (property_exists($carouselItem, 'video_versions')) {
-                    $carouselMedia['video'] = $carouselItem->video_versions;
-                }
-
-                if (property_exists($carouselItem, 'accessibility_caption')) {
-                    $carouselMedia['accessibilityCaption'] = $carouselItem->accessibility_caption;
-                }
+            if (property_exists($carouselItem, 'video_duration')) {
+                $carouselMedia['duration'] = $carouselItem->video_duration;
+            }
+    
+            if (property_exists($carouselItem, 'accessibility_caption')) {
+                $carouselMedia['accessibilityCaption'] = $carouselItem->accessibility_caption;
+            }
+    
+            if (property_exists($carouselItem, 'number_of_qualities')) {
+                $carouselMedia['quality'] = $carouselItem->number_of_qualities;
             }
 
             $carouselMedias[] = (object) $carouselMedia;
@@ -108,10 +114,11 @@ class CarouselHydrator
 
     /**
      * @param int $media_type
+     * 
      * @return string
      * @throws InstagramFetchException
      */
-    private function getTypeCarousel(int $media_type): string
+    private function getCarouselType(int $media_type): string
     {
         switch ($media_type) {
             case Media::MEDIA_TYPE_IMAGE:
