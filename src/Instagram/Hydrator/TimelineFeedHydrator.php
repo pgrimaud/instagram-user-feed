@@ -48,9 +48,31 @@ class TimelineFeedHydrator
         }
 
         foreach ($feed->feed_items as $feedItem) {
-            $timeline = $this->timelineHydrator->timelineBaseHydrator($feedItem->media_or_ad);
-            $this->timelineFeed->addTimeline($timeline);
+            if (property_exists($feedItem, 'media_or_ad')) {
+                // Timeline Feed
+                if (!property_exists($feedItem->media_or_ad, 'label')) {
+                    $timeline = $this->timelineHydrator->timelineBaseHydrator($feedItem->media_or_ad);
+                    $this->timelineFeed->addTimeline($timeline);
+                }
+                
+                // Sponsored Feed
+                if (!property_exists($feedItem, 'label')) {
+                }
+            }
+            
+            // Suggested User Feed
+            if (property_exists($feedItem, 'suggested_users')) {
+            }
         }
+
+        // get additionals info
+        $additionalInfo = [];
+        $additionalInfo['pullToRefresh'] = $feed->pull_to_refresh_window_ms;
+        $additionalInfo['preloadDistance'] = $feed->preload_distance;
+        $additionalInfo['lastHeadLoad'] = \DateTime::createFromFormat('U', (string) $feed->last_head_load_ms);
+        $additionalInfo['hideLikeAndViewCounts'] = boolval($feed->hide_like_and_view_counts);
+        $additionalInfo['clientFeedChangelistApplied'] = $feed->client_feed_changelist_applied;
+        $this->timelineFeed->setAdditionalInfo((object) $additionalInfo);
     }
 
     /**

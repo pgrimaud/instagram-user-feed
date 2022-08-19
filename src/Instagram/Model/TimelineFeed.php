@@ -27,6 +27,11 @@ class TimelineFeed
     private $newFeedPostExist = false;
 
     /**
+     * @var \stdClass
+     */
+    private $additionalInfo;
+
+    /**
      * @return array
      */
     public function getTimeline(): array
@@ -88,5 +93,21 @@ class TimelineFeed
     public function setNewFeedPostExist(bool $newFeedPostExist): void
     {
         $this->newFeedPostExist = $newFeedPostExist;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getAdditionalInfo(): stdClass
+    {
+        return $this->additionalInfo;
+    }
+
+    /**
+     * @param \stdClass $additionalInfo
+     */
+    public function setAdditionalInfo(\stdClass $additionalInfo): void
+    {
+        $this->additionalInfo = $additionalInfo;
     }
 }

@@ -35,7 +35,7 @@ class ImageHydrator
         $image->setDate(\DateTime::createFromFormat('U', (string) $node->taken_at));
         $image->setLikes($node->like_count);
         $image->setIsLiked($node->has_liked);
-        $image->setComments($node->comment_count);
+        
         $image->setHeight($node->original_height);
         $image->setWidth($node->original_width);
 
@@ -43,9 +43,15 @@ class ImageHydrator
             return $node;
         }, $node->image_versions2->candidates));
 
+        if (property_exists($node, 'comment_count')) {
+            $image->setComments($node->comment_count);
+        }
+
         if (property_exists($node, 'caption')) {
-            $image->setCaption($node->caption->text);
-            $image->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
+            if (!empty($node->caption)) {
+                $image->setCaption($node->caption->text);
+                $image->setHashtags(InstagramHelper::buildHashtags($node->caption->text));
+            }
         }
 
         if (property_exists($node, 'accessibility_caption')) {

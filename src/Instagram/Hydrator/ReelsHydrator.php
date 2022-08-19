@@ -35,7 +35,6 @@ class ReelsHydrator
         $reels->setDate(\DateTime::createFromFormat('U', (string) $node->taken_at));
         $reels->setLikes($node->like_count);
         $reels->setIsLiked($node->has_liked);
-        $reels->setComments($node->comment_count);
         $reels->setViews($node->view_count);
         $reels->setPlays($node->play_count);
         $reels->setDuration($node->video_duration);
@@ -50,6 +49,10 @@ class ReelsHydrator
         $reels->setVideos(array_map(function ($node) {
             return $node;
         }, $node->video_versions));
+
+        if (property_exists($node, 'comment_count')) {
+            $reels->setComments($node->comment_count);
+        }
 
         if (property_exists($node, 'caption')) {
             if (!empty($node->caption)) {
