@@ -59,7 +59,8 @@ use Instagram\Transport\{CommentPost,
     LocationData,
     LiveData,
     ReelsDataFeed,
-    TimelineDataFeed
+    TimelineDataFeed,
+    StoryInteraction
 };
 use Psr\Cache\CacheItemPoolInterface;
 use Instagram\Utils\{InstagramHelper, OptionHelper};
@@ -391,6 +392,23 @@ class Api
         $hydrator->hydrateHighLights($folder, $data);
 
         return $hydrator->getFolder();
+    }
+
+    /**
+     * @param int $storyId
+     * @param int $ownerId
+     * @param int $takenAt
+     * @param int $seenAt
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function seenStory(int $storyId, int $ownerId, int $takenAt, int $seenAt): string
+    {
+        $storyInteraction = new StoryInteraction($this->client, $this->session);
+        return $storyInteraction->seen($storyId, $ownerId, $takenAt, $seenAt);
     }
 
     /**

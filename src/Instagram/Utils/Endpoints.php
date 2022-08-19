@@ -24,6 +24,8 @@ class Endpoints
 
     const TIMELINE_URL = 'https://i.instagram.com/api/v1/feed/timeline/';
 
+    const SEEN_STORY_URL = 'https://i.instagram.com/api/v1/stories/reel/seen/';
+
     /**
      * @param int $accountId
      *
