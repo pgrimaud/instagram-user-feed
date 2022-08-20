@@ -412,6 +412,34 @@ class Api
     }
 
     /**
+     * @param int $storyId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function likeStory(int $storyId): string
+    {
+        $storyInteraction = new StoryInteraction($this->client, $this->session);
+        return $storyInteraction->like($storyId);
+    }
+
+    /**
+     * @param int $storyId
+     *
+     * @return string
+     *
+     * @throws Exception\InstagramAuthException
+     * @throws Exception\InstagramFetchException
+     */
+    public function unlikeStory(int $storyId): string
+    {
+        $storyInteraction = new StoryInteraction($this->client, $this->session);
+        return $storyInteraction->unlike($storyId);
+    }
+
+    /**
      * @param Media $media
      *
      * @return MediaDetailed
