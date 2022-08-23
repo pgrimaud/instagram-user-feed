@@ -118,9 +118,11 @@ class Api
     /**
      * @param \GuzzleHttp\Cookie\CookieJar $cookies
      *
+     * return \GuzzleHttp\Cookie\CookieJar
+     * 
      * @throws Exception\InstagramAuthException
      */
-    public function loginWithCookies(CookieJar $cookies): void
+    public function loginWithCookies(CookieJar $cookies, string $username = null): CookieJar
     {
         $login = new Login($this->client, '', '', null, $this->challengeDelay);
 
@@ -135,7 +137,17 @@ class Api
         // Get New Cookies
         $cookies = $login->withCookies($session->toArray());
 
+        // Save cookies to cachePool if username/identifier cookies is not empty
+        if (!empty($username)) {
+          $sessionData = $this->cachePool
+              ->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($username))
+              ->set($cookies);
+          $this->cachePool->save($sessionData);
+        }
+
         $this->session = new Session($cookies);
+
+        return $cookies;
     }
 
     /**
