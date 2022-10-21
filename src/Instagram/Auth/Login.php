@@ -70,13 +70,15 @@ class Login
 
         $html = (string) $baseRequest->getBody();
 
-        preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
+//        preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
+        preg_match('/\\\"csrf_token\\\":\\\"(.*?)\\\"/', $html, $matches);
 
         if (!isset($matches[1])) {
             throw new InstagramAuthException('Unable to extract JSON data');
         }
 
-        $data = json_decode($matches[1]);
+//        $data = json_decode($matches[1]);
+        $csrf_token = $matches[1];
 
         $cookieJar = new CookieJar();
 
@@ -87,9 +89,9 @@ class Login
                     'enc_password' => '#PWD_INSTAGRAM_BROWSER:0:' . time() . ':' . $this->password,
                 ],
                 'headers'     => [
-                    'cookie'           => 'ig_cb=1; csrftoken=' . $data->config->csrf_token,
+                    'cookie'           => 'ig_cb=1; csrftoken=' . $csrf_token,
                     'referer'          => InstagramHelper::URL_BASE,
-                    'x-csrftoken'      => $data->config->csrf_token,
+                    'x-csrftoken'      => $csrf_token,
                     'user-agent'       => OptionHelper::$USER_AGENT,
                     'accept-language'  => OptionHelper::$LOCALE,
                 ],
@@ -124,7 +126,7 @@ class Login
 
     /**
      * @param \array $session
-     * 
+     *
      * @return CookieJar
      *
      * @throws InstagramAuthException
