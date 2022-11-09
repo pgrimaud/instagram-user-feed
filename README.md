@@ -15,6 +15,7 @@
 > **Warning**
 > 2022-11-09 - Instagram changed his DOM AGAIN... Please update to this version 6.16.3
 
+> **Warning**
 > 2022-06-01 - Instagram changed his DOM content and profile data loading. Please update to this version 6.15.0
 
 ## Information
