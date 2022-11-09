@@ -121,15 +121,14 @@ abstract class AbstractDataFeed
             CacheResponse::setResponse($baseRequest);
 
             $html = (string)$baseRequest->getBody();
-
-            preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
+            //preg_match('/<script type="text\/javascript">window\._sharedData\s?=(.+);<\/script>/', $html, $matches);
+            preg_match('/\"client_revision\":(.*?),/', $html, $matches);
 
             if (!isset($matches[1])) {
-                throw new InstagramAuthException('Unable to extract JSON data');
+                throw new InstagramAuthException('Unable to extract server version');
             }
 
-            $data = json_decode($matches[1]);
-            return $data->rollout_hash;
+            return $matches[1];
         } catch (\Exception $e) {
             throw new InstagramFetchException($e->getMessage());
         }
