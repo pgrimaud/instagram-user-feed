@@ -248,6 +248,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "sportakal",
+      "name": "Sinan Portakal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44243313?v=4",
+      "profile": "https://simpliers.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -255,5 +264,6 @@
   "projectOwner": "pgrimaud",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
