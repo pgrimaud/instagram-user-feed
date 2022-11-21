@@ -127,9 +127,10 @@ class ImapClient
 
                 // confirm instagram is the mail sender
                 if (
-                    (property_exists($headers, 'senderaddress') &&
-                        $headers->senderaddress === 'Instagram <security@mail.instagram.com>')
-                    || $headers->from->host === 'mail.instagram.com'
+                    (property_exists($headers, 'fromaddress') &&
+                        $headers->fromaddress === 'Instagram <security@mail.instagram.com>') ||
+                    (isset($headers->from[0]) && property_exists($headers->from[0], 'host') &&
+                        $headers->from[0]->host === 'mail.instagram.com')
                 ) {
                     $isMailFromInstagram = true;
                 }
