@@ -136,7 +136,7 @@ class ImapClient
                 }
 
                 if ($isMailFromInstagram && isset($match[1])) {
-                    imap_delete($resource, $i);
+                    imap_delete($resource, "$i");
 
                     $foundCode = true;
                     $code      = $match[1];
