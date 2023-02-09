@@ -145,10 +145,13 @@ class Login
 
         $html = (string) $baseRequest->getBody();
 
-        preg_match('/\\\"csrf_token\\\":\\\"(.*?)\\\"/', $html, $matches);
+        preg_match('/"raw":"{\\\\"(.*?)\\\\"}"/', $html, $matches);
 
-        if (isset($matches[1])) {
-            $data = $matches[1];
+        if (isset($matches[0])) {
+            if (!property_exists(json_decode("{{$matches[0]}}"), 'raw'))
+                throw new InstagramAuthException('Login With Cookies Failed, Please login with instagram credentials.');
+
+            $data = json_decode(json_decode("{{$matches[0]}}")->raw);
 
             if (!isset($data->config->viewer) && !isset($data->config->viewerId)) {
                 throw new InstagramAuthException('Please login with instagram credentials.');

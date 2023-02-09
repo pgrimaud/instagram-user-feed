@@ -9,7 +9,8 @@ use Instagram\Utils\CacheHelper;
 use GuzzleHttp\Cookie\{SetCookie, CookieJar};
 use Instagram\Auth\{Checkpoint\ImapClient, Login, Session};
 use Instagram\Exception\{InstagramException, InstagramAuthException};
-use Instagram\Hydrator\{LocationHydrator,
+use Instagram\Hydrator\{
+    LocationHydrator,
     MediaHydrator,
     MediaCommentsHydrator,
     ProfileAlternativeHydrator,
@@ -23,7 +24,8 @@ use Instagram\Hydrator\{LocationHydrator,
     LiveHydrator,
     TimelineFeedHydrator
 };
-use Instagram\Model\{Location,
+use Instagram\Model\{
+    Location,
     Media,
     MediaDetailed,
     MediaComments,
@@ -39,7 +41,8 @@ use Instagram\Model\{Location,
     TaggedMediasFeed,
     TimelineFeed
 };
-use Instagram\Transport\{CommentPost,
+use Instagram\Transport\{
+    CommentPost,
     JsonMediaDetailedDataFeed,
     JsonMediasDataFeed,
     JsonMediaCommentsFeed,
@@ -122,7 +125,8 @@ class Api
      * 
      * @throws Exception\InstagramAuthException
      */
-    public function loginWithCookies(CookieJar $cookies, string $username = null): CookieJar
+
+    public function loginWithCookies(CookieJar $cookies, bool $saveCookies = false, string $sessionKey = null): void
     {
         $login = new Login($this->client, '', '', null, $this->challengeDelay);
 
@@ -137,17 +141,18 @@ class Api
         // Get New Cookies
         $cookies = $login->withCookies($session->toArray());
 
-        // Save cookies to cachePool if username/identifier cookies is not empty
-        if (!empty($username)) {
-          $sessionData = $this->cachePool
-              ->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($username))
-              ->set($cookies);
-          $this->cachePool->save($sessionData);
+        if ($saveCookies) {
+            if (!($this->cachePool instanceof CacheItemPoolInterface))
+                throw new InstagramAuthException('You must set cachePool to save this session, example: \n$cachePool = new \Symfony\Component\Cache\Adapter\FilesystemAdapter("Instagram", 0, __DIR__ . "/../cache"); \n$api = new \Instagram\Api($cachePool);');
+            if (empty($sessionKey))
+                throw new InstagramAuthException('You must set sessionKey, Example like your instagram username. \nE.g: (new Instagram\Api())->loginWithCookies($cookies, true, $credentials->getLogin());');
+
+            $sessionData = $this->cachePool->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($sessionKey));
+            $sessionData->set($cookies);
+            $this->cachePool->save($sessionData);
         }
 
         $this->session = new Session($cookies);
-
-        return $cookies;
     }
 
     /**
@@ -163,7 +168,7 @@ class Api
     {
         $login = new Login($this->client, $username, $password, $imapClient, $this->challengeDelay);
 
-        if ( !($this->cachePool instanceof CacheItemPoolInterface) ) {
+        if (!($this->cachePool instanceof CacheItemPoolInterface)) {
             throw new InstagramAuthException('You must set cachePool / login with cookies, example: \n$cachePool = new \Symfony\Component\Cache\Adapter\FilesystemAdapter("Instagram", 0, __DIR__ . "/../cache"); \n$api = new \Instagram\Api($cachePool);');
         }
 
@@ -180,7 +185,6 @@ class Api
                 $this->logout($username);
                 $this->login($username, $password, $imapClient);
             }
-
         } else {
             $cookies = $login->process();
             $sessionData->set($cookies);
@@ -833,7 +837,7 @@ class Api
 
         return $hydrator->getTimelineFeed();
     }
-      
+
     /**
      * @param string $user
      *

@@ -21,8 +21,8 @@ $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
 
 /** 1. Get cookies from file */
 $sessionId = $cachePool->getItem(Session::SESSION_KEY . '.' . CacheHelper::sanitizeUsername($credentials->getLogin()))
-                       ->get()
-                       ->getCookieByName('sessionId');
+    ->get()
+    ->getCookieByName('sessionId');
 
 // Generate CookieJar from instagram cookie 'sessionid'
 $cookieJar = new CookieJar(false, [$sessionId]);
@@ -41,7 +41,7 @@ $sessionId = new SetCookie([
 ]);
 // Generate CookieJar from instagram cookie 'sessionid'
 $cookieJar = new CookieJar(false, [$sessionId]);
-*/
+ */
 
 try {
     $api = new Api($cachePool);
@@ -50,7 +50,11 @@ try {
     $api->setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.57 Safari/537.36');
     $api->setLanguage('id-ID');
 
-    $api->loginWithCookies($cookieJar, $credentials->getLogin());
+    $api->loginWithCookies($cookieJar);
+
+    /** You can use below code to auto save session
+     $api->loginWithCookies($cookieJar, true, $credentials->getLogin());
+     */
 
     $profile = $api->getProfile('robertdowneyjr');
 
