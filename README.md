@@ -6,7 +6,6 @@
 [![Minimum PHP Version](https://img.shields.io/packagist/php-v/pgrimaud/instagram-user-feed.svg?maxAge=3600)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Last version](https://img.shields.io/packagist/v/pgrimaud/instagram-user-feed?maxAge=3600)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 [![Total Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/downloads)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
-[![Visitor badge](https://visitor-badge.glitch.me/badge?page_id=pgrimaud.instagram-user-feed)](https://github.com/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-28-orange.svg)](#contributors)
