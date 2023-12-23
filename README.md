@@ -62,6 +62,13 @@ composer require pgrimaud/instagram-user-feed
 
 # Changelog
 
+**vNEXT** - 2023-12-222:
+
+- Medias are no longer returned after fetching a profile.  `$profile->getMedias()` will always
+  return an empty array after calling `$api->getProfile()`.  It is necessary to call
+  `$api->getMoreMedias($profile)` to return the first 12 media
+- Same for IGTV
+
 **v6.16** - 2022-08-02:
 
 - Login with cookies. Thanks to [nsmle](https://github.com/nsmle) (example [here](https://github.com/pgrimaud/instagram-user-feed/blob/master/examples/login-with-cookies.php)) 🎉.

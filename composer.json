@@ -47,5 +47,8 @@
     "php-coveralls/php-coveralls": "^2.2",
     "phpunit/phpunit": "^8.5|^9.5",
     "symfony/var-dumper": "^5.0|^6.0"
+  },
+  "scripts": {
+    "test": "phpunit tests --whitelist src"
   }
 }

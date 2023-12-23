@@ -790,8 +790,6 @@ class Api
 
         $hydrator = new ProfileHydrator();
         $hydrator->hydrateProfile($data);
-        $hydrator->hydrateMedias($data);
-        $hydrator->hydrateIgtvs($data);
 
         return $hydrator->getProfile();
     }
