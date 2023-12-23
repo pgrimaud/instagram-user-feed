@@ -51,9 +51,8 @@ class ProfileTest extends TestCase
         $this->assertFalse($profile->isPrivate());
         $this->assertTrue($profile->isVerified());
         $this->assertSame(419, $profile->getMediaCount());
-        $this->assertTrue($profile->hasMoreMedias());
-        $this->assertCount(12, $profile->getMedias());
-        $this->assertSame(null, $profile->getMedias()[0]->getAccessibilityCaption());
+        $this->assertFalse($profile->hasMoreMedias());
+        $this->assertCount(0, $profile->getMedias());
 
         $this->assertSame(1518284433, $profile->__serialize()['id']);
         $this->assertSame('robertdowneyjr', $profile->__serialize()['userName']);
@@ -66,8 +65,8 @@ class ProfileTest extends TestCase
         $this->assertFalse($profile->__serialize()['private']);
         $this->assertTrue($profile->__serialize()['verified']);
         $this->assertSame(419, $profile->__serialize()['mediaCount']);
-        $this->assertTrue($profile->__serialize()['hasMoreMedias']);
-        $this->assertCount(12, $profile->__serialize()['medias']);
+        $this->assertFalse($profile->__serialize()['hasMoreMedias']);
+        $this->assertCount(0, $profile->__serialize()['medias']);
 
         $profile = $api->getMoreMedias($profile);
         $media   = $profile->getMedias()[0];

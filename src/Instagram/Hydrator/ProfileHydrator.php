@@ -84,6 +84,10 @@ class ProfileHydrator
         // reset igtvs
         $this->profile->setIGTV([]);
 
+        if(!isset($data->edge_felix_video_timeline->edges)) {
+            return;
+        }
+
         foreach ($data->edge_felix_video_timeline->edges as $item) {
             $igtv = $this->mediaHydrator->hydrateMediaFromProfile($item->node);
             $this->profile->addIGTV($igtv);
