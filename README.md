@@ -62,12 +62,13 @@ composer require pgrimaud/instagram-user-feed
 
 # Changelog
 
-**vNEXT** - 2023-12-222:
+**6.16.1** - 2023-12-24:
 
 - Medias are no longer returned after fetching a profile.  `$profile->getMedias()` will always
   return an empty array after calling `$api->getProfile()`.  It is necessary to call
-  `$api->getMoreMedias($profile)` to return the first 12 media
-- Same for IGTV
+  `$api->getMoreMedias($profile)` to return the first 12 media ([cookieguru](https://github.com/cookieguru))
+- Same for IGTV ([cookieguru](https://github.com/cookieguru))
+- Fix imap_delete second parameter ([deepvision7](https://github.com/deepvision7))
 
 **v6.16** - 2022-08-02:
 
