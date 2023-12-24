@@ -62,7 +62,7 @@ composer require pgrimaud/instagram-user-feed
 
 # Changelog
 
-**6.16.1** - 2023-12-24:
+**v6.16.1** - 2023-12-24:
 
 - Medias are no longer returned after fetching a profile.  `$profile->getMedias()` will always
   return an empty array after calling `$api->getProfile()`.  It is necessary to call
