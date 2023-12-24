@@ -5,7 +5,7 @@ namespace Instagram\Tests;
 use GuzzleHttp\{Client, Cookie\CookieJar, Cookie\SetCookie, Handler\MockHandler, HandlerStack, Psr7\Response};
 
 use Instagram\Api;
-use Instagram\Auth\{ Login, Session };
+use Instagram\Auth\{Login, Session};
 use Instagram\Exception\InstagramAuthException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -26,6 +26,7 @@ class LoginWithCookiesTest extends TestCase
 
         $mock = new MockHandler([
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/login-success.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/fixtures/manifest.json')),
             new Response(200, [], file_get_contents(__DIR__ . '/fixtures/profile.json')),
         ]);
 
@@ -58,7 +59,7 @@ class LoginWithCookiesTest extends TestCase
         $api = new Api();
         $api->loginWithCookies($cookiesJar);
     }
-    
+
     public function testLoginWithCookiesInvalid()
     {
         $this->expectException(InstagramAuthException::class);
