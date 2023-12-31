@@ -62,6 +62,10 @@ composer require pgrimaud/instagram-user-feed
 
 # Changelog
 
+**v6.16.6** - 2023-12-31:
+
+- Fix login error "Unable to extract JSON data" ([n1crask](https://github.com/n1crask))
+
 **v6.16.5** - 2023-12-24:
 
 - Medias are no longer returned after fetching a profile.  `$profile->getMedias()` will always
