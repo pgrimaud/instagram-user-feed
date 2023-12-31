@@ -64,6 +64,7 @@ composer require pgrimaud/instagram-user-feed
 
 **v6.16.6** - 2023-12-31:
 
+- Add support for Symfony 7
 - Fix login error "Unable to extract JSON data" ([n1crask](https://github.com/n1crask))
 
 **v6.16.5** - 2023-12-24:
