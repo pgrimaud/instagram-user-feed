@@ -54,12 +54,12 @@ class TimelineFeedHydrator
                     $timeline = $this->timelineHydrator->timelineBaseHydrator($feedItem->media_or_ad);
                     $this->timelineFeed->addTimeline($timeline);
                 }
-                
+
                 // Sponsored Feed
                 if (!property_exists($feedItem, 'label')) {
                 }
             }
-            
+
             // Suggested User Feed
             if (property_exists($feedItem, 'suggested_users')) {
             }

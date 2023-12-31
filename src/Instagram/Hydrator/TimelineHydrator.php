@@ -37,7 +37,7 @@ class TimelineHydrator
 
     /**
      * @param string $mediaType
-     * 
+     *
      * @return mixed Image|Carousel|Video|Reels|Igtv
      */
     public function hydrateTimelineMedia(string $mediaType, \StdClass $node)
@@ -80,7 +80,7 @@ class TimelineHydrator
     /**
      * @param int    $media_type
      * @param string $product_type
-     * 
+     *
      * @return string
      * @throws InstagramFetchException
      */

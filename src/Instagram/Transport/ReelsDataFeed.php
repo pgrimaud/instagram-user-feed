@@ -11,7 +11,7 @@ use Instagram\Utils\{Endpoints, OptionHelper, CacheResponse};
 
 class ReelsDataFeed extends AbstractDataFeed
 {
-    const IG_APP_ID = 936619743392459;
+    public const IG_APP_ID = 936619743392459;
 
     /**
      * @param int         $userId

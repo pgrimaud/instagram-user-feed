@@ -28,7 +28,7 @@ class JsonMediaCommentsFeed extends AbstractDataFeed
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return !empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new \StdClass;
+        return !empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new \StdClass();
     }
 
     /**
@@ -51,6 +51,6 @@ class JsonMediaCommentsFeed extends AbstractDataFeed
 
         $data = $this->fetchJsonDataFeed($endpoint);
 
-        return !empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new \StdClass;
+        return !empty($data->data->shortcode_media->edge_media_to_comment) ? $data->data->shortcode_media->edge_media_to_comment : new \StdClass();
     }
 }

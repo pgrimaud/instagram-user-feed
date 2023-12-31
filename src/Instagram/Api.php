@@ -150,7 +150,7 @@ class Api
     {
         $login = new Login($this->client, $username, $password, $imapClient, $this->challengeDelay);
 
-        if ( !($this->cachePool instanceof CacheItemPoolInterface) ) {
+        if (!($this->cachePool instanceof CacheItemPoolInterface)) {
             throw new InstagramAuthException('You must set cachePool / login with cookies, example: \n$cachePool = new \Symfony\Component\Cache\Adapter\FilesystemAdapter("Instagram", 0, __DIR__ . "/../cache"); \n$api = new \Instagram\Api($cachePool);');
         }
 
@@ -775,7 +775,7 @@ class Api
 
         return $hydrator->getTimelineFeed();
     }
-      
+
     /**
      * @param string $user
      *

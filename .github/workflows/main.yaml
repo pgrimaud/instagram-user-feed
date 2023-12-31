@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '7.2', '7.3', '7.4', '8', '8.1', '8.2', '8.3']
+        php: ['8.2', '8.3']
 
     steps:
       - name: "Init repository"
@@ -26,9 +26,10 @@ jobs:
         run: composer install
 
       - name: "Tests"
-        run: php vendor/bin/phpunit tests --whitelist src --coverage-clover ./build/logs/clover.xml
+        run: composer tests
 
-      - name: "Coveralls"
-        run: php vendor/bin/php-coveralls -v
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "CS Fix"
+        run: composer cs-fix
+
+      - name: "Phpstan"
+        run: composer phpstan

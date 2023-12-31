@@ -115,7 +115,7 @@ class Login
 
         if (property_exists($response, 'authenticated') && $response->authenticated == true) {
             return $cookieJar;
-        } else if (property_exists($response, 'error_type') && $response->error_type === 'generic_request_error') {
+        } elseif (property_exists($response, 'error_type') && $response->error_type === 'generic_request_error') {
             throw new InstagramAuthException('Generic error / Your IP may be block from Instagram. You should consider using a proxy.');
         } else {
             throw new InstagramAuthException('Wrong login / password');

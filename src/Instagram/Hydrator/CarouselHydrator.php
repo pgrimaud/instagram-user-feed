@@ -85,7 +85,7 @@ class CarouselHydrator
                 'width'                => $carouselItem->original_width,
                 'height'               => $carouselItem->original_height,
             ];
-    
+
             if (property_exists($carouselItem, 'image_versions2')) {
                 $carouselMedia['image'] = $carouselItem->image_versions2->candidates;
             }
@@ -97,11 +97,11 @@ class CarouselHydrator
             if (property_exists($carouselItem, 'video_duration')) {
                 $carouselMedia['duration'] = $carouselItem->video_duration;
             }
-    
+
             if (property_exists($carouselItem, 'accessibility_caption')) {
                 $carouselMedia['accessibilityCaption'] = $carouselItem->accessibility_caption;
             }
-    
+
             if (property_exists($carouselItem, 'number_of_qualities')) {
                 $carouselMedia['quality'] = $carouselItem->number_of_qualities;
             }
@@ -114,7 +114,7 @@ class CarouselHydrator
 
     /**
      * @param int $media_type
-     * 
+     *
      * @return string
      * @throws InstagramFetchException
      */

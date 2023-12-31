@@ -8,7 +8,7 @@ use GuzzleHttp\Cookie\CookieJar;
 
 class Session
 {
-    const SESSION_KEY = 'instagram.session';
+    public const SESSION_KEY = 'instagram.session';
 
     /**
      * @var CookieJar

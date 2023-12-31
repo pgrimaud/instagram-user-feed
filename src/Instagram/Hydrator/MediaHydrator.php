@@ -69,7 +69,7 @@ class MediaHydrator
         $feed->setEndCursor($node->edge_user_to_photos_of_you->page_info->end_cursor);
 
         foreach ($node->edge_user_to_photos_of_you->edges as $node) {
-            $media = $this->hydrateProfile->mediaBaseHydrator(new Media, $node->node);
+            $media = $this->hydrateProfile->mediaBaseHydrator(new Media(), $node->node);
             $feed->addMedia($media);
         }
 

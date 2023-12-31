@@ -12,6 +12,9 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 > **Warning**
+> 2023-12-31 - Version 7.0.0 will drop support for PHP < 8.2
+
+> **Warning**
 > 2022-11-09 - Instagram changed his DOM AGAIN... Please update to this version 6.16.4
 
 > **Warning**
@@ -61,6 +64,10 @@ composer require pgrimaud/instagram-user-feed
 ```
 
 # Changelog
+
+**v7.0.0** - 2023-12-31:
+
+- Drop support for PHP < 8.2
 
 **v6.16.6** - 2023-12-31:
 
