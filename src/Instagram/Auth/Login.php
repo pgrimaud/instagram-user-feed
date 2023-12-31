@@ -74,8 +74,7 @@ class Login
  
 
         preg_match($pattern, $html, $matches);
-
-        var_dump($matches);
+ 
         if (!isset($matches[1])) {
             throw new InstagramAuthException('Unable to extract JSON data');
         }
