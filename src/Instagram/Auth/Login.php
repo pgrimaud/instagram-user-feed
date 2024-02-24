@@ -70,7 +70,7 @@ class Login
 
         $html = (string) $baseRequest->getBody();
 
-        preg_match('/\\\"csrf_token\\\":\\\"(.*?)\\\"/', $html, $matches);
+        preg_match('/\"csrf_token\":\"(.*?)\"/', $html, $matches);
 
         if (!isset($matches[1])) {
             throw new InstagramAuthException('Unable to extract JSON data');
@@ -145,14 +145,10 @@ class Login
 
         $html = (string) $baseRequest->getBody();
 
-        preg_match('/\\\"csrf_token\\\":\\\"(.*?)\\\"/', $html, $matches);
+        preg_match('/\"csrf_token\":\"(.*?)\"/', $html, $matches);
 
-        if (isset($matches[1])) {
-            $data = $matches[1];
-
-            if (!isset($data->config->viewer) && !isset($data->config->viewerId)) {
-                throw new InstagramAuthException('Please login with instagram credentials.');
-            }
+        if (!isset($matches[1])) {
+            throw new InstagramAuthException('Unable to extract JSON data');
         }
 
         return $cookies;
