@@ -25,6 +25,9 @@ class JsonProfileDataFeedV2 extends AbstractDataFeed
                 'x-ig-app-id' => 936619743392459,
             ]);
         } catch (\Exception $e) {
+            if (str_contains($e->getMessage(), '{"message":"checkpoint_required"')) {
+                throw new InstagramAuthException("Checkpoint required", $e->getCode(), $e);
+            }
             throw new InstagramFetchException('Error: ' . $e->getMessage());
         }
 
