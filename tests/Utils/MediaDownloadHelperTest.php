@@ -18,9 +18,9 @@ class MediaDownloadHelperTest extends TestCase
 
     public function testDownloadUrl()
     {
-        $baseImg = 'https://cdn.discordapp.com/attachments/862683614256168990/862724864581959680/input1.png';
+        $baseImg = 'https://placehold.co/20';
         $fileName = MediaDownloadHelper::downloadMedia($baseImg, __DIR__ . '/../cache');
 
-        $this->assertSame('attachments-862683614256168990-862724864581959680-input1.png', $fileName);
+        $this->assertSame('20', $fileName);
     }
 }
