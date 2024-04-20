@@ -103,7 +103,7 @@ class ImapClient
         $resource  = @imap_open('{' . $this->getServer() . '/' . $this->getConnectionType() . '/ssl}INBOX', $this->getLogin(), $this->getPassword());
 
         if (!$resource) {
-          throw new InstagramAuthException('Unable to open IMAP stream.');
+            throw new InstagramAuthException('Unable to open IMAP stream.');
         }
 
         $numberMax = imap_num_msg($resource);
@@ -136,7 +136,7 @@ class ImapClient
                 }
 
                 if ($isMailFromInstagram && isset($match[1])) {
-                    imap_delete($resource, $i);
+                    imap_delete($resource, "$i");
 
                     $foundCode = true;
                     $code      = $match[1];

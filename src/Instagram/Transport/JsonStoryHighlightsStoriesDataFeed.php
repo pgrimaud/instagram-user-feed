@@ -34,7 +34,7 @@ class JsonStoryHighlightsStoriesDataFeed extends AbstractDataFeed
         $endpoint = InstagramHelper::URL_BASE . 'graphql/query/?query_hash=' . InstagramHelper::QUERY_HASH_HIGHLIGHTS_STORIES . '&variables=' . json_encode($variables);
 
         $data = $this->fetchJsonDataFeed($endpoint);
-        
+
         return $data->data->reels_media[0];
     }
 }

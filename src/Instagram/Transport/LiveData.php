@@ -8,7 +8,6 @@ use GuzzleHttp\Exception\ClientException;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\{Endpoints, OptionHelper, CacheResponse};
 
-
 class LiveData extends AbstractDataFeed
 {
     /**

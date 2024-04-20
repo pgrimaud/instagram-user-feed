@@ -26,7 +26,7 @@ class HtmlProfileDataFeed extends AbstractDataFeed
                 'accept-language' => OptionHelper::$LOCALE,
             ],
         ];
-        
+
         if (!empty($this->session)) {
             $headers['cookies'] = $this->session->getCookies();
         }

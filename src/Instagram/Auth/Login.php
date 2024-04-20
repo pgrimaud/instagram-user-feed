@@ -70,7 +70,7 @@ class Login
 
         $html = (string) $baseRequest->getBody();
 
-        preg_match('/\\\"csrf_token\\\":\\\"(.*?)\\\"/', $html, $matches);
+        preg_match('/\"csrf_token\":\"(.*?)\"/', $html, $matches);
 
         if (!isset($matches[1])) {
             throw new InstagramAuthException('Unable to extract JSON data');
@@ -115,7 +115,7 @@ class Login
 
         if (property_exists($response, 'authenticated') && $response->authenticated == true) {
             return $cookieJar;
-        } else if (property_exists($response, 'error_type') && $response->error_type === 'generic_request_error') {
+        } elseif (property_exists($response, 'error_type') && $response->error_type === 'generic_request_error') {
             throw new InstagramAuthException('Generic error / Your IP may be block from Instagram. You should consider using a proxy.');
         } else {
             throw new InstagramAuthException('Wrong login / password');
@@ -145,12 +145,9 @@ class Login
 
         $html = (string) $baseRequest->getBody();
 
-        preg_match('/"raw":"{\\\\"(.*?)\\\\"}"/', $html, $matches);
+        preg_match('/\"csrf_token\":\"(.*?)\"/', $html, $matches);
 
-        if (isset($matches[0])) {
-            if (!property_exists(json_decode("{{$matches[0]}}"), 'raw'))
-                throw new InstagramAuthException('Login With Cookies Failed, Please login with instagram credentials.');
-
+        if (isset($matches[1])) {
             $data = json_decode(json_decode("{{$matches[0]}}")->raw);
 
             if (!isset($data->config->viewer) && !isset($data->config->viewerId)) {

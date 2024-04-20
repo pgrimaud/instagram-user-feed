@@ -6,23 +6,23 @@ namespace Instagram\Utils;
 
 class Endpoints
 {
-    const FOLLOW_URL = 'https://www.instagram.com/web/friendships/{{accountId}}/follow/';
-    const UNFOLLOW_URL = 'https://www.instagram.com/web/friendships/{{accountId}}/unfollow/';
+    public const FOLLOW_URL = 'https://www.instagram.com/web/friendships/{{accountId}}/follow/';
+    public const UNFOLLOW_URL = 'https://www.instagram.com/web/friendships/{{accountId}}/unfollow/';
 
-    const LIKE_URL = 'https://www.instagram.com/web/likes/{{postId}}/like/';
-    const UNLIKE_URL = 'https://www.instagram.com/web/likes/{{postId}}/unlike/';
+    public const LIKE_URL = 'https://www.instagram.com/web/likes/{{postId}}/like/';
+    public const UNLIKE_URL = 'https://www.instagram.com/web/likes/{{postId}}/unlike/';
 
-    const LOCATION_URL = 'https://www.instagram.com/explore/locations/{{locationId}}/';
+    public const LOCATION_URL = 'https://www.instagram.com/explore/locations/{{locationId}}/';
 
-    const LIVE_URL = 'https://www.instagram.com/{{username}}/live/?__a=1';
+    public const LIVE_URL = 'https://www.instagram.com/{{username}}/live/?__a=1';
 
-    const REELS_URL = 'https://i.instagram.com/api/v1/clips/user/?hl=en';
+    public const REELS_URL = 'https://i.instagram.com/api/v1/clips/user/?hl=en';
 
-    const PROFILE_URL = 'https://i.instagram.com/api/v1/users/{{userId}}/info/';
+    public const PROFILE_URL = 'https://i.instagram.com/api/v1/users/{{userId}}/info/';
 
-    const COMMENT_URL = 'https://www.instagram.com/web/comments/{{postId}}/add/';
+    public const COMMENT_URL = 'https://www.instagram.com/web/comments/{{postId}}/add/';
 
-    const TIMELINE_URL = 'https://i.instagram.com/api/v1/feed/timeline/';
+    public const TIMELINE_URL = 'https://i.instagram.com/api/v1/feed/timeline/';
 
     const SEEN_STORY_URL = 'https://i.instagram.com/api/v1/stories/reel/seen/';
 

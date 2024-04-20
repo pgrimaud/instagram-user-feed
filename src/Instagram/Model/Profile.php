@@ -148,7 +148,6 @@ class Profile
      * @return int
      */
     public function getFollowers(): int
-
     {
         return $this->followers;
     }

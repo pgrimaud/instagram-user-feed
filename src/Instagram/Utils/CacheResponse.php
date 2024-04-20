@@ -18,16 +18,16 @@ class CacheResponse
      *
      * @return void
      */
-     public static function setResponse(Response $response): void
-     {
-         self::$response = $response;
-     }
+    public static function setResponse(Response $response): void
+    {
+        self::$response = $response;
+    }
 
     /**
      * @return \GuzzleHttp\Psr7\Response|null
      */
-     public static function getResponse(): mixed
-     {
-         return self::$response;
-     }
+    public static function getResponse(): mixed
+    {
+        return self::$response;
+    }
 }

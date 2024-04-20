@@ -12,7 +12,7 @@ use Instagram\Utils\OptionHelper;
 
 class TimelineDataFeed extends AbstractDataFeed
 {
-    const IG_APP_ID = 1217981644879628;
+    public const IG_APP_ID = 1217981644879628;
 
     /**
      * @param string|null $maxId

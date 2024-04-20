@@ -8,13 +8,13 @@ use Instagram\Utils\InstagramHelper;
 
 class Media
 {
-    const TYPE_IMAGE = 'image';
-    const TYPE_VIDEO = 'video';
-    const TYPE_CAROUSEL = 'carousel';
+    public const TYPE_IMAGE = 'image';
+    public const TYPE_VIDEO = 'video';
+    public const TYPE_CAROUSEL = 'carousel';
 
-    const MEDIA_TYPE_IMAGE = 1;
-    const MEDIA_TYPE_VIDEO = 2;
-    const MEDIA_TYPE_CAROUSEL = 8;
+    public const MEDIA_TYPE_IMAGE = 1;
+    public const MEDIA_TYPE_VIDEO = 2;
+    public const MEDIA_TYPE_CAROUSEL = 8;
 
     /**
      * @var int

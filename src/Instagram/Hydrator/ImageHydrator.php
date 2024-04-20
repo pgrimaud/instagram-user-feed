@@ -35,7 +35,7 @@ class ImageHydrator
         $image->setDate(\DateTime::createFromFormat('U', (string) $node->taken_at));
         $image->setLikes($node->like_count);
         $image->setIsLiked($node->has_liked);
-        
+
         $image->setHeight($node->original_height);
         $image->setWidth($node->original_width);
 

@@ -56,11 +56,13 @@ class MediaDetailedHydrator
         $thumbnailSrc = $displaySrc = '';
         if (property_exists($node, 'image_versions2')) {
             foreach ($node->image_versions2->candidates as $img) {
-                if ($img->width == 640)
+                if ($img->width == 640) {
                     $thumbnailSrc = $img->url;
+                }
 
-                if ($img->width == $node->original_width)
+                if ($img->width == $node->original_width) {
                     $displaySrc = $img->url;
+                }
             }
         }
 
@@ -167,8 +169,9 @@ class MediaDetailedHydrator
 
             $scItems[] = $scItem;
 
-            if ($key == 0)
+            if ($key == 0) {
                 $media->setDisplayResources($item->image_versions2->candidates);
+            }
         }
 
         $media->setSideCarItems($scItems);
