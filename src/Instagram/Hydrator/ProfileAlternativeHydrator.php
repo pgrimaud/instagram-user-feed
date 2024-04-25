@@ -26,7 +26,7 @@ class ProfileAlternativeHydrator
      */
     public function hydrateProfile(\StdClass $data): void
     {
-        $this->profile->setId($data->pk);
+        $this->profile->setId((int)$data->pk);
         $this->profile->setUserName($data->username);
         $this->profile->setFullName($data->full_name);
         $this->profile->setFollowers($data->follower_count ?? 0);
