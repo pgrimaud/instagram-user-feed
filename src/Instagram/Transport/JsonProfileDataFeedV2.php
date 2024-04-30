@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Instagram\Transport;
 
 use Instagram\Exception\InstagramFetchException;
+use Instagram\Exception\InstagramAuthException;
 use Instagram\Utils\InstagramHelper;
 
 class JsonProfileDataFeedV2 extends AbstractDataFeed
@@ -14,7 +15,7 @@ class JsonProfileDataFeedV2 extends AbstractDataFeed
      *
      * @return \StdClass
      *
-     * @throws InstagramFetchException
+     * @throws InstagramFetchException|InstagramAuthException
      */
     public function fetchData(string $username): \StdClass
     {
