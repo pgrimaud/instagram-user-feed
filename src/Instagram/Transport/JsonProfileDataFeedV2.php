@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Instagram\Transport;
 
+use Instagram\Exception\InstagramAuthException;
 use Instagram\Exception\InstagramFetchException;
 use Instagram\Utils\InstagramHelper;
 
