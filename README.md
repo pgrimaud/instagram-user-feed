@@ -8,7 +8,7 @@
 [![Total Downloads](https://poser.pugx.org/pgrimaud/instagram-user-feed/downloads)](https://packagist.org/packages/pgrimaud/instagram-user-feed)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 > **Warning**
@@ -424,6 +424,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/deepvision7"><img src="https://avatars.githubusercontent.com/u/5318161?v=4?s=100" width="100px;" alt="deepvision7"/><br /><sub><b>deepvision7</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=deepvision7" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/n1crack"><img src="https://avatars.githubusercontent.com/u/712404?v=4?s=100" width="100px;" alt="Yusuf Özdemir"/><br /><sub><b>Yusuf Özdemir</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=n1crack" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://kadirmelihcan.com"><img src="https://avatars.githubusercontent.com/u/17956350?v=4?s=100" width="100px;" alt="Kadir Melih Can"/><br /><sub><b>Kadir Melih Can</b></sub></a><br /><a href="https://github.com/pgrimaud/instagram-user-feed/commits?author=kdrmlhcn" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
