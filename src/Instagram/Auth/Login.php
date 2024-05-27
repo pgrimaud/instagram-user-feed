@@ -155,6 +155,14 @@ class Login
             }
         }
 
+        // get all instagram cookies
+        $manifestRequest = $this->client->request('GET', InstagramHelper::URL_BASE . "data/manifest.json", [
+            'headers' => [
+                'user-agent' => OptionHelper::$USER_AGENT,
+            ],
+            'cookies' => $cookies
+        ]);
+
         return $cookies;
     }
 
